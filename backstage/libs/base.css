@@ -1,0 +1,48 @@
+:root {
+  --color-primary: #2a4e6c;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f2f2f2;
+  color: #2a4e6c;
+}
+
+.space-x-md {
+  width: 16px;
+}
+
+.space-y-s {
+  height: 8px;
+}
+
+.space-y-md {
+  height: 16px;
+}
+
+.link {
+  color: #2d72ad;
+  text-decoration: underline;
+}
+
+.link:hover {
+  text-decoration-thickness: 2px;
+}
+
+.icon-link {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  color: #2d72ad;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 4px;
+}
+
+.icon-link:hover p {
+  text-decoration: underline;
+}
+
+.hidden {
+  display: none;
+}

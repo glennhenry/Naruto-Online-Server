@@ -1,0 +1,827 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="/backstage/assets/favicon.ico">
+  <link rel="stylesheet" href="/backstage/libs/reset.css">
+  <link rel="stylesheet" href="/backstage/libs/base.css">
+  <link rel="stylesheet" href="/backstage/libs/toast.css">
+  <script src="/backstage/libs/toast.js"></script>
+  <script src="/backstage/libs/utils.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <title>Logger</title>
+  <style>
+    .main {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-size: 13px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      padding: 6px 8px;
+      border-bottom: 3px solid var(--color-primary);
+      gap: 8px;
+    }
+
+    .topbar h1 {
+      font-size: 20px;
+    }
+
+    .topbar .icon-link {
+      font-size: 13px;
+    }
+
+    .content {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 8px;
+    }
+
+    .footer {
+      padding: 4px;
+      color: #9e9e9e;
+      border-top: 1px solid #ccc;
+    }
+
+    .screen {
+      flex: 1;
+      width: 100%;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      color: black;
+      background-color: white;
+      border: 1px solid #ccc;
+      font-family: monospace;
+      font-size: 14px;
+    }
+
+    .menu-bar {
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4px 8px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .logger-title {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .logger-title p {
+      font-family: monospace;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+    }
+
+    .toggle-icon-button {
+      all: unset;
+      padding: 4px;
+      cursor: pointer;
+    }
+
+    .toggle-icon-button:hover {
+      background-color: #e5e5e5;
+    }
+
+    .toggle-icon-button.enabled {
+      background-color: #ccc;
+    }
+
+    .menu-icon-button {
+      all: unset;
+      padding: 4px;
+      cursor: pointer;
+    }
+
+    .menu-icon-button:hover {
+      background-color: #e5e5e5;
+    }
+
+    .filter-bar {
+      height: 40px;
+      display: flex;
+      align-items: center;
+      padding-right: 8px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .filter-timestamp {
+      width: 98px;
+    }
+
+    .filter-source {
+      width: 180px;
+    }
+
+    .filter-level-selector {
+      background-color: white;
+      border: 1px solid #817f84;
+      border-radius: 4px;
+      padding: 4px;
+    }
+
+    .filter-tag {
+      width: 160px;
+      position: relative;
+      display: flex;
+      gap: 4px;
+    }
+
+    #tags-notice {
+      font-size: 10px;
+    }
+
+    .filter-tag-input {
+      position: absolute;
+      top: 32;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      background-color: white;
+    }
+
+    .tag-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px;
+    }
+
+    .tag-option:not(:first-child) {
+      border-top: 1px solid #ccc;
+    }
+
+    input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+    }
+
+    .options {
+      border-top: 1px solid #ccc;
+    }
+
+    .disabled {
+      cursor: default;
+      pointer-events: none;
+      color: #888;
+      background-color: #e5e5e5;
+    }
+
+    .filter-timestamp,
+    .filter-source,
+    .filter-level-selector,
+    .filter-tag {
+      padding: 4px;
+    }
+
+    .filter-message {
+      flex: 1;
+      padding: 4px;
+    }
+
+    .logs {
+      flex: 1;
+      padding-bottom: 8px;
+      overflow: auto;
+    }
+
+    .logs-content {
+      min-width: 100%;
+      width: max-content;
+    }
+
+    .logmsg {
+      display: flex;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .timestamp {
+      width: 110px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .source {
+      width: 250px;
+    }
+
+    .level {
+      width: 50px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .tag {
+      width: 200px;
+      background-color: #f0f0f0;
+    }
+
+    .timestamp,
+    .source,
+    .level,
+    .tag {
+      border-right: 1px solid #ccc;
+      padding: 4px;
+    }
+
+    .message {
+      padding: 4px;
+      white-space: pre;
+    }
+
+    .trace {
+      background-color: #5F8787;
+    }
+
+    .debug {
+      background-color: #fbbfff
+    }
+
+    .info {
+      background-color: #b6dbff
+    }
+
+    .warn {
+      background-color: #ffeb80
+    }
+
+    .error {
+      background-color: #ffa5a5;
+    }
+
+    .kp {
+      background-color: #af87d7;
+    }
+
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+
+      #print-section,
+      #print-section * {
+        visibility: visible;
+      }
+
+      #print-section {
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="main">
+    <div class="topbar">
+      <h1><a href="/backstage">Backstage</a></h1>
+      <a class="icon-link" href="/backstage/logger">
+        <img src="/backstage/assets/logger.png" width="24px" alt="Logger">
+        <p>Logger</p>
+      </a>
+      <a class="icon-link" href="/backstage/command">
+        <img src="/backstage/assets/console.png" width="24px" style="margin-right:-2px;" alt="Command">
+        <p>Command</p>
+      </a>
+    </div>
+    <div id="print-section" class="content">
+      <div class="screen">
+        <div class="menu-bar">
+          <div class="logger-title">
+            <img id="connect-status" src="/backstage/assets/offline.png" width="16px" title="Not connected">
+            <p>Logger</p>
+            <p>(total logs: <span id="total-logs">0</span>)</p>
+            <p>(displayed: <span id="displayed-logs">0</span>)</p>
+          </div>
+          <div class="actions">
+            <button id="go-up" class="menu-icon-button">
+              <img src="/backstage/assets/up.png" width="24px" alt="Up" title="Scroll to start" style="padding:4px;">
+            </button>
+            <button id="go-down" class="menu-icon-button">
+              <img src="/backstage/assets/down.png" width="24px" alt="Down" title="Scroll to end" style="padding:4px;">
+            </button>
+            <button class="menu-icon-button" onclick="window.print()">
+              <img src="/backstage/assets/print.png" width="24px" alt="Printer" title="Print to PDF">
+            </button>
+            <button id="export-logs" class="menu-icon-button">
+              <img src="/backstage/assets/share.png" width="24px" alt="Export" title="Export to log file"
+                style="padding:2px;">
+            </button>
+            <button id="toggle-scroll" class="toggle-icon-button">
+              <img src="/backstage/assets/bottom.png" width="24px" alt="Bottom" title="Toggle scroll to end"
+                style="padding:3px;">
+            </button>
+            <button id="stop-receive" class="toggle-icon-button">
+              <img src="/backstage/assets/stop.png" width="24px" alt="Stop" title="Stop receiving new logs"
+                style="padding:2px;">
+            </button>
+            <button id="disable-limit" class="toggle-icon-button">
+              <img src="/backstage/assets/nolimit.png" width="24px" alt="Limit" title="Disable logs limit (max 1000)">
+            </button>
+            <button id="clear-logs" class="menu-icon-button">
+              <img src="/backstage/assets/delete.png" width="24px" alt="Trash" title="Clear all logs"
+                style="padding:4px;">
+            </button>
+          </div>
+        </div>
+        <div class="filter-bar">
+          <div class="filter-timestamp"></div>
+          <div style="width:12px"></div>
+          <input class="filter-source" type="text" placeholder="Source">
+          <div style="width:60px"></div>
+          <select id="filter-level-selector" class="filter-level-selector" name="filter-level-selector">
+            <option id="filter-all-level" selected value="all">ALL</option>
+            <option value="trace">TRACE</option>
+            <option value="debug">DEBUG</option>
+            <option value="info">INFO</option>
+            <option value="warn">WARN</option>
+            <option value="error">ERROR</option>
+            <option value="off">OFF</option>
+          </select>
+          <div style="width:12px"></div>
+          <div class="filter-tag">
+            <button id="open-filter-tag">Tags</button>
+            <p id="tags-notice"></p>
+            <div class="filter-tag-input hidden">
+              <div class="tag-option">
+                <label for="tag-any">Any</label>
+                <input id="tag-any" type="checkbox" checked>
+              </div>
+              <div class="options"></div>
+            </div>
+          </div>
+          <div style="width:18px"></div>
+          <input class="filter-message" type="text" placeholder="Message">
+        </div>
+        <div class="logs">
+          <div class="logs-content"></div>
+        </div>
+      </div>
+    </div>
+    <footer class="footer">
+      <p>Made possible by <a class="link" href="https://github.com/glennhenry/Encore" target="_blank">Encore</a>,
+        a game
+        server framework. Bring it back live.</p>
+    </footer>
+  </div>
+  <div class="toast-container"></div>
+  <script>
+    function getCookie(name) {
+      const cookies = document.cookie.split(";").map(c => c.trim());
+      for (const cookie of cookies) {
+        if (cookie.startsWith(name + "=")) {
+          return cookie.substring((name + "=").length);
+        }
+      }
+      return null;
+    }
+
+    const token = getCookie("backstage-clientId");
+    const websocket = new WebSocket(`ws://127.0.0.1:8080/backstage/logger?token=${token}&listens=all`);
+
+    let logs = []
+    let sourceQuery = ""
+    let levelFilter = "all"
+    let notUsingTagsFilter = true
+    let activeTagsFilter = new Set()
+    let availableTags = new Set()
+    let messageQuery = ""
+    const MAX_CHAR_PER_LINES = 3000
+    const MAX_LOGS_STORAGE = 1000
+
+    function clearLogs() {
+      $(".logs-content").empty()
+      logs = []
+      $("#total-logs").text("0")
+      $("#displayed-logs").text("0")
+      resetAllFilters()
+    }
+
+    function isChecked(checkbox) {
+      return checkbox.prop("checked")
+    }
+
+    function resetAllFilters() {
+      $(".filter-source").val("")
+      $("#filter-level-selector").val("all")
+      $("#tag-any").prop("checked", true)
+      $(".filter-message").val("")
+      sourceQuery = ""
+      levelFilter = "all"
+      notUsingTagsFilter = true
+      activeTagsFilter = new Set()
+      availableTags = new Set()
+      $(".options").empty()
+      messageQuery = ""
+    }
+
+    let toggleScroll = false
+    let stopReceive = false
+    let disableLimit = false
+    let isExporting = false
+
+    $(document).ready(function () {
+      resetAllFilters()
+
+      // actions
+      $(".toggle-icon-button").click(function () {
+        $(this).toggleClass("enabled")
+      })
+      $("#go-up").click(function () {
+        $(".logs").scrollTop(0)
+      })
+      $("#go-down").click(function () {
+        $(".logs").scrollTop($(".logs").prop("scrollHeight"))
+      })
+      $("#export-logs").click(function () {
+        downloadLogs()
+      })
+      $("#toggle-scroll").click(function () {
+        toggleScroll = $(this).hasClass("enabled")
+        if (toggleScroll) {
+          $(".logs").scrollTop($(".logs").prop("scrollHeight"))
+        }
+      })
+      $("#stop-receive").click(function () {
+        stopReceive = $(this).hasClass("enabled")
+      })
+      $("#disable-limit").click(function () {
+        disableLimit = $(this).hasClass("enabled")
+      })
+      $("#clear-logs").click(function () {
+        clearLogs()
+      })
+
+      $(".filter-source").change(function () {
+        sourceQuery = $(this).val()
+        console.log(sourceQuery)
+        updateLogsDisplayAfterFilter()
+      })
+
+      $("#filter-level-selector").change(function () {
+        levelFilter = $(this).val()
+        updateLogsDisplayAfterFilter()
+      })
+
+      $("#open-filter-tag").click(function (event) {
+        event.stopPropagation();
+        $(".filter-tag-input").toggleClass("hidden");
+      });
+
+      $(".filter-tag-input").click(function (event) {
+        event.stopPropagation();
+      });
+
+      $("#tag-any").change(function () {
+        if (this.checked) {
+          clearTagFilter()
+          activeTagsFilter.clear()
+          notUsingTagsFilter = true
+        } else {
+          enableTagFilter(true)
+          notUsingTagsFilter = false
+        }
+        updateEmptyTagNotice()
+        updateLogsDisplayAfterFilter()
+      })
+
+      $(".tag-option").each(function () {
+        const input = $(this).children().eq(1)
+        if (input.attr("id") != "tag-any") {
+          onTagFilterChecked(input)
+        }
+        updateEmptyTagNotice()
+      })
+
+      $(".filter-message").change(function () {
+        messageQuery = $(this).val()
+        updateLogsDisplayAfterFilter()
+      })
+    })
+
+    $(document).click(function (event) {
+      const clickedInsideOption = $(event.target).closest(".filter-tag-input").length
+      if (!clickedInsideOption) {
+        $(".filter-tag-input").addClass("hidden");
+      }
+    });
+
+    function exportLogs() {
+      const lines = []
+
+      $(".logs-content .logmsg").each(function () {
+        const columns = $(this).children().map(function () {
+          return $(this).text()
+        }).get()
+
+        lines.push(columns.join(" "))
+      })
+
+      return lines.join("")
+    }
+
+    function downloadLogs() {
+      const text = exportLogs()
+      const blob = new Blob([text], {
+        type: "text/plain;charset=utf-8"
+      })
+
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement("a")
+
+      a.href = url
+      a.download = "logs.log"
+      a.click()
+
+      URL.revokeObjectURL(url)
+    }
+
+    function clearTagFilter() {
+      $(".tag-option").each(function () {
+        const input = $(this).children().eq(1)
+        if (input.attr("id") != "tag-any") {
+          input.attr("disabled", true)
+          input.prop("checked", false)
+          $(this).addClass("disabled")
+        }
+      })
+    }
+
+    function enableTagFilter() {
+      $(".tag-option").each(function () {
+        const input = $(this).children().eq(1)
+        if (input.attr("id") != "tag-any") {
+          input.attr("disabled", false)
+          $(this).removeClass("disabled")
+        }
+      })
+    }
+
+    function onTagFilterChecked(input) {
+      input.change(function () {
+        const tag = input.attr("id").toLowerCase()
+
+        if (this.checked) {
+          activeTagsFilter.add(tag)
+        } else {
+          activeTagsFilter.delete(tag)
+        }
+
+        updateEmptyTagNotice()
+        updateLogsDisplayAfterFilter()
+      })
+    }
+
+    function updateEmptyTagNotice() {
+      if (!notUsingTagsFilter && activeTagsFilter.size == 0) {
+        $("#tags-notice").text("no tags applied")
+      } else {
+        $("#tags-notice").text("")
+      }
+    }
+
+    function sourceMatch(value) {
+      return sourceQuery === "" ||
+        String(value ?? "").toLowerCase().includes(sourceQuery.toLowerCase())
+    }
+
+    function levelMatch(value) {
+      return levelFilter === "all" ||
+        String(value ?? "").toLowerCase() === levelFilter.toLowerCase()
+    }
+
+    function tagMatch(value) {
+      if (notUsingTagsFilter) return true
+      if (value == null || value === "") return false
+
+      const tags = String(value).split(",").map(t => t.trim().toLowerCase())
+      return tags.some(tag => activeTagsFilter.has(tag))
+    }
+
+    function messageMatch(value) {
+      return messageQuery === "" ||
+        String(value ?? "").toLowerCase().includes(messageQuery.toLowerCase())
+    }
+
+    function matchAllTerms(log) {
+      return sourceMatch(log.source) && levelMatch(log.level) && tagMatch(log.tag) && (messageMatch(log.message) || messageMatch(log.throwable))
+    }
+
+    function updateLogsDisplayAfterFilter() {
+      $(".logs-content").empty()
+      let count = 0
+      for (const log of logs) {
+        if (matchAllTerms(log)) {
+          addLogMessage(log)
+          count++
+        }
+      }
+      $("#displayed-logs").text(count)
+    }
+
+    websocket.onopen = () => {
+      $("#connect-status").attr("src", "/backstage/assets/online.png")
+      Toast.info("Connected!", "Connected to the logger WebSocket.", true)
+    };
+
+    websocket.onclose = (event) => {
+      $("#connect-status").attr("src", "/backstage/assets/offline.png")
+      Toast.info("Disconnected!", "Disconnected from the logger WebSocket.", true)
+    };
+
+    websocket.onmessage = (event) => {
+      try {
+        const msg = JSON.parse(event.data);
+        const type = msg.type;
+        const payload = msg.payload;
+
+        switch (type) {
+          case "newlog":
+            if (stopReceive) return
+            if (!disableLimit && logs.length > MAX_LOGS_STORAGE) {
+              logs.shift()
+            }
+            logs.push(payload)
+            addNewTagFilter(payload.tag)
+
+            if (matchAllTerms(payload)) {
+              addLogMessage(payload)
+              $("#displayed-logs").text(Number($("#displayed-logs").text()) + 1)
+            }
+
+            $("#total-logs").text(logs.length)
+            if (toggleScroll) {
+              $(".logs").scrollTop($(".logs").prop("scrollHeight"))
+            }
+            break;
+          default:
+            Toast.warn("Unknown message", `Received an unknown message type: ${type}`)
+        }
+      } catch (e) {
+        Toast.error("WS error", e.message)
+      }
+    };
+
+    function addNewTagFilter(tag) {
+      if (tag == null || tag.trim() === "" || tag === "null") return
+
+      const tags = tag.split(",")
+      for (const rawTag of tags) {
+        const t = rawTag.trim()
+        if (!t) continue
+
+        const key = t.toLowerCase()
+        if (availableTags.has(key)) continue
+        availableTags.add(key)
+
+        const option = $('<div class="tag-option"></div>')
+        const input = $("<input>")
+          .attr("id", key)
+          .attr("type", "checkbox")
+
+        onTagFilterChecked(input)
+
+        if (notUsingTagsFilter) {
+          option.addClass("disabled")
+          input.prop("disabled", true)
+        }
+
+        $(".options").append(
+          option
+            .append($("<label></label>")
+              .attr("for", key)
+              .text(t))
+            .append(input)
+        )
+      }
+    }
+
+    function addLogMessage(log) {
+      const logMsg = $(`<div class="logmsg"></div>`)
+
+      // trim indents
+      const msg = $(`<p class="message"></p>`)
+      for (const line of log.message.split(/\r?\n/g)) {
+        let indentTrimmed = line.replace(/[^\S\r\n]{10,}/g, '')
+        if (indentTrimmed.length > MAX_CHAR_PER_LINES) {
+          indentTrimmed = indentTrimmed.slice(0, 2985) + '... [TRUNCATED]';
+        }
+
+        msg.append($("<span></span>").text(indentTrimmed + "\n"))
+      }
+
+      // add throwables
+      if (log.throwable != null) {
+        for (const line of log.throwable.split(/\r?\n/g)) {
+          msg.append($("<span></span>").text(line + "\n"))
+        }
+      }
+
+      const fgRegex = /\u001b\[38;5;(\d+)m(.+?)\u001b\[0m/g
+      const bgRegex = /\u001b\[48;5;(\d+)m(.+?)\u001b\[0m/g
+      const boldRegex = /\u001b\[1m(.+?)\u001b\[22m/g
+
+      // replace ansi colors
+      msg.children().each(function () {
+        let rawText = $(this).text();
+
+        if (rawText.includes("\u001b")) {
+          let htmlContent = rawText
+            // Handle Foreground Colors
+            .replace(fgRegex, function (match, colorNum, actualText) {
+              const cssColor = getAnsiColor(colorNum);
+              return `<span style="color: ${cssColor};">${actualText}</span>`;
+            })
+            // Handle Background Colors
+            .replace(bgRegex, function (match, colorNum, actualText) {
+              return `<span style="background-color: red;">${actualText}</span>`;
+            })
+            // Handle Bold
+            .replace(boldRegex, function (match, actualText) {
+              return `<span style="font-weight: bold;">${actualText}</span>`;
+            });
+
+          $(this).html(htmlContent);
+        }
+      })
+
+      logMsg
+        .append($(`<p class="timestamp">${formatDate(log.timestamp)}</p>`))
+        .append($(`<p class="source">${log.source}</p>`))
+        .append($(`<p class="level ${getColorClass(log.level)}">${log.level.toUpperCase()}</p>`))
+        .append($(`<p class="tag">${log.tag}</p>`))
+        .append(msg)
+
+      $(".logs-content").append(logMsg)
+    }
+
+    function getAnsiColor(num) {
+      const colorMap = {
+        '5': '#800080',
+        '28': '#008700',
+        '33': '#0087ff',
+        '54': ' #5f0087',
+        '68': '#5f87d7',
+        '103': '#8787af',
+        '108': '#87af87',
+        '110': '#87afd7',
+        '124': '#af0000',
+        '130': '#af5f00',
+        '140': '#af87d7',
+        '161': '#d7005f',
+        '249': '#b2b2b2',
+        '254': ' #e4e4e4'
+      };
+      return colorMap[num] || 'red';
+    }
+
+    // HH:mm:ss.SSS
+    function formatDate(millis) {
+      const date = new Date(Number(millis))
+
+      const year = date.getFullYear()
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0")
+
+      const hours = String(date.getHours()).padStart(2, "0");
+      const minutes = String(date.getMinutes()).padStart(2, "0");
+      const seconds = String(date.getSeconds()).padStart(2, "0");
+      const milliseconds = String(date.getMilliseconds()).padStart(3, "0");
+
+      return `${hours}:${minutes}:${seconds}.${milliseconds}`
+    }
+
+    function getColorClass(level) {
+      if (level === "Trace") {
+        return "trace"
+      } else if (level === "Debug") {
+        return "debug"
+      } else if (level === "Info") {
+        return "info"
+      } else if (level === "Warn") {
+        return "warn"
+      } else if (level === "Error") {
+        return "error"
+      } else {
+        return "kp"
+      }
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,431 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="/backstage/assets/favicon.ico">
+  <link rel="stylesheet" href="/backstage/libs/reset.css">
+  <link rel="stylesheet" href="/backstage/libs/base.css">
+  <link rel="stylesheet" href="/backstage/libs/toast.css">
+  <script src="/backstage/libs/toast.js"></script>
+  <script src="/backstage/libs/utils.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <title>Backstage</title>
+  <style>
+    .main {
+      font-size: 13px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      padding: 6px 8px;
+      border-bottom: 3px solid var(--color-primary);
+      gap: 8px;
+    }
+
+    .topbar h1 {
+      font-size: 20px;
+    }
+
+    .topbar .icon-link {
+      font-size: 13px;
+    }
+
+    .content {
+      display: flex;
+    }
+
+    .left-side {
+      width: 700px;
+      padding: 8px;
+    }
+
+    .callout {
+      width: 500px;
+      display: flex;
+      padding: 4px;
+      border: 1px solid var(--color-primary);
+    }
+
+    .version {
+      display: flex;
+      flex-direction: column;
+      padding-right: 8px;
+    }
+
+    .status {
+      font-size: 20px;
+      padding-left: 8px;
+      border-left: 2px solid var(--color-primary);
+    }
+
+    ol {
+      list-style: decimal;
+      padding-inline-start: 24px;
+    }
+
+    ul {
+      list-style: disc;
+      padding-inline-start: 24px;
+    }
+
+    li {
+      padding-left: 4px;
+    }
+
+    .right-side {
+      padding: 8px;
+      border-left: 2px solid var(--color-primary);
+    }
+
+    .monitor {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .btn {
+      width: max-content;
+      padding: 8px;
+      border-radius: 4px;
+      user-select: none;
+      margin-top: 8px;
+    }
+
+    .neutral {
+      background: linear-gradient(to bottom, #f4f4f4, #dcdcdc);
+      color: #333;
+      text-shadow: 0 1px #fff;
+      border: 1px solid #aaa;
+    }
+
+    .neutral:hover {
+      cursor: pointer;
+      background-image: linear-gradient(to bottom, #f6f6f6, #e3e3e3);
+    }
+
+    .neutral:active {
+      background-image: linear-gradient(to top, #f4f4f4, #dcdcdc);
+    }
+
+    .server-time,
+    .running-since {
+      font-size: 16px;
+    }
+
+    #server-time,
+    #running-since,
+    #has-been-running-for {
+      font-weight: bold;
+    }
+
+    .connected-players {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    #connected-players {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .running-acts-text {
+      font-size: 16px;
+    }
+
+    .acts {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .stage-act {
+      width: 500px;
+      display: flex;
+      flex-direction: column;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background-color: white;
+    }
+
+    .stage-act-title-text {
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    .footer {
+      padding: 4px;
+      color: #9e9e9e;
+      border-top: 1px solid #ccc;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="main">
+    <div class="topbar">
+      <h1><a href="/backstage">Backstage</a></h1>
+      <a class="icon-link" href="/backstage/logger">
+        <img src="/backstage/assets/logger.png" width="24px" alt="Logger">
+        <p>Logger</p>
+      </a>
+      <a class="icon-link" href="/backstage/command">
+        <img src="/backstage/assets/console.png" width="24px" style="margin-right:-2px;" alt="Command">
+        <p>Command</p>
+      </a>
+    </div>
+    <div class="content">
+      <div class="left-side">
+        <div class="callout">
+          <div class="version">
+            <p>Running <strong id="server-name">—</strong> of version <strong id="server-version">—</strong>.</p>
+            <div class="space-y-s"></div>
+            <p>Encore details:</p>
+            <p>Version: <strong id="encore-codename">—</strong> - <strong id="encore-version">—</strong> at <strong
+                id="encore-version-date">—</strong></p>
+          </div>
+          <div class="status">
+            <p>Status: <span id="status-text">—</span></p>
+          </div>
+        </div>
+        <div class="space-y-s"></div>
+        <p>Welcome to the backstage!</p>
+        <div class="space-y-s"></div>
+        <p>This is the place where you can browse development, game, or server tools.</p>
+        <ol>
+          <li><strong>Logger</strong>: A live stream of server logs with pretty display, search, and filter.</li>
+          <li><strong>Command</strong>: Execute server-side actions through registered server commands.</li>
+        </ol>
+        <p>Other tools:</p>
+        <ul>
+          <li>Example</li>
+        </ul>
+      </div>
+      <div class=right-side>
+        <p>On this side, you can monitor the server details. This information will refresh <em>every minute</em>.</p>
+        <button id="refresh-monitor" class="btn neutral">Refresh</button>
+        <div class="monitor">
+          <div class="space-y-md"></div>
+          <p class="server-time">Server time: <span id="server-time" data-millis="">—</span></p>
+          <p class="running-since">Running since: <span id="running-since">—</span> (<span id="has-been-running-for"
+              data-millis="">—</span> ago)</p>
+          <div class="space-y-md"></div>
+          <p>Runtime information:</p>
+          <ul>
+            <li>
+              <p>Java: <span id="java-version">—</span></p>
+            </li>
+            <li>
+              <p>OS: <span id="os-version">—</span></p>
+            </li>
+          </ul>
+          <div class="space-y-md"></div>
+          <p>Memory stats:</p>
+          <ul>
+            <li>
+              <p>max JVM memory: <span id="maxMemory">—</span> MB</p>
+            </li>
+            <li>
+              <p>current JVM memory: <span id="totalMemory">—</span> MB</p>
+            </li>
+            <li>
+              <p>free JVM memory: <span id="freeMemory">—</span> MB</p>
+            </li>
+            <li>
+              <p>used JVM memory: <span id="usedMemory">—</span> MB</p>
+            </li>
+          </ul>
+          <div class="space-y-md"></div>
+          <p class="connected-players">Connected players: <span id="connected-players"></span></p>
+          <p class="running-acts-text">Running acts (not live):</p>
+          <div class="acts"></div>
+        </div>
+      </div>
+    </div>
+    <footer class="footer">
+      <p>Made possible by <a class="link" href="https://github.com/glennhenry/Encore" target="_blank">Encore</a>, a game
+        server framework. Bring it back live.</p>
+    </footer>
+  </div>
+  <div class="toast-container"></div>
+  <script>
+    $(document).ready(function () {
+      requestMetadata()
+      updateStatus()
+      setInterval(() => {
+        updateStatus()
+      }, 10000);
+      requestInit()
+      requestMonitor()
+      setInterval(() => {
+        requestMonitor()
+      }, 60000);
+
+      $("#refresh-monitor").click(function () {
+        requestMonitor()
+      })
+    })
+
+    async function requestMetadata() {
+      try {
+        const response = await fetch(`/backstage/metadata`)
+        if (response.ok) {
+          const data = await response.json()
+          $("#encore-version").text(data.encoreVersion)
+          $("#encore-version-date").text(data.encoreVersionDate)
+          $("#encore-codename").text(data.encoreCodename)
+          $("#server-name").text(data.serverName)
+          $("#server-version").text(data.serverVersion)
+        }
+      } catch (err) {
+        Toast.error("Something is wrong!", `Request metadata error: ${err.message}`, true)
+      }
+    }
+
+    async function updateStatus() {
+      try {
+        const response = await fetch(`/backstage/status`)
+        if (response.ok) {
+          $("#status-text").text("LIVE 🚀").css("color", "green")
+        } else {
+          $("#status-text").text("DEAD 💀").css("color", "red")
+        }
+      } catch (err) {
+        $("#status-text").text("DEAD 💀").css("color", "red")
+        Toast.error("Something is wrong!", `Status request error: ${err.message}`, true)
+      }
+    }
+
+    async function requestInit() {
+      try {
+        const response = await fetch(`/backstage/init`)
+        if (response.ok) {
+          const data = await response.json()
+
+          // server time
+          $("#server-time").attr("data-millis", Number(data.serverTime) + 1000)
+          setInterval(() => {
+            $("#server-time").attr("data-millis", Number($("#server-time").attr("data-millis")) + 1000)
+            $("#server-time").text(formatDate(Number($("#server-time").attr("data-millis"))))
+          }, 1000)
+
+          // running since
+          const runningSince = Number(data.runningSince)
+          $("#running-since").text(formatDate(runningSince))
+
+          // hasBeenRunningFor
+          const now = new Date().getTime()
+          const hasBeenRunningFor = now - runningSince
+
+          $("#has-been-running-for").attr("data-millis", hasBeenRunningFor + 1000)
+          setInterval(() => {
+            $("#has-been-running-for").attr("data-millis", Number($("#has-been-running-for").attr("data-millis")) + 1000)
+            $("#has-been-running-for").text(formatDurationDate(Number($("#has-been-running-for").attr("data-millis"))))
+          }, 1000)
+
+          // java version
+          $("#java-version").text(data.javaVersion)
+
+          // os details
+          $("#os-version").text(data.osDetails)
+        }
+      } catch (err) {
+        Toast.error("Something is wrong!", `Request metadata error: ${err.message}`, true)
+      }
+    }
+
+    async function requestMonitor() {
+      try {
+        const response = await fetch(`/backstage/monitor`)
+        if (response.ok) {
+          const data = await response.json()
+
+          // num players
+          $("#connected-players").text(data.numPlayers)
+
+          // mem stats
+          $("#maxMemory").text(Math.trunc(Number(data.memStats.maxMemory) / 1_000_000))
+          $("#totalMemory").text(Math.trunc(Number(data.memStats.totalMemory) / 1_000_000))
+          $("#freeMemory").text(Math.trunc(Number(data.memStats.freeMemory) / 1_000_000))
+          $("#usedMemory").text(Math.trunc(Number(data.memStats.usedMemory) / 1_000_000))
+
+          // acts
+          $(".acts").empty()
+          let x = 1
+          for (const act of data.acts) {
+            $(".acts").append(createActCard(act, x))
+            x += 1
+          }
+        }
+      } catch (err) {
+        $("#status-text").text("DEAD 💀").css("color", "red")
+        Toast.error("Something is wrong!", `Status request error: ${err.message}`, true)
+      }
+    }
+
+    function createActCard(act, num) {
+      const actCard = $("<div></div>").addClass("stage-act")
+
+      actCard.append($("<p></p>").text(`Act ${num}`).addClass("stage-act-title-text "))
+
+      const now = new Date().getTime()
+      actCard.append($("<p></p>").text(`actId: ${act.actId}`))
+      actCard.append($("<p></p>").text(`ownerId: ${act.ownerId}`))
+      actCard.append($("<p></p>").text(`startedAt: ${formatDate(act.startedAt)} (${formatDurationDate(now - act.startedAt)} ago)`))
+      actCard.append($("<p></p>").text(`firstPerformAt: ${formatDate(act.firstPerformAt)} (${formatDurationDate(now - act.firstPerformAt)} ago)`))
+      actCard.append($("<p></p>").text(`prevPerformAt: ${formatDate(act.prevPerformAt)} (${formatDurationDate(now - act.prevPerformAt)} ago)`))
+      actCard.append($("<p></p>").text(`nextPerformAt: ${formatDate(act.nextPerformAt)} (${formatDurationDate(act.nextPerformAt - now)} ago)`))
+      actCard.append($("<p></p>").text(`performCount: ${act.performCount}`))
+      actCard.append($("<p></p>").text(`class: ${act.actClassName}`))
+
+      for (const [key, value] of Object.entries(act.metadata)) {
+        actCard.append($("<p></p>").text(`> ${key}: ${value}`))
+      }
+
+      return actCard
+    }
+
+    // HH:mm:ss yyyy.MM.dd
+    function formatDate(millis) {
+      const date = new Date(Number(millis))
+
+      const year = date.getFullYear()
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0")
+
+      const hours = String(date.getHours()).padStart(2, "0");
+      const minutes = String(date.getMinutes()).padStart(2, "0");
+      const seconds = String(date.getSeconds()).padStart(2, "0");
+
+      return `${hours}:${minutes}:${seconds} ${day}-${month}-${year}`
+    }
+
+    // 3 days 7 hours 2 minutes 21 seconds
+    function formatDurationDate(millis) {
+      const msInSecond = 1000;
+      const msInMinute = msInSecond * 60;
+      const msInHour = msInMinute * 60;
+      const msInDay = msInHour * 24;
+
+      const days = Math.floor(millis / msInDay);
+      const hours = Math.floor((millis % msInDay) / msInHour);
+      const minutes = Math.floor((millis % msInHour) / msInMinute);
+      const seconds = Math.floor((millis % msInMinute) / msInSecond);
+
+      if (days > 0) {
+        return `${days} days ${hours} hours ${minutes} minutes ${seconds} seconds`;
+      } else if (hours > 0) {
+        return `${hours} hours ${minutes} minutes ${seconds} seconds`;
+      } else if (minutes > 0) {
+        return `${minutes} minutes ${seconds} seconds`;
+      } else {
+        return `${seconds} seconds`;
+      }
+    }
+  </script>
+</body>
+
+</html>
