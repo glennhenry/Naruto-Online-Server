@@ -1,4 +1,4 @@
-rootProject.name = "Encore"
+rootProject.name = "Naruto-Online-Server"
 
 dependencyResolutionManagement {
     repositories {
