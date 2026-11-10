@@ -7,7 +7,7 @@ plugins {
     alias(libs.plugins.kotlin.plugin.serialization)
 }
 
-group = "dev.encore"
+group = "dev.narutool"
 version = "0.0.1"
 
 application {
@@ -97,4 +97,7 @@ dependencies {
     // Tests
     testImplementation(libs.kotlin.test.junit)
     testImplementation(libs.ktor.server.test.host)
+
+    // Custom: Compression
+    implementation("org.tukaani:xz:1.12")
 }
