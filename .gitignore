@@ -5,6 +5,7 @@ deploy/
 assets/
 !backstage/assets/
 venue.secret.xml
+workspace/output/
 
 .gradle
 build/
