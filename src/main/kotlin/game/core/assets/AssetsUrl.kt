@@ -26,6 +26,9 @@ data class AssetsUrl(val url: String) {
      * The path segment of the assets.
      *
      * e.g., `assets/dir1/dir2`
+     *
+     * This can be empty for file that live in the root directory
+     * such as `entry.swf`.
      */
     val path: String
 
@@ -52,19 +55,22 @@ data class AssetsUrl(val url: String) {
 
     init {
         val pathParts = url.split(Regex("/(?=[^/]*$)"), limit = 2)
-        require(pathParts.size == 2) {
-            "Invalid asset URL: expected a path and filename, got '$url'"
+        if (pathParts.size == 2) {
+            path = pathParts[0]
+            filename = pathParts[1]
+        } else {
+            // edge case: root-level file like entry.swf
+            path = ""
+            filename = pathParts[0]
         }
-
-        path = pathParts[0]
-        filename = pathParts[1]
 
         val filenameParts = filename.split('.', limit = 2)
         if (filenameParts.size == 2) {
             filenameWithoutExt = filenameParts[0]
             extension = filenameParts[1]
         } else {
-            // peculiarity: some assets don't have extension and its size is 0
+            // edge case: some assets don't have extension and its size is 0
+            // such as treasureHunting tipsPic
             filenameWithoutExt = filenameParts[0]
             extension = ""
         }
@@ -94,5 +100,17 @@ data class AssetsUrl(val url: String) {
      */
     fun asFile(versionTag: String): File {
         return File(toLocalPath(versionTag))
+    }
+
+    /**
+     * Returns `true` if this assets is optional.
+     *
+     * This refers to assets that has no significance for the game
+     * and is not required to be downloaded. It includes `Thumbs.db`
+     * and some assets that are never used by the game.
+     */
+    fun isOptionalAssets(): Boolean {
+        // @TODO add assets blacklist for unimportant assets like rumorPlot plotImg
+        return url.contains("Thumbs.db")
     }
 }

@@ -18,20 +18,24 @@ class VersionMap(decoded: Map<*, *>) {
 
     init {
         @Suppress("UNCHECKED_CAST")
-        (decoded as Map<String, Map<String, Any>>).forEach { (url, value) ->
-            map[url] = AssetsEntry(
-                url = AssetsUrl(url),
-                tag = VersionTag(requireNotNull(value["tag"]) {
-                    "VersionMap creation error: tag null for value '$value'"
-                } as String),
-                size = requireNotNull(value["size"]) {
-                    "VersionMap creation error: size null for value '$value'"
-                } as Int,
-                ver = requireNotNull(value["ver"]) {
-                    "VersionMap creation error: ver null for value '$value'"
-                } as Int,
-                belong = value["belong"] as? String
-            )
+        decoded as Map<String, Any>
+        decoded.forEach { (url, value) ->
+            // one edge case where value is not a map, it's literally "version": "..."
+            if (value is Map<*, *>) {
+                map[url] = AssetsEntry(
+                    url = AssetsUrl(url),
+                    tag = VersionTag(requireNotNull(value["tag"]) {
+                        "VersionMap creation error: tag null for value '$value'"
+                    } as String),
+                    size = requireNotNull(value["size"]) {
+                        "VersionMap creation error: size null for value '$value'"
+                    } as Int,
+                    ver = requireNotNull(value["ver"]) {
+                        "VersionMap creation error: ver null for value '$value'"
+                    } as Int,
+                    belong = value["belong"] as? String
+                )
+            }
         }
     }
 

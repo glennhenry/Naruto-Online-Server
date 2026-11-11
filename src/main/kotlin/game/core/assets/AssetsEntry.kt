@@ -19,3 +19,12 @@ data class AssetsEntry(
     // this is always null
     val belong: String? = null,
 )
+
+/**
+ * Returns `true` if this is an optional assets.
+ *
+ * See [AssetsUrl.isOptionalAssets]
+ */
+fun AssetsEntry.isOptionalAssets(): Boolean {
+    return url.isOptionalAssets()
+}
