@@ -51,14 +51,22 @@ data class AssetsUrl(val url: String) {
     val extension: String
 
     init {
-        url.split(Regex("/(?=[^/]*$)"), limit = 2).let {
-            path = it[0]
-            filename = it[1]
+        val pathParts = url.split(Regex("/(?=[^/]*$)"), limit = 2)
+        require(pathParts.size == 2) {
+            "Invalid asset URL: expected a path and filename, got '$url'"
         }
 
-        filename.split('.', limit = 2).let {
-            filenameWithoutExt = it[0]
-            extension = it[1]
+        path = pathParts[0]
+        filename = pathParts[1]
+
+        val filenameParts = filename.split('.', limit = 2)
+        if (filenameParts.size == 2) {
+            filenameWithoutExt = filenameParts[0]
+            extension = filenameParts[1]
+        } else {
+            // peculiarity: some assets don't have extension and its size is 0
+            filenameWithoutExt = filenameParts[0]
+            extension = ""
         }
     }
 
