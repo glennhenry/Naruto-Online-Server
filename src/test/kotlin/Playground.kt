@@ -1,19 +1,19 @@
-import game.amf.AmfDecoder
+import encore.fancam.Fancam
+import encore.time.TimeCenter
+import game.core.amf.AmfDecoder
+import game.core.assets.VersionMap
+import game.core.utils.formatSizeInMb
 import org.tukaani.xz.LZMAInputStream
-import org.w3c.dom.Document
 import testUtils.TestFancam
 import java.io.ByteArrayInputStream
 import java.io.DataInputStream
 import java.io.File
-import java.io.StringWriter
-import javax.xml.parsers.DocumentBuilderFactory
-import javax.xml.transform.OutputKeys
-import javax.xml.transform.Transformer
-import javax.xml.transform.TransformerFactory
-import javax.xml.transform.dom.DOMSource
-import javax.xml.transform.stream.StreamResult
+import kotlin.system.measureTimeMillis
 import kotlin.test.BeforeTest
 import kotlin.test.Test
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.seconds
+import kotlin.time.DurationUnit
 
 /**
  * Playground for quick testing and code run
@@ -28,90 +28,99 @@ class Playground {
 
     @Test
     fun play() {
-        val rescfg = File("workspace/resource.cfg")
-        ResourceReader(rescfg).decode()
+        val res = File("workspace/resource.cfg")
+        val rescfg = ResourceCfg(res).also { it.decode() }
     }
 }
 
-fun Int.bytesToMb(): Double {
-    return this.toDouble() / 1024 / 1024
-}
-
-fun ByteArray.sizeInMb(): String {
-    return "(${"%.2f".format(this.size.bytesToMb())} MB)"
-}
-
-fun Int.sizeInMb(): String {
-    return "(${"%.2f".format(this.bytesToMb())} MB)"
-}
-
-fun Long.bytesToMb(): Double {
-    return this.toDouble() / 1024 / 1024
-}
-
-fun Long.sizeInMb(): String {
-    return "(${"%.2f".format(this.bytesToMb())} MB)"
-}
-
-fun File.sizeInMb(): String {
-    return this.length().sizeInMb()
-}
-
-class ResourceReader(private val resourceCfgFile: File) {
+/**
+ * Abstract access to the `resource.cfg` file.
+ *
+ * The `resource.cfg` is a special file that contains an entry
+ * of all Naruto Online assets and an XML data consisting assets
+ * packages needed to initialize the game.
+ *
+ * Call `decode()` first before any usage.
+ */
+class ResourceCfg(private val file: File) {
     init {
-        require(resourceCfgFile.exists()) {
+        require(file.exists()) {
             "Fail to read resource.cfg: file doesn't exists"
         }
     }
 
+    private enum class ResourceDecodeStatus {
+        NotDecoded, Decoding, DecodeCompleted
+    }
+
+    private var status = ResourceDecodeStatus.NotDecoded
+
+    private var _versionMap: VersionMap? = null
+    val versionMap: VersionMap
+        get() = _versionMap ?: error(
+            "ResourceCfg is uninitialized, please call decode() first."
+        )
+
+    private var _xml: String? = null
+    val xml: String
+        get() = _xml ?: error(
+            "ResourceCfg is uninitialized, please call decode() first."
+        )
+
     fun decode() {
-        println("resource.cfg: ${resourceCfgFile.length()} ${resourceCfgFile.sizeInMb()}")
+        if (status == ResourceDecodeStatus.Decoding) {
+            Fancam.warn { "resource.cfg decode is in process" }
+            return
+        }
+        if (status == ResourceDecodeStatus.DecodeCompleted) {
+            Fancam.warn { "resource.cfg is already decoded" }
+            return
+        }
+        status = ResourceDecodeStatus.Decoding
+        Fancam.info { "Start decoding resource.cfg ${file.length()} bytes ${file.formatSizeInMb()}" }
 
-        val decompressed = LZMAInputStream(
-            resourceCfgFile.inputStream()
-        ).use { it.readAllBytes() }
-        println("Decompressed: ${decompressed.size} ${decompressed.sizeInMb()}")
+        val elapsed = measureTimeMillis {
+            try {
+                val decompressed = LZMAInputStream(file.inputStream()).use { it.readAllBytes() }
+                val input = ByteArrayInputStream(decompressed)
+                val data = DataInputStream(input)
+                val amfLength = data.readInt()
+                val xmlLengthApprox = decompressed.size - amfLength - 5
 
-        val input = ByteArrayInputStream(decompressed)
-        val data = DataInputStream(input)
+                Fancam.debug {
+                    "Decompressed: ${decompressed.size} bytes, " +
+                            "amfLength: $amfLength bytes, " +
+                            "xmlLength: $xmlLengthApprox bytes"
+                }
 
-        val amfLength = data.readInt()
+                val amf = AmfDecoder().decode(data)
+                _versionMap = VersionMap(amf as Map<*, *>)
 
-        println("amfLength: $amfLength ${amfLength.sizeInMb()}")
+                val hasXml = data.readUnsignedByte() != 0
+                if (hasXml) {
+                    val xmlLength = data.readInt()
+                    require(xmlLength <= input.available()) {
+                        "Invalid XML length: $xmlLength (available=${input.available()})"
+                    }
 
-        val versionMap = AmfDecoder().decode(data)
+                    val xmlBytes = ByteArray(xmlLength)
+                    data.readFully(xmlBytes)
 
-//        println(versionMap?.toJsonString())
-
-        val hasXml = data.readUnsignedByte() != 0
-        var xml: String? = null
-
-        if (hasXml) {
-            val xmlLength = data.readInt()
-            require(xmlLength <= input.available()) {
-                "Invalid XML length: $xmlLength (available=${input.available()})"
+                    _xml = xmlBytes.toString(Charsets.UTF_8)
+                }
+            } catch (e: Exception) {
+                Fancam.error(e, "res_reader") { "Scandal detected while decoding resource.cfg" }
+                status = ResourceDecodeStatus.NotDecoded
+                return
             }
-
-            val xmlBytes = ByteArray(xmlLength)
-            data.readFully(xmlBytes)
-
-            xml = xmlBytes.toString(Charsets.UTF_8)
         }
 
-        val factory = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-        val document = factory.parse(xml?.byteInputStream())
+        Fancam.info {
+            "Finished decoding resource.cfg after " +
+                    elapsed.milliseconds.toString(DurationUnit.SECONDS, decimals = 2) +
+                    " with ${versionMap.numEntries()} entries"
+        }
 
-        println(XmlUtils.toRawString(document))
-    }
-}
-
-object XmlUtils {
-    fun toRawString(doc: Document?): String {
-        val tf = TransformerFactory.newInstance()
-        val transformer: Transformer = tf.newTransformer()
-        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-        val writer = StringWriter()
-        transformer.transform(DOMSource(doc), StreamResult(writer))
-        return writer.toString()
+        status = ResourceDecodeStatus.DecodeCompleted
     }
 }
