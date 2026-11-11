@@ -1,4 +1,4 @@
-package game.amf
+package game.core.amf
 
 /**
  * Byte markers for AMF3 format.
