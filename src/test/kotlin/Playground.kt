@@ -1,7 +1,7 @@
 import encore.fancam.Fancam
-import encore.time.TimeCenter
 import game.core.amf.AmfDecoder
 import game.core.assets.VersionMap
+import game.core.assets.VersionTag
 import game.core.utils.formatSizeInMb
 import org.tukaani.xz.LZMAInputStream
 import testUtils.TestFancam
@@ -12,7 +12,6 @@ import kotlin.system.measureTimeMillis
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.milliseconds
-import kotlin.time.Duration.Companion.seconds
 import kotlin.time.DurationUnit
 
 /**
@@ -30,6 +29,9 @@ class Playground {
     fun play() {
         val res = File("workspace/resource.cfg")
         val rescfg = ResourceCfg(res).also { it.decode() }
+        println(rescfg.xml)
+        println(rescfg.getVersion())
+        rescfg.versionMap.exportToJson()
     }
 }
 
@@ -122,5 +124,19 @@ class ResourceCfg(private val file: File) {
         }
 
         status = ResourceDecodeStatus.DecodeCompleted
+    }
+
+    /**
+     * Returns the version of this `resource.cfg`.
+     *
+     * The version of resource CFG represents the version tag
+     * from which the CFG file was downloaded. The version of CFG
+     * is the highest to any version of files in the version map,
+     * except for few files like `entry.swf` where it's same.
+     *
+     * It's the same value as [VersionMap.version].
+     */
+    fun getVersion(): VersionTag {
+        return versionMap.version
     }
 }

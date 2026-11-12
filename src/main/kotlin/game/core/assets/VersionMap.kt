@@ -1,6 +1,9 @@
 package game.core.assets
 
 import game.core.amf.AmfDecoder
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
+import java.io.File
 
 /**
  * Represent the Naruto Online assets version map inside the `resource.cfg`.
@@ -16,17 +19,35 @@ import game.core.amf.AmfDecoder
 class VersionMap(decoded: Map<*, *>) {
     private val map = mutableMapOf<String, AssetsEntry>()
 
+    /**
+     * Represents which version does this version map belongs to.
+     *
+     * It is derived from the version of `entry.swf`, which is
+     * usually same version as `resource.cfg`, and is the latest
+     * within all assets in the map.
+     */
+    lateinit var version: VersionTag
+
     init {
         @Suppress("UNCHECKED_CAST")
         decoded as Map<String, Any>
         decoded.forEach { (url, value) ->
             // one edge case where value is not a map, it's literally "version": "..."
             if (value is Map<*, *>) {
+                val tag = VersionTag(requireNotNull(value["tag"]) {
+                    "VersionMap creation error: tag null for value '$value'"
+                } as String)
+
+                // the version of resource.cfg is not listed in the file
+                // but a heuristic can determine it via entry.swf version
+                // as it is always updated to download the newer resource.cfg
+                if (url == "entry.swf") {
+                    version = tag
+                }
+
                 map[url] = AssetsEntry(
                     url = AssetsUrl(url),
-                    tag = VersionTag(requireNotNull(value["tag"]) {
-                        "VersionMap creation error: tag null for value '$value'"
-                    } as String),
+                    tag = tag,
                     size = requireNotNull(value["size"]) {
                         "VersionMap creation error: size null for value '$value'"
                     } as Int,
@@ -58,5 +79,38 @@ class VersionMap(decoded: Map<*, *>) {
      */
     fun entries(): List<AssetsEntry> {
         return map.values.toList()
+    }
+
+    @Serializable
+    private data class AssetsEntryJson(
+        val size: Int,
+        val belong: String? = null,
+        val tag: String,
+        val ver: Int,
+        val url: String
+    )
+
+    private val jsonPrinter = Json {
+        prettyPrint = true
+        prettyPrintIndent = "  "
+        encodeDefaults = true
+    }
+
+    /**
+     * Export the version map into JSON in the respective [outputDir].
+     */
+    fun exportToJson(outputDir: String = "workspace/output") {
+        val output = File(outputDir, "resource.cfg-${version.tag}.json")
+        output.writeText(
+            jsonPrinter.encodeToString(map.mapValues { (_, entry) ->
+                AssetsEntryJson(
+                    url = entry.url.url,
+                    tag = entry.tag.tag,
+                    size = entry.size,
+                    ver = entry.ver,
+                    belong = entry.belong
+                )
+            })
+        )
     }
 }
