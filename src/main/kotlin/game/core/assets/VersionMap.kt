@@ -11,13 +11,16 @@ import java.io.File
  * The version map is an entry of all Naruto Online assets
  * with information like size, version, and URL.
  *
+ * It is considered the *remote index* as they are needed
+ * by a remote server to properly serve required game files.
+ *
  * This class is not constructed directly as `resource.cfg`
  * must be decoded beforehand with [ResourceCfg.decode].
  *
  * @param decoded Decoded result of version map using [AmfDecoder].
  */
 class VersionMap(decoded: Map<*, *>) {
-    private val map = mutableMapOf<String, AssetsEntry>()
+    private val map = mutableMapOf<String, RemoteAssetsEntry>()
 
     /**
      * Represents which version does this version map belongs to.
@@ -47,7 +50,7 @@ class VersionMap(decoded: Map<*, *>) {
                     version = tag
                 }
 
-                map[url] = AssetsEntry(
+                map[url] = RemoteAssetsEntry(
                     url = AssetsPath(url),
                     tag = tag,
                     size = (requireNotNull(value["size"]) {
@@ -65,7 +68,7 @@ class VersionMap(decoded: Map<*, *>) {
     /**
      * Returns the assets entry of [url] or `null` if not found.
      */
-    fun getEntry(url: String): AssetsEntry? {
+    fun getEntry(url: String): RemoteAssetsEntry? {
         return map[url]
     }
 
@@ -79,7 +82,7 @@ class VersionMap(decoded: Map<*, *>) {
     /**
      * Return all entries in the version map.
      */
-    fun entries(): List<AssetsEntry> {
+    fun entries(): List<RemoteAssetsEntry> {
         return map.values.toList()
     }
 

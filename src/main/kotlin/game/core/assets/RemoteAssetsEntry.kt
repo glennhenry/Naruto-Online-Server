@@ -9,9 +9,10 @@ package game.core.assets
  *               e.g., `EN_NarutoAlpha6.00Build304`
  * @property size Size of the assets in bytes.
  * @property ver Revision number of this assets.
+ *               An increase in `ver` number always reflects a higher version tag.
  * @property belong Unknown. It's always null in the CFG.
  */
-data class AssetsEntry(
+data class RemoteAssetsEntry(
     val url: AssetsPath,
     val tag: VersionTag,
     val size: Int,
@@ -25,6 +26,6 @@ data class AssetsEntry(
  *
  * See [AssetsPath.isOptionalAssets]
  */
-fun AssetsEntry.isOptionalAssets(): Boolean {
+fun RemoteAssetsEntry.isOptionalAssets(): Boolean {
     return url.isOptionalAssets()
 }
