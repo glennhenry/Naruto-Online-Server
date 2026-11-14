@@ -1,53 +1,44 @@
 package game.core.utils
 
 import java.io.File
+import java.util.Locale
 
 /**
  * Convert this amount of bytes into MB.
+ * @param useBinary if this is `true`, 1 KB is 1024 bytes, else 1000 bytes.
  */
-fun Int.bytesToMb(): Double {
-    return this.toDouble() / 1024 / 1024
-}
-
-/**
- * Convert this amount of bytes into MB.
- */
-fun Long.bytesToMb(): Double {
-    return this.toDouble() / 1024 / 1024
+fun Number.bytesToMb(useBinary: Boolean = true): Double {
+    val divisor = if (useBinary) 1024.0 * 1024.0 else 1_000_000.0
+    return this.toDouble() / divisor
 }
 
 /**
  * Format this amount of bytes in MB.
  *
  * e.g., `(3.22 MB)`
+ * @param useBinary if this is `true`, 1 KB is 1024 bytes, else 1000 bytes.
  */
-fun Int.formatSizeInMb(): String {
-    return "(${"%.2f".format(this.bytesToMb())} MB)"
-}
-
-/**
- * Format this amount of bytes in MB.
- *
- * e.g., `(3.22 MB)`
- */
-fun Long.formatSizeInMb(): String {
-    return "(${"%.2f".format(this.bytesToMb())} MB)"
+fun Number.formatSizeInMb(useBinary: Boolean = true): String {
+    val mb = this.bytesToMb(useBinary)
+    return String.format(Locale.US, "(%.2f MB)", mb)
 }
 
 /**
  * Format this array size in MB.
  *
  * e.g., `(3.22 MB)`
+ * @param useBinary if this is `true`, 1 KB is 1024 bytes, else 1000 bytes.
  */
-fun ByteArray.formatSizeInMb(): String {
-    return "(${"%.2f".format(this.size.bytesToMb())} MB)"
+fun ByteArray.formatSizeInMb(useBinary: Boolean = true): String {
+    return this.size.formatSizeInMb(useBinary)
 }
 
 /**
  * Format this file size in MB.
  *
  * e.g., `(3.22 MB)`
+ * @param useBinary if this is `true`, 1 KB is 1024 bytes, else 1000 bytes.
  */
-fun File.formatSizeInMb(): String {
-    return this.length().formatSizeInMb()
+fun File.formatSizeInMb(useBinary: Boolean = true): String {
+    return this.length().formatSizeInMb(useBinary)
 }

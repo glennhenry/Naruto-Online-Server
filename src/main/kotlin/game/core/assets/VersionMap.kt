@@ -28,6 +28,8 @@ class VersionMap(decoded: Map<*, *>) {
      */
     lateinit var version: VersionTag
 
+    private var totalSize: Long = 0
+
     init {
         @Suppress("UNCHECKED_CAST")
         decoded as Map<String, Any>
@@ -48,9 +50,9 @@ class VersionMap(decoded: Map<*, *>) {
                 map[url] = AssetsEntry(
                     url = AssetsUrl(url),
                     tag = tag,
-                    size = requireNotNull(value["size"]) {
+                    size = (requireNotNull(value["size"]) {
                         "VersionMap creation error: size null for value '$value'"
-                    } as Int,
+                    } as Int).also { totalSize += it },
                     ver = requireNotNull(value["ver"]) {
                         "VersionMap creation error: ver null for value '$value'"
                     } as Int,
@@ -79,6 +81,13 @@ class VersionMap(decoded: Map<*, *>) {
      */
     fun entries(): List<AssetsEntry> {
         return map.values.toList()
+    }
+
+    /**
+     * Returns the sum of all entry size in bytes.
+     */
+    fun totalSizeBytes(): Long {
+        return totalSize
     }
 
     @Serializable
