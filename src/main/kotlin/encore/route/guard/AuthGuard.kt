@@ -1,6 +1,6 @@
 package encore.route.guard
 
-import io.ktor.server.application.ApplicationCall
+import io.ktor.server.application.*
 
 /**
  * Authentication mechanism executed before request handling.

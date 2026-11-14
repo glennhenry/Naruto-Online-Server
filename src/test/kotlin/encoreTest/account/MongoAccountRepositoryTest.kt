@@ -4,7 +4,7 @@ import TestMongoCollections
 import encore.account.MongoAccountRepository
 import encore.account.model.Credentials
 import encore.account.model.Profile
-import game.mongo.collection.PlayerAccount
+import game.core.mongo.collection.PlayerAccount
 import encore.utils.identifier.Ids
 import encore.utils.hash
 import initMongo

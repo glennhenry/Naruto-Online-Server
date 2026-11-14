@@ -1,6 +1,6 @@
 package encore.subunit.scope
 
-import game.mongo.collection.PlayerId
+import game.core.mongo.collection.PlayerId
 
 /**
  * A player-scoped context.

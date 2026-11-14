@@ -1,7 +1,7 @@
-package game.mongo.collection
+package game.core.mongo.collection
 
-import kotlinx.serialization.Serializable
 import encore.account.model.Profile
+import kotlinx.serialization.Serializable
 
 /**
  * Representation of a player's account.

@@ -1,6 +1,6 @@
 package encore.network.transport
 
-import game.mongo.collection.PlayerId
+import game.core.mongo.collection.PlayerId
 import kotlinx.coroutines.CoroutineScope
 
 /**

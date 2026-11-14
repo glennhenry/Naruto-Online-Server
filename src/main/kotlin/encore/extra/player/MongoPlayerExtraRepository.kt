@@ -6,8 +6,8 @@ import com.mongodb.kotlin.client.coroutine.MongoCollection
 import encore.account.FieldPlayerId
 import encore.datastore.runMongoCatching
 import encore.datastore.throwIfNothingMatched
-import game.mongo.collection.PlayerId
-import game.mongo.collection.PlayerServerObjects
+import game.core.mongo.collection.PlayerId
+import game.core.mongo.collection.PlayerServerObjects
 import kotlinx.coroutines.flow.firstOrNull
 
 class MongoPlayerExtraRepository(

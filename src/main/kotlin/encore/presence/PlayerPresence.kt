@@ -1,6 +1,6 @@
 package encore.presence
 
-import game.mongo.collection.PlayerId
+import game.core.mongo.collection.PlayerId
 
 /**
  * Represents the current presence status of a player.

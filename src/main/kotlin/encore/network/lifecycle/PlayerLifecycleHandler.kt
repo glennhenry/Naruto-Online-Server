@@ -1,11 +1,11 @@
 package encore.network.lifecycle
 
-import game.context.PlayerContext
-import game.context.ServerContext
 import encore.fancam.Fancam
 import encore.fancam.Tags
-import encore.network.transport.Connection
 import encore.network.stage.GameStage
+import encore.network.transport.Connection
+import game.core.context.PlayerContext
+import game.core.context.ServerContext
 
 /**
  * Dispatches hooks for [PlayerLifecycle] events.

@@ -1,4 +1,4 @@
-package game.core.utils
+package game.utils
 
 import org.w3c.dom.Document
 import java.io.StringWriter

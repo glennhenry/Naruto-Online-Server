@@ -1,9 +1,9 @@
 package encore.account
 
-import game.mongo.collection.PlayerAccount
-import game.mongo.collection.PlayerId
 import encore.account.model.Credentials
 import encore.account.model.Profile
+import game.core.mongo.collection.PlayerAccount
+import game.core.mongo.collection.PlayerId
 
 /**
  * No-operation implementation of [AccountRepository] used for testing purposes.

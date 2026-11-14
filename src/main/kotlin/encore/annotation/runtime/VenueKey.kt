@@ -1,8 +1,8 @@
 package encore.annotation.runtime
 
 import encore.EncoreConfig
-import game.config.CustomConfig
-import game.config.SecretConfig
+import game.core.config.CustomConfig
+import game.core.config.SecretConfig
 
 /**
  * Used to annotate [EncoreConfig], [CustomConfig], and [SecretConfig]

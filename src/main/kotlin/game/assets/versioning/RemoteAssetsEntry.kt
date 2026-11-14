@@ -1,4 +1,7 @@
-package game.core.assets
+package game.assets.versioning
+
+import game.assets.common.AssetsPath
+import game.assets.common.VersionTag
 
 /**
  * Represent Naruto Online assets entry that is found on resource.cfg.

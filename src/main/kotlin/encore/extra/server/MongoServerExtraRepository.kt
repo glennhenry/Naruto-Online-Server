@@ -5,7 +5,7 @@ import com.mongodb.kotlin.client.coroutine.MongoCollection
 import encore.datastore.ServerObjectsFilter
 import encore.datastore.runMongoCatching
 import encore.datastore.throwIfNothingMatched
-import game.mongo.collection.ServerObjects
+import game.core.mongo.collection.ServerObjects
 import kotlinx.coroutines.flow.firstOrNull
 
 class MongoServerExtraRepository(

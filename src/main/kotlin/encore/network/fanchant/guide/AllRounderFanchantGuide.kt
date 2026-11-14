@@ -1,7 +1,7 @@
 package encore.network.fanchant.guide
 
-import encore.network.fanchant.Fanchant
 import encore.network.fanchant.AllRounderFanchant
+import encore.network.fanchant.Fanchant
 
 /**
  * A fallback-based implementation of [FanchantGuide].

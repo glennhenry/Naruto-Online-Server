@@ -1,6 +1,6 @@
 package encore.network.stage
 
-import game.context.ServerContext
+import game.core.context.ServerContext
 import kotlinx.coroutines.CoroutineScope
 
 /**

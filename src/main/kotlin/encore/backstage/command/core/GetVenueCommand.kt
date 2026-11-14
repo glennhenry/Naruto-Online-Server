@@ -6,7 +6,7 @@ import encore.backstage.command.types.ArgumentInputs
 import encore.backstage.command.types.CommandResult
 import encore.utils.toJsonString
 import encore.venue.Venue
-import game.context.ServerContext
+import game.core.context.ServerContext
 
 /**
  * Command to retrieve all [Venue]'s configuration in JSON.

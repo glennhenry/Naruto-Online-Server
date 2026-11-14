@@ -1,10 +1,10 @@
 package encore.context
 
-import game.mongo.collection.PlayerId
 import encore.network.transport.Connection
 import encore.subunit.scope.ServerScope
-import game.context.PlayerContext
-import game.context.ServerContext
+import game.core.context.PlayerContext
+import game.core.context.ServerContext
+import game.core.mongo.collection.PlayerId
 import kotlinx.coroutines.CoroutineScope
 
 /**
@@ -12,7 +12,7 @@ import kotlinx.coroutines.CoroutineScope
  * - [playerContext] creation is solely provided from the input map
  *   [contexts] in the constructor.
  * - [serverContext] creation is provided from constructor, or default with
- *   [game.context.ServerContext.createForTest].
+ *   [ServerContext.createForTest].
  */
 class FakeContextFactory(
     private val contexts: Map<String, PlayerContext>

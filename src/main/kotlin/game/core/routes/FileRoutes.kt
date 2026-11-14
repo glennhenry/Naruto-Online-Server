@@ -1,12 +1,10 @@
-package game.routes
+package game.core.routes
 
 import encore.route.RouteHandler
-import io.ktor.http.HttpStatusCode
-import io.ktor.server.http.content.staticFiles
-import io.ktor.server.response.respond
-import io.ktor.server.response.respondFile
-import io.ktor.server.routing.Route
-import io.ktor.server.routing.get
+import io.ktor.http.*
+import io.ktor.server.http.content.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
 import java.io.File
 
 /**

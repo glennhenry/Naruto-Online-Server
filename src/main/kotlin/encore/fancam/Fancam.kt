@@ -1,10 +1,6 @@
 package encore.fancam
 
-import encore.fancam.events.Level
-import encore.fancam.events.LogEvent
-import encore.fancam.events.TrackEvent
-import encore.fancam.events.LogEventBuilder
-import encore.fancam.events.TrackEventBuilder
+import encore.fancam.events.*
 import encore.fancam.impl.FancamTemplate
 import encore.fancam.impl.OfficialFancam
 import encore.fancam.impl.RehearsalFancam

@@ -8,7 +8,7 @@ import encore.backstage.command.types.CommandResult
 import encore.utils.dataStructure.EasyStorage
 import encore.utils.support.className
 import encore.utils.toJsonString
-import game.context.ServerContext
+import game.core.context.ServerContext
 
 /**
  * Command to get a particular item stored in [EasyStorage].

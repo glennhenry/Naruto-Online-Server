@@ -1,8 +1,8 @@
 package example
 
-import game.context.PlayerSubunits
-import game.context.ServerContext
-import game.mongo.collection.PlayerAccount
+import game.core.context.PlayerSubunits
+import game.core.context.ServerContext
+import game.core.mongo.collection.PlayerAccount
 import encore.network.transport.TestConnection
 import encore.network.handler.HandlerContext
 import encore.network.handler.FanchantHandler
@@ -12,7 +12,6 @@ import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import testUtils.HandlerTestState
 import testUtils.createAccount
-import kotlin.reflect.KClass
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

@@ -1,4 +1,4 @@
-package game.mongo
+package game.core.mongo
 
 /**
  * Encompasses the Mongo collection name of the 4 base collections

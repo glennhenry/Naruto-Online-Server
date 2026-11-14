@@ -1,5 +1,9 @@
 package encore.utils.types
 
+import encore.utils.types.Outcome.Fail
+import encore.utils.types.Outcome.Ok
+
+
 /**
  * Represents the summary of an operation, capturing success with a value
  * or failure without exposing exceptions.

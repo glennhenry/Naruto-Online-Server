@@ -1,6 +1,6 @@
 import com.mongodb.kotlin.client.coroutine.MongoClient
 import com.mongodb.kotlin.client.coroutine.MongoDatabase
-import game.mongo.MongoCollections
+import game.core.mongo.MongoCollections
 import org.bson.Document
 
 const val NARUTO_OL_SERVER_TEST_DB_NAME = "NARUTO_OL_SERVER-test-DB"

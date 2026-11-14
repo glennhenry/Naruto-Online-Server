@@ -1,10 +1,8 @@
-package game.context
+package game.core.context
 
 import encore.account.AccountRepository
 import encore.account.AccountSubunit
 import encore.account.BlankAccountRepository
-import encore.creation.PlayerCreationSubunit
-import encore.presence.PlayerPresenceSubunit
 import encore.acts.ActIdStore
 import encore.acts.StageActDirector
 import encore.auth.AuthSubunit
@@ -12,6 +10,7 @@ import encore.backstage.command.CommandDispatcher
 import encore.context.ContextFactory
 import encore.context.ContextRegistry
 import encore.context.FakeContextFactory
+import encore.creation.PlayerCreationSubunit
 import encore.datastore.BlankDataStore
 import encore.datastore.DataStore
 import encore.extra.player.InMemoryPlayerExtraRepository
@@ -22,6 +21,7 @@ import encore.extra.server.ServerExtraRepository
 import encore.extra.server.ServerExtraSubunit
 import encore.fancam.Fancam
 import encore.network.lifecycle.PlayerLifecycleHandler
+import encore.presence.PlayerPresenceSubunit
 import encore.session.SessionSubunit
 import encore.subunit.Subunit
 import encore.subunit.SubunitLocator

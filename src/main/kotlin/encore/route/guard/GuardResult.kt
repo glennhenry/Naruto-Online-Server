@@ -1,8 +1,8 @@
 package encore.route.guard
 
 import bootstrap.errorHtml
-import io.ktor.http.HttpStatusCode
-import io.ktor.server.application.ApplicationCall
+import io.ktor.http.*
+import io.ktor.server.application.*
 
 /**
  * The result of pre-request handling mechanism

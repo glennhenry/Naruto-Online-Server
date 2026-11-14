@@ -9,7 +9,7 @@ import encore.backstage.command.types.CommandResult
 import encore.session.SessionSubunit
 import encore.session.UserSession
 import encore.time.TimeCenter
-import game.context.ServerContext
+import game.core.context.ServerContext
 
 /**
  * Command to list the active sessions of [SessionSubunit].

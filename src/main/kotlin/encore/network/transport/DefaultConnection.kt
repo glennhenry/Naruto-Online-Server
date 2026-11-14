@@ -1,13 +1,13 @@
 package encore.network.transport
 
 import encore.acts.StageAct
-import game.mongo.collection.PlayerId
 import encore.fancam.Fancam
 import encore.fancam.INDENT
 import encore.fancam.Tags
 import encore.fancam.events.Level
 import encore.utils.hexString
 import encore.utils.safeAsciiString
+import game.core.mongo.collection.PlayerId
 import io.ktor.utils.io.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel

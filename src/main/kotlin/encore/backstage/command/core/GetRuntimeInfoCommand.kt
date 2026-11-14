@@ -6,7 +6,7 @@ import encore.backstage.command.types.Argument
 import encore.backstage.command.types.ArgumentInputs
 import encore.backstage.command.types.CommandResult
 import game.GameIdentity
-import game.context.ServerContext
+import game.core.context.ServerContext
 
 /**
  * Command to get the [RuntimeInfo] of server.

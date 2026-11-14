@@ -1,8 +1,8 @@
 package encore.network.handler
 
-import game.mongo.collection.PlayerId
 import encore.network.fanchant.Fanchant
 import encore.network.transport.Connection
+import game.core.mongo.collection.PlayerId
 
 /**
  * Encapsulate objects and data needed by handlers to handle network messages.

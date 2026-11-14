@@ -1,4 +1,4 @@
-package game.context
+package game.core.context
 
 import com.mongodb.kotlin.client.coroutine.MongoDatabase
 import encore.account.AccountSubunit
@@ -7,7 +7,8 @@ import encore.acts.ActIdStore
 import encore.acts.StageActDirector
 import encore.auth.AuthSubunit
 import encore.backstage.command.CommandDispatcher
-import encore.context.*
+import encore.context.ContextFactory
+import encore.context.ContextRegistry
 import encore.creation.PlayerCreationSubunit
 import encore.datastore.MongoDataStore
 import encore.extra.player.MongoPlayerExtraRepository
@@ -25,8 +26,8 @@ import encore.time.TimeCenter
 import encore.utils.types.okOrNull
 import encore.websocket.WebSocketManager
 import game.RealPlayerCreationFactory
-import game.mongo.MongoCollections
-import game.mongo.collection.PlayerId
+import game.core.mongo.MongoCollections
+import game.core.mongo.collection.PlayerId
 import kotlinx.coroutines.CoroutineScope
 
 /**

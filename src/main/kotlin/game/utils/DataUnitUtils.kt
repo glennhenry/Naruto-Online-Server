@@ -1,7 +1,7 @@
-package game.core.utils
+package game.utils
 
 import java.io.File
-import java.util.Locale
+import java.util.*
 
 /**
  * Convert this amount of bytes into MB.

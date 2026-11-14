@@ -1,8 +1,8 @@
 package encore.extra.player
 
-import game.mongo.collection.PlayerId
+import game.core.mongo.collection.PlayerId
 
-import game.mongo.collection.PlayerServerObjects
+import game.core.mongo.collection.PlayerServerObjects
 
 /**
  * Repository handling [PlayerServerObjects.extra] concern.

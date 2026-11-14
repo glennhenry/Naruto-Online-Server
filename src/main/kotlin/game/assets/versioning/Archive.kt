@@ -1,4 +1,6 @@
-package game.core.assets
+package game.assets.versioning
+
+import game.assets.common.AssetsPath
 
 /**
  * Represent the 'archive' entry inside each of either

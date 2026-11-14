@@ -1,4 +1,4 @@
-package game.mongo.collection
+package game.core.mongo.collection
 
 import game.Globals
 

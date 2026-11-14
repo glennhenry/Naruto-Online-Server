@@ -1,5 +1,9 @@
 package encore.utils.types
 
+import encore.utils.types.Report.Fail
+import encore.utils.types.Report.Ok
+
+
 /**
  * Represents the summary of an operation, capturing success or failure.
  *

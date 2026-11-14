@@ -1,11 +1,11 @@
 package encore.fancam.formatter
 
-import preciseDetailedDateFormatter
 import encore.fancam.events.SimpleTrackEvent
 import encore.fancam.events.TrackEvent
 import encore.serialization.toJsonElement
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
+import preciseDetailedDateFormatter
 
 /**
  * Formatter implementation for track event tailored for file output.

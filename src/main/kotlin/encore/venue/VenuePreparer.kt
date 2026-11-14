@@ -1,9 +1,9 @@
 package encore.venue
 
 import encore.annotation.runtime.VenueKey
-import encore.utils.xml.XMLFlattener
 import encore.fancam.Fancam
 import encore.fancam.Tags
+import encore.utils.xml.XMLFlattener
 import java.io.File
 import kotlin.reflect.KClass
 import kotlin.reflect.KParameter

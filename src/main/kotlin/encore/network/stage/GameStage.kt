@@ -21,7 +21,7 @@ import encore.network.transport.DefaultConnection
 import encore.utils.hexString
 import encore.utils.safeAsciiString
 import encore.utils.support.className
-import game.context.ServerContext
+import game.core.context.ServerContext
 import io.ktor.network.selector.*
 import io.ktor.network.sockets.*
 import io.ktor.utils.io.*

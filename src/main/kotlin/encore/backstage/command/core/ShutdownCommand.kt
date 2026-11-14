@@ -6,8 +6,8 @@ import encore.backstage.command.Command
 import encore.backstage.command.types.Argument
 import encore.backstage.command.types.ArgumentInputs
 import encore.backstage.command.types.CommandResult
-import game.context.ServerContext
-import game.mongo.collection.ServerId
+import game.core.context.ServerContext
+import game.core.mongo.collection.ServerId
 import kotlin.system.exitProcess
 import kotlin.time.Duration.Companion.seconds
 

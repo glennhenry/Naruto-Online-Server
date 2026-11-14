@@ -1,8 +1,8 @@
 package gameTest.core.assets
 
-import game.core.assets.AssetsPath
-import game.core.assets.BaseAssetsDir
-import game.core.assets.BaseCdnUrl
+import game.assets.common.AssetsPath
+import game.assets.common.BaseAssetsDir
+import game.assets.common.BaseCdnUrl
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

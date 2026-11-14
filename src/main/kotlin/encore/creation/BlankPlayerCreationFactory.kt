@@ -1,10 +1,10 @@
 package encore.creation
 
 import encore.utils.types.Report
-import game.mongo.collection.PlayerAccount
-import game.mongo.collection.PlayerId
-import game.mongo.collection.PlayerObjects
-import game.mongo.collection.PlayerServerObjects
+import game.core.mongo.collection.PlayerAccount
+import game.core.mongo.collection.PlayerId
+import game.core.mongo.collection.PlayerObjects
+import game.core.mongo.collection.PlayerServerObjects
 
 class BlankPlayerCreationFactory: PlayerCreationFactory {
     override fun playerId(isAdmin: Boolean): PlayerId {

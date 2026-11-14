@@ -4,8 +4,8 @@ import encore.fancam.Fancam
 import encore.fancam.INDENT
 import encore.fancam.Tags
 import encore.serialization.JSON
-import io.ktor.server.websocket.DefaultWebSocketServerSession
-import io.ktor.websocket.Frame
+import io.ktor.server.websocket.*
+import io.ktor.websocket.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 

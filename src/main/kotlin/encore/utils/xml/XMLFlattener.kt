@@ -7,7 +7,6 @@ import org.xml.sax.InputSource
 import java.io.File
 import java.io.StringReader
 import javax.xml.parsers.DocumentBuilderFactory
-import kotlin.collections.iterator
 
 /**
  * XML utility to flatten an XML file into a flat key-value map whose key

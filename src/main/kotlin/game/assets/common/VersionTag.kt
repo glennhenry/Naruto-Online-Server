@@ -1,4 +1,4 @@
-package game.core.assets
+package game.assets.common
 
 /**
  * Regex for Naruto Online version tag, separating between the

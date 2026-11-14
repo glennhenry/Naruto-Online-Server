@@ -1,4 +1,4 @@
-package game.core.amf
+package game.amf
 
 import java.io.ByteArrayInputStream
 import java.io.DataInputStream

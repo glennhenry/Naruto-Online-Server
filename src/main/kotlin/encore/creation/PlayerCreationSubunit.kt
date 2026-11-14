@@ -8,7 +8,7 @@ import encore.subunit.Subunit
 import encore.subunit.scope.ServerScope
 import encore.utils.types.isOk
 import game.Globals
-import game.mongo.collection.PlayerId
+import game.core.mongo.collection.PlayerId
 
 /**
  * Server-scoped subunit responsible for player creation.

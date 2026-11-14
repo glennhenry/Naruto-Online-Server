@@ -1,4 +1,4 @@
-package game.config
+package game.core.config
 
 import encore.annotation.runtime.VenueKey
 

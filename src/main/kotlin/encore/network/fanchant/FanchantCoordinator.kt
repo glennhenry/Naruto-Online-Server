@@ -1,11 +1,11 @@
 package encore.network.fanchant
 
-import encore.network.handler.FanchantHandler
-import encore.network.handler.AllRounderHandler
 import encore.fancam.Fancam
 import encore.fancam.INDENT
 import encore.fancam.Tags
 import encore.fancam.formatter.colorizeSegmentFg
+import encore.network.handler.AllRounderHandler
+import encore.network.handler.FanchantHandler
 import encore.utils.support.className
 
 /**

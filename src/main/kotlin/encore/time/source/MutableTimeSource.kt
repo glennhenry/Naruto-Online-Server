@@ -1,6 +1,6 @@
 package encore.time.source
 
-import io.ktor.util.date.getTimeMillis
+import io.ktor.util.date.*
 import kotlin.time.Duration
 
 /**

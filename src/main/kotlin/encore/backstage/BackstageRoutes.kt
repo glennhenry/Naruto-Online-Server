@@ -21,7 +21,7 @@ import encore.venue.Venue
 import encore.websocket.WebSocketMessage
 import encore.websocket.WebSocketMessageType
 import game.GameIdentity
-import game.context.ServerContext
+import game.core.context.ServerContext
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.http.content.*

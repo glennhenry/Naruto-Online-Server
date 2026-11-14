@@ -1,7 +1,7 @@
 package encore.fancam.formatter
 
-import encore.serialization.AnyMapSerializer
 import encore.fancam.events.TrackEvent
+import encore.serialization.AnyMapSerializer
 import kotlinx.serialization.json.Json
 
 /**

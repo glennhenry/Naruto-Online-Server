@@ -1,6 +1,6 @@
 package encore.route.guard
 
-import io.ktor.server.application.ApplicationCall
+import io.ktor.server.application.*
 
 /**
  * [SecurityGuard] implementation that always allows the request.

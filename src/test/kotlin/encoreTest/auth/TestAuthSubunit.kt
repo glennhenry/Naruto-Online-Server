@@ -10,8 +10,8 @@ import encore.account.model.Profile
 import encore.auth.AuthSubunit
 import encore.auth.LoginResult
 import encore.datastore.MongoDataStore
-import game.mongo.collection.PlayerAccount
-import game.mongo.collection.PlayerId
+import game.core.mongo.collection.PlayerAccount
+import game.core.mongo.collection.PlayerId
 import encore.session.SessionSubunit
 import encore.time.source.SystemTimeSource
 import encore.utils.types.Outcome

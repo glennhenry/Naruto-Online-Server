@@ -1,8 +1,8 @@
 package testUtils
 
 import encore.account.model.Profile
-import game.mongo.collection.PlayerAccount
-import game.mongo.collection.PlayerId
+import game.core.mongo.collection.PlayerAccount
+import game.core.mongo.collection.PlayerId
 import encore.time.TimeCenter
 import encore.utils.hash
 

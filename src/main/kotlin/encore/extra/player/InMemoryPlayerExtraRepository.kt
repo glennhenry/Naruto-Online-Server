@@ -1,7 +1,7 @@
 package encore.extra.player
 
 import encore.datastore.DocumentNotFoundException
-import game.mongo.collection.PlayerId
+import game.core.mongo.collection.PlayerId
 
 class InMemoryPlayerExtraRepository(
     private val initialMap: MutableMap<String, MutableMap<String, String>> = mutableMapOf()

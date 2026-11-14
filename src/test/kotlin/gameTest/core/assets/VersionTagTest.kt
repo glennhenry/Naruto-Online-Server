@@ -1,6 +1,6 @@
 package gameTest.core.assets
 
-import game.core.assets.VersionTag
+import game.assets.common.VersionTag
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse

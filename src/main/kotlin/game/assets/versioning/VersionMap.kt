@@ -1,6 +1,8 @@
-package game.core.assets
+package game.assets.versioning
 
-import game.core.amf.AmfDecoder
+import game.amf.AmfDecoder
+import game.assets.common.AssetsPath
+import game.assets.common.VersionTag
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import java.io.File

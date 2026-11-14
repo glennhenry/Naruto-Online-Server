@@ -2,10 +2,10 @@ package encore.route.guard
 
 import encore.security.SimpleRateLimit
 import encore.time.source.TimeSource
-import io.ktor.http.HttpStatusCode
-import io.ktor.server.application.ApplicationCall
-import io.ktor.server.plugins.origin
-import io.ktor.server.request.contentLength
+import io.ktor.http.*
+import io.ktor.server.application.*
+import io.ktor.server.plugins.*
+import io.ktor.server.request.*
 
 /**
  * Default [SecurityGuard] implementation which performs basic request checks.

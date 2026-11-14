@@ -1,7 +1,5 @@
 package encore.definition
 
-import encore.definition.GameReference.get
-import encore.definition.GameReference.initialize
 import encore.fancam.Fancam
 import encore.fancam.Tags
 import encore.time.TimeCenter

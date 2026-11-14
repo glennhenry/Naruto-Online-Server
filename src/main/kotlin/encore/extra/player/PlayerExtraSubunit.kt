@@ -9,7 +9,7 @@ import encore.utils.types.Outcome
 import encore.utils.types.Report
 import encore.utils.types.toOutcome
 import encore.utils.types.toReport
-import game.mongo.collection.PlayerId
+import game.core.mongo.collection.PlayerId
 
 /**
  * Server subunit for [PlayerExtraRepository].

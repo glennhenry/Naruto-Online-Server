@@ -1,5 +1,7 @@
-package game.core.assets
+package game.assets.versioning
 
+import game.assets.common.AssetsPath
+import game.assets.common.VersionTag
 import org.w3c.dom.Element
 import org.w3c.dom.Node
 import org.xml.sax.InputSource

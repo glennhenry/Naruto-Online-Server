@@ -1,6 +1,6 @@
 package encore.extra.server
 
-import game.mongo.collection.ServerObjects
+import game.core.mongo.collection.ServerObjects
 
 /**
  * Repository handling [ServerObjects.extra] concern.

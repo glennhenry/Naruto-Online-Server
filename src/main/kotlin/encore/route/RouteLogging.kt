@@ -5,18 +5,12 @@ import encore.fancam.INDENT
 import encore.fancam.Tags
 import encore.fancam.formatter.colorizeSegmentFg
 import encore.time.TimeCenter
-import io.ktor.http.HttpStatusCode
-import io.ktor.server.application.Application
-import io.ktor.server.application.ApplicationCall
-import io.ktor.server.application.PipelineCall
-import io.ktor.server.plugins.origin
-import io.ktor.server.request.contentLength
-import io.ktor.server.request.contentType
-import io.ktor.server.request.httpMethod
-import io.ktor.server.request.receiveText
-import io.ktor.server.request.uri
-import io.ktor.server.response.ApplicationSendPipeline
-import io.ktor.util.AttributeKey
+import io.ktor.http.*
+import io.ktor.server.application.*
+import io.ktor.server.plugins.*
+import io.ktor.server.request.*
+import io.ktor.server.response.*
+import io.ktor.util.*
 
 suspend fun ApplicationCall.stringifyHttpRequest(unhandled: Boolean): String {
     return buildString {

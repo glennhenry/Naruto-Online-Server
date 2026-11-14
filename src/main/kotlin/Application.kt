@@ -22,10 +22,10 @@ import encore.time.source.SystemTimeSource
 import encore.venue.Venue
 import game.GameIdentity
 import game.Globals
-import game.context.RealContextFactory
-import game.context.ServerContext
-import game.mongo.RuntimeMongoCollections
-import game.routes.fileRoutes
+import game.core.context.RealContextFactory
+import game.core.context.ServerContext
+import game.core.mongo.RuntimeMongoCollections
+import game.core.routes.fileRoutes
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*

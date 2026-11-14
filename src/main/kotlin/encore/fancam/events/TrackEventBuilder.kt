@@ -1,7 +1,7 @@
 package encore.fancam.events
 
-import encore.fancam.utils.SourceCallResolver
 import encore.fancam.Fancam
+import encore.fancam.utils.SourceCallResolver
 import encore.time.TimeCenter
 
 /**

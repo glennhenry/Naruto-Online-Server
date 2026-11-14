@@ -6,7 +6,7 @@ import encore.backstage.command.types.ArgumentInputs
 import encore.backstage.command.types.ArgumentType
 import encore.backstage.command.types.CommandResult
 import encore.utils.dataStructure.EasyStorage
-import game.context.ServerContext
+import game.core.context.ServerContext
 
 /**
  * Command to peek the contents of [EasyStorage].

@@ -1,12 +1,12 @@
 package encore.presence
 
-import game.mongo.collection.PlayerId
 import encore.fancam.Fancam
 import encore.fancam.Tags
 import encore.network.transport.UndeterminedIdentity
 import encore.subunit.Subunit
 import encore.subunit.scope.ServerScope
 import encore.time.TimeCenter
+import game.core.mongo.collection.PlayerId
 import java.util.concurrent.ConcurrentHashMap
 
 /**

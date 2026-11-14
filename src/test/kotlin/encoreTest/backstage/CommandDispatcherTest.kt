@@ -4,7 +4,7 @@ import encore.backstage.command.Command
 import encore.backstage.command.CommandDispatcher
 import encore.backstage.command.ExampleCommand
 import encore.backstage.command.types.*
-import game.context.ServerContext
+import game.core.context.ServerContext
 import kotlinx.coroutines.test.runTest
 import testUtils.TestFancam
 import testUtils.assertDoesNotFail

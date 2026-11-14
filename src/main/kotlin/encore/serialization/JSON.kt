@@ -2,7 +2,6 @@ package encore.serialization
 
 import encore.fancam.Fancam
 import encore.fancam.Tags
-import encore.serialization.JSON.initialize
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.json.Json

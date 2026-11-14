@@ -1,12 +1,12 @@
-package game.context
+package game.core.context
 
-import game.mongo.collection.PlayerAccount
-import game.mongo.collection.PlayerId
 import encore.fancam.Fancam
 import encore.network.transport.Connection
 import encore.subunit.Subunit
 import encore.subunit.scope.PlayerScope
 import encore.utils.support.className
+import game.core.mongo.collection.PlayerAccount
+import game.core.mongo.collection.PlayerId
 
 /**
  * Represents the **server-side context** of a connected player.

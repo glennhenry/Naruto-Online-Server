@@ -1,10 +1,10 @@
 package encore.subunit
 
 import encore.utils.identifier.Ids
-import game.context.PlayerContext
-import game.context.PlayerSubunits
-import game.context.ServerContext
-import game.context.ServerSubunits
+import game.core.context.PlayerContext
+import game.core.context.PlayerSubunits
+import game.core.context.ServerContext
+import game.core.context.ServerSubunits
 
 /**
  * A component that facilitates arbitrary subunits safekeeping.

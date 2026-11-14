@@ -1,14 +1,12 @@
 package encore.fancam.formatter
 
-import preciseDetailedDateFormatter
 import encore.EncoreFancamConfig
 import encore.fancam.events.Level
 import encore.fancam.events.LogEvent
 import encore.fancam.events.TraceElement
 import encore.fancam.events.label
 import preciseBasicDateFormatter
-import kotlin.text.padStart
-import kotlin.text.take
+import preciseDetailedDateFormatter
 
 /**
  * Formatter implementation tailored for:

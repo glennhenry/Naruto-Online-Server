@@ -1,17 +1,16 @@
 package bootstrap
 
-import game.context.ServerSubunits
 import encore.fancam.Fancam
 import encore.fancam.Tags
 import encore.network.stage.Stage
-import encore.subunit.scope.ServerScope
 import encore.subunit.Subunit
-import io.ktor.utils.io.CancellationException
+import encore.subunit.scope.ServerScope
+import game.core.context.ServerSubunits
+import io.ktor.utils.io.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.job
 import kotlinx.coroutines.runBlocking
-import kotlin.collections.forEach
 
 /**
  * Install a hook for the application shutdown which will:

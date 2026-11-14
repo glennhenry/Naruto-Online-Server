@@ -1,9 +1,10 @@
-package game.core.assets
+package game.assets.versioning
 
 import encore.fancam.Fancam
 import encore.fancam.INDENT
-import game.core.amf.AmfDecoder
-import game.core.utils.formatSizeInMb
+import game.amf.AmfDecoder
+import game.assets.common.VersionTag
+import game.utils.formatSizeInMb
 import org.tukaani.xz.LZMAInputStream
 import java.io.ByteArrayInputStream
 import java.io.DataInputStream

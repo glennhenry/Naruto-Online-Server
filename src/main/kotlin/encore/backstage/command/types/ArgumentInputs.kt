@@ -1,7 +1,7 @@
 package encore.backstage.command.types
 
-import encore.utils.support.className
 import encore.backstage.command.Command
+import encore.utils.support.className
 
 /**
  * Represent the clean input arguments of a command invocation.

@@ -1,7 +1,7 @@
 package encore.websocket.handler
 
 import encore.websocket.WebSocketMessage
-import io.ktor.server.websocket.DefaultWebSocketServerSession
+import io.ktor.server.websocket.*
 
 /**
  * Represent a handler for the WebSocket communication system.

@@ -1,4 +1,4 @@
-package game.core.assets
+package game.assets.common
 
 import java.io.File
 
