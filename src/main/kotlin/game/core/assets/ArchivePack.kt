@@ -47,17 +47,17 @@ class ArchivePack(private val xml: String, val version: VersionTag) {
 
             val num = archive.getAttribute("num").toInt()
             val id = archive.getAttribute("id").toInt()
-            val url = AssetsUrl(archive.getAttribute("url"))
+            val path = AssetsPath(archive.getAttribute("url"))
             val t = archive.getAttribute("t")
 
-            val items = mutableListOf<AssetsUrl>()
+            val items = mutableListOf<AssetsPath>()
             val itemsNodes = archiveNodes.item(i).childNodes
             for (j in 0 until itemsNodes.length) {
                 val itemElement = itemsNodes.item(j) as? Element ?: continue
-                items.add(AssetsUrl(itemElement.getAttribute("url")))
+                items.add(AssetsPath(itemElement.getAttribute("url")))
             }
 
-            result.add(Archive(num, id, url, t, items))
+            result.add(Archive(num, id, path, t, items))
         }
 
         return result

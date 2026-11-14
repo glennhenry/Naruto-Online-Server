@@ -4,7 +4,7 @@ import java.io.File
 
 /**
  * Base CDN URL of Naruto Online assets.
- * This is fixed for EN version.
+ * This is fixed for the EN version.
  */
 const val BaseCdnUrl = "cdnnarutoen-cst.oasgames.com"
 
@@ -15,22 +15,25 @@ const val BaseCdnUrl = "cdnnarutoen-cst.oasgames.com"
 const val BaseAssetsDir = "assets/game"
 
 /**
- * Relative path to the assets.
- * It does not include the local or remote CDN URL and version tag.
+ * Representation of assets' path.
+ *
+ * It's independent of local assets directory, remote CDN URL, and
+ * version tag.
+ *
  * For example: `assets/dir1/dir2/file.swf`.
  *
- * @property url The full relative path of the assets.
+ * @property path The path of the assets.
  */
-data class AssetsUrl(val url: String) {
+data class AssetsPath(val path: String) {
     /**
-     * The path segment of the assets.
+     * The directory path of this assets.
      *
      * e.g., `assets/dir1/dir2`
      *
      * This can be empty for file that live in the root directory
      * such as `entry.swf`.
      */
-    val path: String
+    val directoryPath: String
 
     /**
      * Filename of the assets.
@@ -54,13 +57,13 @@ data class AssetsUrl(val url: String) {
     val extension: String
 
     init {
-        val pathParts = url.split(Regex("/(?=[^/]*$)"), limit = 2)
+        val pathParts = path.split(Regex("/(?=[^/]*$)"), limit = 2)
         if (pathParts.size == 2) {
-            path = pathParts[0]
+            directoryPath = pathParts[0]
             filename = pathParts[1]
         } else {
             // edge case: root-level file like entry.swf
-            path = ""
+            directoryPath = ""
             filename = pathParts[0]
         }
 
@@ -77,21 +80,21 @@ data class AssetsUrl(val url: String) {
     }
 
     /**
-     * Convert into CDN URL with [BaseCdnUrl] and given [versionTag].
+     * Convert into CDN URL with [cdnUrl] and the given [versionTag].
      *
      * e.g., `cdnnarutoen-cst.oasgames.com/EN_NarutoAlpha6.00Build304/assets/dir1/dir2/file.swf`
      */
-    fun toCdnUrl(versionTag: String): String {
-        return "$BaseCdnUrl/$versionTag/$url"
+    fun toCdnUrl(versionTag: String, cdnUrl: String = BaseCdnUrl): String {
+        return "$cdnUrl/$versionTag/$path"
     }
 
     /**
-     * Convert into local path with [BaseAssetsDir] and given [versionTag].
+     * Convert into local path with [assetsDir] and the given [versionTag].
      *
      * e.g., `assets/game/EN_NarutoAlpha6.00Build304/assets/dir1/dir2/file.swf`
      */
-    fun toLocalPath(versionTag: String): String {
-        return "$BaseAssetsDir/$versionTag/$url"
+    fun toLocalPath(versionTag: String, assetsDir: String = BaseAssetsDir): String {
+        return "$assetsDir/$versionTag/$path"
     }
 
     /**
@@ -111,6 +114,6 @@ data class AssetsUrl(val url: String) {
      */
     fun isOptionalAssets(): Boolean {
         // @TODO add assets blacklist for unimportant assets like rumorPlot plotImg
-        return url.contains("Thumbs.db")
+        return path.contains("Thumbs.db")
     }
 }

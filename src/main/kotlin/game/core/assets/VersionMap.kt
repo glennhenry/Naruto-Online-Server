@@ -48,7 +48,7 @@ class VersionMap(decoded: Map<*, *>) {
                 }
 
                 map[url] = AssetsEntry(
-                    url = AssetsUrl(url),
+                    url = AssetsPath(url),
                     tag = tag,
                     size = (requireNotNull(value["size"]) {
                         "VersionMap creation error: size null for value '$value'"
@@ -113,7 +113,7 @@ class VersionMap(decoded: Map<*, *>) {
         output.writeText(
             jsonPrinter.encodeToString(map.mapValues { (_, entry) ->
                 AssetsEntryJson(
-                    url = entry.url.url,
+                    url = entry.url.path,
                     tag = entry.tag.tag,
                     size = entry.size,
                     ver = entry.ver,

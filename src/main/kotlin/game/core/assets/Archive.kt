@@ -7,7 +7,7 @@ package game.core.assets
  * @property num The number of items of this archive, same as items' [List.size].
  * @property id The unique identifier of this archive within multiple
  *              archives inside one of the assets division.
- * @property url The url of this archive, typically a `.pkg` file.
+ * @property path The path of this archive, typically it's a `.pkg` file.
  * @property t Unknown, a timestamp of this archive.
  * @property items The list of items this archive consists of.
  */
@@ -15,10 +15,10 @@ data class Archive(
     val num: Int,
     val id: Int,
     // not every archive has url
-    val url: AssetsUrl?,
+    val path: AssetsPath?,
     // some archive have a 't' which is some unknown timestamp
     val t: String?,
-    val items: List<AssetsUrl>
+    val items: List<AssetsPath>
 )
 
 /**

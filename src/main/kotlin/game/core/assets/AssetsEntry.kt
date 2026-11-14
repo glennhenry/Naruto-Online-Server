@@ -12,7 +12,7 @@ package game.core.assets
  * @property belong Unknown. It's always null in the CFG.
  */
 data class AssetsEntry(
-    val url: AssetsUrl,
+    val url: AssetsPath,
     val tag: VersionTag,
     val size: Int,
     val ver: Int,
@@ -23,7 +23,7 @@ data class AssetsEntry(
 /**
  * Returns `true` if this is an optional assets.
  *
- * See [AssetsUrl.isOptionalAssets]
+ * See [AssetsPath.isOptionalAssets]
  */
 fun AssetsEntry.isOptionalAssets(): Boolean {
     return url.isOptionalAssets()
