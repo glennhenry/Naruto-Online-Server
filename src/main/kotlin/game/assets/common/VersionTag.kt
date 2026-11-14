@@ -58,16 +58,9 @@ data class VersionTag(val tag: String) {
      * Comparison is done from the [major], [minor], then the [build] number.
      */
     fun isNewerThan(other: VersionTag): Boolean {
-        if (major > other.major) {
-            return true
-        }
-        if (minor > other.minor) {
-            return true
-        }
-        if (build > other.build) {
-            return true
-        }
-        return false
+        if (major != other.major) return major > other.major
+        if (minor != other.minor) return minor > other.minor
+        return build > other.build
     }
 
     /**
@@ -76,15 +69,8 @@ data class VersionTag(val tag: String) {
      * Comparison is done from the [major], [minor], then the [build] number.
      */
     fun isOlderThan(other: VersionTag): Boolean {
-        if (other.major > major) {
-            return true
-        }
-        if (other.minor > minor) {
-            return true
-        }
-        if (other.build > build) {
-            return true
-        }
-        return false
+        if (major != other.major) return other.major > major
+        if (minor != other.minor) return other.minor > minor
+        return other.build > build
     }
 }

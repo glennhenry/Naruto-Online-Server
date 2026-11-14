@@ -34,23 +34,33 @@ class VersionTagTest {
     }
 
     @Test
-    fun `isNewerThan compare with greater version returns true`() {
+    fun `isNewerThan tests`() {
+        // higher major
         assertTrue {
             VersionTag("EN_NarutoAlpha7.00Build300")
                 .isNewerThan(VersionTag("EN_NarutoAlpha6.00Build300"))
         }
+        // higher minor
         assertTrue {
             VersionTag("EN_NarutoAlpha6.01Build300")
                 .isNewerThan(VersionTag("EN_NarutoAlpha6.00Build300"))
         }
+        // higher build
         assertTrue {
             VersionTag("EN_NarutoAlpha6.00Build301")
                 .isNewerThan(VersionTag("EN_NarutoAlpha6.00Build300"))
         }
-    }
-
-    @Test
-    fun `isNewerThan compare with same version returns false`() {
+        // lower major, higher minor
+        assertFalse {
+            VersionTag("EN_NarutoAlpha4.99Build300")
+                .isNewerThan(VersionTag("EN_NarutoAlpha5.00Build300"))
+        }
+        // lower major, lower minor, higher build
+        assertFalse {
+            VersionTag("EN_NarutoAlpha4.00Build301")
+                .isNewerThan(VersionTag("EN_NarutoAlpha5.01Build300"))
+        }
+        // same version
         assertFalse {
             VersionTag("EN_NarutoAlpha6.00Build300")
                 .isNewerThan(VersionTag("EN_NarutoAlpha6.00Build300"))
@@ -58,23 +68,33 @@ class VersionTagTest {
     }
 
     @Test
-    fun `isOlderThan compare with greater version returns false`() {
+    fun `isOlderThan tests`() {
+        // higher major
         assertFalse {
             VersionTag("EN_NarutoAlpha7.00Build300")
                 .isOlderThan(VersionTag("EN_NarutoAlpha6.00Build300"))
         }
+        // higher minor
         assertFalse {
             VersionTag("EN_NarutoAlpha6.01Build300")
                 .isOlderThan(VersionTag("EN_NarutoAlpha6.00Build300"))
         }
+        // higher build
         assertFalse {
             VersionTag("EN_NarutoAlpha6.00Build301")
                 .isOlderThan(VersionTag("EN_NarutoAlpha6.00Build300"))
         }
-    }
-
-    @Test
-    fun `isOlderThan compare with same version returns false`() {
+        // lower major, higher minor
+        assertTrue {
+            VersionTag("EN_NarutoAlpha4.99Build300")
+                .isOlderThan(VersionTag("EN_NarutoAlpha5.00Build300"))
+        }
+        // lower major, lower minor, higher build
+        assertTrue {
+            VersionTag("EN_NarutoAlpha4.00Build301")
+                .isOlderThan(VersionTag("EN_NarutoAlpha5.01Build300"))
+        }
+        // same version
         assertFalse {
             VersionTag("EN_NarutoAlpha6.00Build300")
                 .isOlderThan(VersionTag("EN_NarutoAlpha6.00Build300"))
