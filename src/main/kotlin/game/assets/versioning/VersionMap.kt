@@ -34,6 +34,8 @@ class VersionMap(decoded: Map<*, *>) {
     lateinit var version: VersionTag
 
     private var totalSize: Long = 0
+    private var optionalAssetsSize: Long = 0
+    private var optionalAssetsAmount: Int = 0
 
     init {
         @Suppress("UNCHECKED_CAST")
@@ -62,7 +64,12 @@ class VersionMap(decoded: Map<*, *>) {
                         "VersionMap creation error: ver null for value '$value'"
                     } as Int,
                     belong = value["belong"] as? String
-                )
+                ).also {
+                    if (it.isOptionalAssets()) {
+                        optionalAssetsSize += it.size
+                        optionalAssetsAmount += 1
+                    }
+                }
             }
         }
     }
@@ -75,7 +82,7 @@ class VersionMap(decoded: Map<*, *>) {
     }
 
     /**
-     * Returns the amount of assets entries.
+     * Returns the amount of all assets entries.
      */
     fun numEntries(): Int {
         return map.size
@@ -93,6 +100,20 @@ class VersionMap(decoded: Map<*, *>) {
      */
     fun totalSizeBytes(): Long {
         return totalSize
+    }
+
+    /**
+     * Returns the amount of optional assets entries.
+     */
+    fun numOptionalEntries(): Int {
+        return optionalAssetsAmount
+    }
+
+    /**
+     * Returns the sum of all optional assets entry in bytes.
+     */
+    fun totalOptionalSizeBytes(): Long {
+        return optionalAssetsSize
     }
 
     @Serializable

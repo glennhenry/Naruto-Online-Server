@@ -114,8 +114,16 @@ class ResourceCfg(private val file: File) {
             buildString {
                 appendLine(
                     "Finished decoding resource.cfg after " +
-                            elapsed.milliseconds.toString(DurationUnit.SECONDS, decimals = 2) +
-                            " with ${versionMap.numEntries()} entries (${versionMap.version.tag})"
+                            elapsed.milliseconds.toString(DurationUnit.SECONDS, decimals = 2)
+                )
+                appendLine(
+                    "$INDENT Got ${versionMap.numEntries()} entries, " +
+                            "remote size: ${versionMap.totalSizeBytes().formatSizeInMb()}, " +
+                            "version: ${versionMap.version.tag}"
+                )
+                appendLine(
+                    "$INDENT Got ${versionMap.numOptionalEntries()} optional entries " +
+                            versionMap.totalOptionalSizeBytes().formatSizeInMb()
                 )
                 append(
                     "$INDENT Got a total of ${archives.size()} items in archives " +
