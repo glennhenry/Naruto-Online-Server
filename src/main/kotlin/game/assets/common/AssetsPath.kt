@@ -116,4 +116,8 @@ data class AssetsPath(val path: String) {
         // @TODO add assets blacklist for unimportant assets like rumorPlot plotImg
         return path.contains("Thumbs.db")
     }
+
+    override fun toString(): String {
+        return path
+    }
 }

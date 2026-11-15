@@ -73,4 +73,8 @@ data class VersionTag(val tag: String) {
         if (minor != other.minor) return other.minor > minor
         return other.build > build
     }
+
+    override fun toString(): String {
+        return tag
+    }
 }
