@@ -2,11 +2,17 @@
 
 <img src="poster.png" alt="gameplay image" width=200/>
 
-Server emulator for Naruto Online.
+Server emulator for Naruto Online EN version.
 
 *This project tries to reconstruct the game server-side behavior. Client files and assets are not included.*
 
 Made with [Encore](https://github.com/glennhenry/Encore).
+
+# Progress
+
+Currently, the server has not been developed yet. We are still creating scripts to manage game assets and special game file formats.
+
+<img src="progress.png" alt="gameplay image" width=300/>
 
 # Server Manual
 
