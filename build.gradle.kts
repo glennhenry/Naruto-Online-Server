@@ -62,6 +62,21 @@ tasks.named<JavaExec>("run") {
     )
 }
 
+tasks.register<JavaExec>("runTool") {
+    group = "tools"
+    description = "Run a specific Tools.kt"
+    classpath = sourceSets["test"].runtimeClasspath
+    val toolName = project.findProperty("tool")?.toString()?.takeIf { it.isNotBlank() }
+    if (toolName != null) {
+        mainClass.set(toolName)
+    }
+    doFirst {
+        if (toolName.isNullOrBlank()) {
+            throw GradleException("Missing required argument. Usage: ./gradlew runTool -Ptool=<ToolObjectName>")
+        }
+    }
+}
+
 tasks.test {
     testLogging {
         showStandardStreams = true
