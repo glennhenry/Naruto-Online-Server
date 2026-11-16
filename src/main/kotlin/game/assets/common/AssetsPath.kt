@@ -1,5 +1,6 @@
 package game.assets.common
 
+import game.utils.ensureHttp
 import java.io.File
 
 /**
@@ -82,10 +83,10 @@ data class AssetsPath(val path: String) {
     /**
      * Convert into CDN URL with [cdnUrl] and the given [versionTag].
      *
-     * e.g., `cdnnarutoen-cst.oasgames.com/EN_NarutoAlpha6.00Build304/assets/dir1/dir2/file.swf`
+     * e.g., `https://cdnnarutoen-cst.oasgames.com/EN_NarutoAlpha6.00Build304/assets/dir1/dir2/file.swf`
      */
     fun toCdnUrl(versionTag: String, cdnUrl: String = BaseCdnUrl): String {
-        return "$cdnUrl/$versionTag/$path"
+        return "$cdnUrl/$versionTag/$path".ensureHttp()
     }
 
     /**

@@ -4,7 +4,6 @@ import encore.fancam.Fancam
 import encore.fancam.INDENT
 import game.assets.common.AssetsPath
 import game.assets.common.BaseAssetsDir
-import game.assets.common.BaseCdnUrl
 import game.assets.versioning.RemoteAssetsEntry
 import game.assets.versioning.ResourceCfg
 import game.assets.versioning.VersionMap
@@ -39,19 +38,18 @@ class AssetsSyncer(
      *   to be downloaded, but the local version may be removed optionally.
      *
      * The result contains:
-     * - List of CDN URLs to download (prepended with [cdnUrl] without HTTP declaration).
-     * - List of CDN URLs for optional downloads.
+     * - List of URLs to download
+     * - List of URLs to download optionally.
      * - List of local assets path to remove (prepended wwith [assetsDir]).
      * - List of local assets path to remove optionally.
      * - The bytes size of each results.
      *
      * @param assetsDir Local assets directory.
-     * @param cdnUrl The CDN URL.
      */
-    fun sync(assetsDir: String = BaseAssetsDir, cdnUrl: String = BaseCdnUrl): AssetsSyncResult {
-        val download = mutableSetOf<String>()
+    fun sync(assetsDir: String = BaseAssetsDir): AssetsSyncResult {
+        val download = mutableSetOf<DownloadUrl>()
         var downloadSize = 0L
-        val optionalDownload = mutableSetOf<String>()
+        val optionalDownload = mutableSetOf<DownloadUrl>()
         var optionalDownloadSize = 0L
         val remove = mutableSetOf<String>()
         var removeSize = 0L
@@ -60,35 +58,44 @@ class AssetsSyncer(
 
         fun addDownload(remoteEntry: RemoteAssetsEntry) {
             if (remoteEntry.url.isOptionalAssets()) {
-                optionalDownload.add(remoteEntry.url.toCdnUrl(remoteEntry.tag.tag, cdnUrl))
+                optionalDownload.add(
+                    DownloadUrl(
+                        "${remoteEntry.tag.tag}/${remoteEntry.url.directoryPath}",
+                        remoteEntry.url.filename
+                    )
+                )
                 optionalDownloadSize += remoteEntry.size
             } else {
-                download.add(remoteEntry.url.toCdnUrl(remoteEntry.tag.tag, cdnUrl))
+                download.add(
+                    DownloadUrl(
+                        "${remoteEntry.tag.tag}/${remoteEntry.url.directoryPath}",
+                        remoteEntry.url.filename
+                    )
+                )
                 downloadSize += remoteEntry.size
             }
         }
 
         for (remoteEntry in remote.entries()) {
             val onDisk = local.getEntry(remoteEntry.url.path)
-            if (onDisk.isNotEmpty()) {
-                onDisk.forEach { localEntry ->
-                    if (localEntry.version.isOlderThan(remoteEntry.tag)) {
-                        // local has older, remote has newer -> download newer, remove older
-                        addDownload(remoteEntry)
-                        remove.add(localEntry.path.toLocalPath(localEntry.version.tag, assetsDir))
-                        removeSize += localEntry.size
-                    } else if (localEntry.version.isNewerThan(remoteEntry.tag)) {
-                        // local has newer, remote has older -> download older, optionally remove newer
-                        addDownload(remoteEntry)
-                        optionalRemove.add(localEntry.path.toLocalPath(localEntry.version.tag, assetsDir))
-                        optionalRemoveSize += localEntry.size
-                    } else {
-                        // local has same version as remote listed -> ignore
-                    }
-                }
-            } else {
-                // assets in remote but not in local -> download
+
+            // local has no existing assets that matches the remote listed version
+            // -> download the listed version
+            if (onDisk.none { it.version.isSameVersion(remoteEntry.tag) }) {
                 addDownload(remoteEntry)
+            }
+
+            // local has some existing assets
+            onDisk.forEach { localEntry ->
+                if (localEntry.version.isOlderThan(remoteEntry.tag)) {
+                    // local has older assets, while remote listed newer -> download newer, remove older
+                    remove.add(localEntry.path.toLocalPath(localEntry.version.tag, assetsDir))
+                    removeSize += localEntry.size
+                } else if (localEntry.version.isNewerThan(remoteEntry.tag)) {
+                    // local has newer assets, while remote listed older -> download older, optionally remove newer
+                    optionalRemove.add(localEntry.path.toLocalPath(localEntry.version.tag, assetsDir))
+                    optionalRemoveSize += localEntry.size
+                }
             }
         }
 
