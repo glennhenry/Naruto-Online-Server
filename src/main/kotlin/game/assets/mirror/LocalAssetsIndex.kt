@@ -7,10 +7,9 @@ import game.assets.common.BaseAssetsDir
 import game.assets.common.VersionTag
 import game.assets.versioning.RemoteAssetsEntry
 import game.utils.formatSizeInMb
+import game.utils.millisFormatInSeconds
 import java.io.File
 import kotlin.system.measureTimeMillis
-import kotlin.time.Duration.Companion.milliseconds
-import kotlin.time.DurationUnit
 
 /**
  * Represent all available assets on local directory.
@@ -82,10 +81,7 @@ class LocalAssetsIndex(private val assetsDir: String = BaseAssetsDir) {
 
         Fancam.info {
             buildString {
-                appendLine(
-                    "Built local index after " +
-                            elapsed.milliseconds.toString(DurationUnit.SECONDS, decimals = 2)
-                )
+                appendLine("Built local index after ${elapsed.millisFormatInSeconds()}")
                 append(
                     "$INDENT Got ${numEntries()} entries, local size: ${totalSize.formatSizeInMb()}."
                 )

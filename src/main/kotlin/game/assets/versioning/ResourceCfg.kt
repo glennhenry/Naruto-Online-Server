@@ -5,13 +5,12 @@ import encore.fancam.INDENT
 import game.amf.AmfDecoder
 import game.assets.common.VersionTag
 import game.utils.formatSizeInMb
+import game.utils.millisFormatInSeconds
 import org.tukaani.xz.LZMAInputStream
 import java.io.ByteArrayInputStream
 import java.io.DataInputStream
 import java.io.File
 import kotlin.system.measureTimeMillis
-import kotlin.time.Duration.Companion.milliseconds
-import kotlin.time.DurationUnit
 
 /**
  * Abstract access to the `resource.cfg` file.
@@ -112,10 +111,7 @@ class ResourceCfg(private val file: File) {
 
         Fancam.info {
             buildString {
-                appendLine(
-                    "Finished decoding resource.cfg after " +
-                            elapsed.milliseconds.toString(DurationUnit.SECONDS, decimals = 2)
-                )
+                appendLine("Finished decoding resource.cfg after ${elapsed.millisFormatInSeconds()}")
                 appendLine(
                     "$INDENT Got ${versionMap.numEntries()} entries, " +
                             "remote size: ${versionMap.totalSizeBytes().formatSizeInMb()}, " +
