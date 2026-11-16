@@ -1,6 +1,5 @@
-import game.core.assets.ResourceCfg
+import kotlinx.coroutines.test.runTest
 import testUtils.TestFancam
-import java.io.File
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
@@ -16,8 +15,7 @@ class Playground {
     }
 
     @Test
-    fun play() {
-        val res = File("workspace/resource.cfg")
-        val rescfg = ResourceCfg(res).also { it.decode() }
+    fun play() = runTest {
+        println("Hello playground!")
     }
 }
