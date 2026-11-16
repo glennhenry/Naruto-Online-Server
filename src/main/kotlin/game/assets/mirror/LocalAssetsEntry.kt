@@ -10,10 +10,12 @@ import java.io.File
  * Represent assets that is found on the local user's directory.
  * @property path Path of the assets.
  * @property version The version of the assets.
+ * @property size The size of the assets in bytes.
  */
 data class LocalAssetsEntry(
     val path: AssetsPath,
-    val version: VersionTag
+    val version: VersionTag,
+    val size: Int
 ) {
     /**
      * Convert into CDN URL with [cdnUrl] and the given [versionTag].

@@ -62,14 +62,16 @@ class LocalAssetsIndex(private val assetsDir: String = BaseAssetsDir) {
                     val relativePath = file.relativeTo(dir).invariantSeparatorsPath
                     val (version, pureAssetsPath) = relativePath.split('/', limit = 2)
 
+                    val size = file.length().toInt()
                     map.getOrPut(pureAssetsPath) { mutableListOf() }.add(
                         LocalAssetsEntry(
                             path = AssetsPath(pureAssetsPath),
-                            version = VersionTag(version)
+                            version = VersionTag(version),
+                            size = size
                         )
                     )
 
-                    totalSize += file.length()
+                    totalSize += size
                 }
             } catch (e: Exception) {
                 Fancam.error(e, "local_idx") { "Scandal detected while buildling local index" }
