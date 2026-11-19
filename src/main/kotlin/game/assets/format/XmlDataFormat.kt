@@ -5,6 +5,7 @@ import encore.utils.xml.XmlNode
 import encore.utils.xml.XmlUtils
 import game.assets.common.ResourceDecodeStatus
 import java.io.File
+import java.util.zip.DeflaterOutputStream
 import java.util.zip.InflaterInputStream
 import javax.xml.parsers.DocumentBuilderFactory
 
@@ -64,6 +65,27 @@ class XmlDataFormat(private val file: File) : DataFormat {
             File(directoryPath, file.name).outputStream().buffered().use { output ->
                 input.copyTo(output)
             }
+        }
+    }
+
+    companion object {
+        /**
+         * Encode a plain XML file back into Zlib compressed XML format.
+         *
+         * This is typically used for editing assets file where
+         * the file is decoded, edited, then encoded back.
+         *
+         * Find the output in [outputDir].
+         */
+        fun encode(xmlFile: File, outputDir: String = "workspace/output") {
+            val target = File(outputDir, xmlFile.name)
+            xmlFile.inputStream().buffered().use { input ->
+                DeflaterOutputStream(target.outputStream().buffered()).use { deflaterOut ->
+                    input.copyTo(deflaterOut)
+                }
+            }
+
+            println("Encoded '${xmlFile.name}' to ${target.path}")
         }
     }
 }
