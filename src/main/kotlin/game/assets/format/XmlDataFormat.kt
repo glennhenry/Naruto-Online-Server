@@ -7,10 +7,6 @@ import game.assets.common.ResourceDecodeStatus
 import java.io.File
 import java.util.zip.InflaterInputStream
 import javax.xml.parsers.DocumentBuilderFactory
-import javax.xml.transform.OutputKeys
-import javax.xml.transform.TransformerFactory
-import javax.xml.transform.stream.StreamResult
-import javax.xml.transform.stream.StreamSource
 
 /**
  * Represent the XML data format used in Naruto Online assets.
@@ -64,11 +60,9 @@ class XmlDataFormat(private val file: File) : DataFormat {
     }
 
     override fun exportToFile(directoryPath: String) {
-        val tf = TransformerFactory.newInstance().newTransformer()
-        tf.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
         InflaterInputStream(file.inputStream().buffered()).use { input ->
             File(directoryPath, file.name).outputStream().buffered().use { output ->
-                tf.transform(StreamSource(input), StreamResult(output))
+                input.copyTo(output)
             }
         }
     }
