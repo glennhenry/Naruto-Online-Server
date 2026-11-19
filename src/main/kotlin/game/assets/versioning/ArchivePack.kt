@@ -22,15 +22,16 @@ import java.io.File
  * @param xml The raw XML from `resource.cfg`.
  * @param version Version tag of the source `resource.cfg`.
  */
-class ArchivePack(private val xml: String, val version: VersionTag) {
+class ArchivePack(xml: String, val version: VersionTag) {
     val flash: List<Archive>
     val assets: List<Archive>
     val config: List<Archive>
+    val node: XmlNode = XmlNode.fromString(xml)
 
     init {
-        flash = parse(XmlNode.fromString(xml)["flash"])
-        assets = parse(XmlNode.fromString(xml)["assets"])
-        config = parse(XmlNode.fromString(xml)["config"])
+        flash = parse(node["flash"])
+        assets = parse(node["assets"])
+        config = parse(node["config"])
     }
 
     private fun parse(element: XmlNode?): List<Archive> {
@@ -65,7 +66,7 @@ class ArchivePack(private val xml: String, val version: VersionTag) {
      * Export this archive pack into XML in the respective [outputDir].
      */
     fun exportToXml(outputDir: String = "workspace/output") {
-        val output = File(outputDir, "archives.xml-${version.tag}.xml")
-        output.writeText(xml)
+        val output = File(outputDir, "archives.xml")
+        output.writeText(node.toXmlString())
     }
 }

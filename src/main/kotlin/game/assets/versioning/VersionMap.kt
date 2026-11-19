@@ -135,7 +135,7 @@ class VersionMap(decoded: Map<*, *>) {
      * Export the version map into JSON in the respective [outputDir].
      */
     fun exportToJson(outputDir: String = "workspace/output") {
-        val output = File(outputDir, "resource.cfg-${version.tag}.json")
+        val output = File(outputDir, "versionMap.json")
         output.writeText(
             jsonPrinter.encodeToString(map.mapValues { (_, entry) ->
                 AssetsEntryJson(
