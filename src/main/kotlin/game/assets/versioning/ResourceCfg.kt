@@ -5,6 +5,7 @@ import encore.fancam.INDENT
 import encore.time.millisFormatInSeconds
 import encore.utils.formatSizeInMb
 import game.amf.AmfDecoder
+import game.assets.common.ResourceDecodeStatus
 import game.assets.common.VersionTag
 import org.tukaani.xz.LZMAInputStream
 import java.io.ByteArrayInputStream
@@ -30,10 +31,6 @@ class ResourceCfg(private val file: File) {
         require(file.exists()) {
             "Fail to read resource.cfg: file doesn't exists"
         }
-    }
-
-    private enum class ResourceDecodeStatus {
-        NotDecoded, Decoding, DecodeCompleted
     }
 
     private var status = ResourceDecodeStatus.NotDecoded
@@ -106,6 +103,8 @@ class ResourceCfg(private val file: File) {
                 Fancam.error(e, "res_reader") { "Scandal detected while decoding resource.cfg" }
                 status = ResourceDecodeStatus.NotDecoded
                 return
+            } finally {
+                status = ResourceDecodeStatus.DecodeCompleted
             }
         }
 
@@ -128,8 +127,6 @@ class ResourceCfg(private val file: File) {
                 )
             }
         }
-
-        status = ResourceDecodeStatus.DecodeCompleted
     }
 
     /**

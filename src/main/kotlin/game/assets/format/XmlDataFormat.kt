@@ -1,7 +1,9 @@
 package game.assets.format
 
+import encore.fancam.Fancam
 import encore.utils.xml.XmlNode
 import encore.utils.xml.XmlUtils
+import game.assets.common.ResourceDecodeStatus
 import java.io.File
 import java.util.zip.InflaterInputStream
 import javax.xml.parsers.DocumentBuilderFactory
@@ -27,6 +29,8 @@ class XmlDataFormat(private val file: File) : DataFormat {
         }
     }
 
+    private var status = ResourceDecodeStatus.NotDecoded
+
     private var _node: XmlNode? = null
 
     /**
@@ -37,9 +41,26 @@ class XmlDataFormat(private val file: File) : DataFormat {
             ?: error("XmlDataFormat uninitialized, please call decode() first.")
 
     override fun decode() {
-        val builder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-        val doc = builder.parse(InflaterInputStream(file.inputStream()))
-        _node = XmlUtils.toXmlNode(doc.documentElement)
+        if (status == ResourceDecodeStatus.Decoding) {
+            Fancam.warn { "XmlDataFormat of '${file.name}' decode is in process" }
+            return
+        }
+        if (status == ResourceDecodeStatus.DecodeCompleted) {
+            Fancam.warn { "XmlDataFormat of '${file.name}' is already decoded" }
+            return
+        }
+
+        try {
+            val builder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
+            val doc = builder.parse(InflaterInputStream(file.inputStream()))
+            _node = XmlUtils.toXmlNode(doc.documentElement)
+        } catch (e: Exception) {
+            Fancam.error(e, "xml_format") { "Scandal detected while decoding XmlDataFormat of '${file.name}'" }
+            status = ResourceDecodeStatus.NotDecoded
+            return
+        } finally {
+            status = ResourceDecodeStatus.DecodeCompleted
+        }
     }
 
     override fun exportToFile(directoryPath: String) {
