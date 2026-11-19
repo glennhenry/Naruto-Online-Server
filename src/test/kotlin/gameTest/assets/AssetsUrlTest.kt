@@ -1,4 +1,4 @@
-package gameTest.core.assets
+package gameTest.assets
 
 import game.assets.common.AssetsPath
 import game.assets.common.BaseAssetsDir

@@ -1,4 +1,4 @@
-package gameTest.core.assets
+package gameTest.assets
 
 import game.assets.common.VersionTag
 import kotlin.test.Test
