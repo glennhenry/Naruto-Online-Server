@@ -20,7 +20,7 @@ class AssetsUrlTest {
     fun `toCdnUrl correct`() {
         val assets = AssetsPath("assets/arena/badge/1.png")
         assertEquals(
-            "$BaseCdnUrl/EN_NarutoAlpha6.00Build304/assets/arena/badge/1.png",
+            "https://$BaseCdnUrl/EN_NarutoAlpha6.00Build304/assets/arena/badge/1.png",
             assets.toCdnUrl("EN_NarutoAlpha6.00Build304")
         )
     }

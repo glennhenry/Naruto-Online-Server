@@ -1,6 +1,6 @@
 package game.assets.common
 
-import game.utils.ensureHttp
+import encore.utils.ensureHttp
 import java.io.File
 
 /**

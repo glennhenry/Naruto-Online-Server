@@ -1,7 +1,7 @@
 package game.assets.mirror
 
+import encore.utils.ensureHttp
 import game.assets.common.BaseCdnUrl
-import game.utils.ensureHttp
 
 /**
  * The result of [AssetsSyncer.sync].

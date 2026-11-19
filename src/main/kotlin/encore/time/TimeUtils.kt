@@ -1,4 +1,4 @@
-package game.utils
+package encore.time
 
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.DurationUnit

@@ -7,7 +7,7 @@ import kotlinx.coroutines.runBlocking
 import java.io.File
 
 /**
- * The following file contains pieces of Naruto Online tools.
+ * The following file contains pieces of devtools and utility code.
  *
  * Access to the tools are written in tests as main function instead of
  * independent dev endpoint for simplicity.

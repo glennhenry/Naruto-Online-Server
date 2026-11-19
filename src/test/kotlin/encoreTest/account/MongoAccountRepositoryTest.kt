@@ -7,6 +7,7 @@ import encore.account.model.Profile
 import game.core.mongo.collection.PlayerAccount
 import encore.utils.identifier.Ids
 import encore.utils.hash
+import encore.utils.randomString
 import initMongo
 import kotlinx.coroutines.test.runTest
 import testUtils.*

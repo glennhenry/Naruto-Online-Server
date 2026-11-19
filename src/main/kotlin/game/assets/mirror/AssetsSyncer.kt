@@ -2,12 +2,12 @@ package game.assets.mirror
 
 import encore.fancam.Fancam
 import encore.fancam.INDENT
+import encore.utils.formatSizeInMb
 import game.assets.common.AssetsPath
 import game.assets.common.BaseAssetsDir
 import game.assets.versioning.RemoteAssetsEntry
 import game.assets.versioning.ResourceCfg
 import game.assets.versioning.VersionMap
-import game.utils.formatSizeInMb
 
 /**
  * Component to sync between the assets on local disk with the

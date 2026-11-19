@@ -1,7 +1,16 @@
-package game.utils
+package encore.utils
 
 import java.io.File
-import java.util.*
+import java.util.Locale
+
+/**
+ * Converts this amount of MB into bytes.
+ * @param useBinary if this is `true`, 1 KB is 1024 bytes, else 1000 bytes.
+ */
+fun Number.mbToBytes(useBinary: Boolean = true): Long {
+    val mult = if (useBinary) 1024 * 1024 else 1_000_000
+    return this.toLong() * mult
+}
 
 /**
  * Convert this amount of bytes into MB.

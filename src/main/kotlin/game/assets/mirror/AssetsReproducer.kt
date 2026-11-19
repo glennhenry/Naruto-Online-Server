@@ -1,9 +1,9 @@
 package game.assets.mirror
 
 import encore.fancam.Fancam
+import encore.time.millisFormatInSeconds
+import encore.utils.formatSizeInMb
 import game.assets.common.BaseAssetsDir
-import game.utils.formatSizeInMb
-import game.utils.millisFormatInSeconds
 import java.awt.Desktop
 import java.io.File
 import kotlin.system.measureTimeMillis

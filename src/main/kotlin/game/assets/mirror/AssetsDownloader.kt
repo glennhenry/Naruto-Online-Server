@@ -1,7 +1,7 @@
 package game.assets.mirror
 
 import encore.fancam.Fancam
-import game.utils.formatSizeInKb
+import encore.utils.formatSizeInKb
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
