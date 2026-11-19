@@ -1,0 +1,54 @@
+package game.assets.format
+
+import encore.utils.xml.XmlNode
+import encore.utils.xml.XmlUtils
+import java.io.File
+import java.util.zip.InflaterInputStream
+import javax.xml.parsers.DocumentBuilderFactory
+import javax.xml.transform.OutputKeys
+import javax.xml.transform.TransformerFactory
+import javax.xml.transform.stream.StreamResult
+import javax.xml.transform.stream.StreamSource
+
+/**
+ * Represent the XML data format used in Naruto Online assets.
+ *
+ * The XML data found in Naruto Online assets is Zlib-compressed XML.
+ *
+ * - Call [decode] before usage.
+ * - Gain access to the XML data via [node].
+ * - [exportToFile] **re-read** the file and output decoded XML representation
+ *   in the given `directoryPath`.
+ */
+class XmlDataFormat(private val file: File) : DataFormat {
+    init {
+        require(file.exists() && file.isFile) {
+            "XmlDataFormat error: file doesn't exist or it isn't a file. File: ${file.path}"
+        }
+    }
+
+    private var _node: XmlNode? = null
+
+    /**
+     * [XmlNode]
+     */
+    val node: XmlNode
+        get() = _node
+            ?: error("XmlDataFormat uninitialized, please call decode() first.")
+
+    override fun decode() {
+        val builder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
+        val doc = builder.parse(InflaterInputStream(file.inputStream()))
+        _node = XmlUtils.toXmlNode(doc.documentElement)
+    }
+
+    override fun exportToFile(directoryPath: String) {
+        val tf = TransformerFactory.newInstance().newTransformer()
+        tf.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+        InflaterInputStream(file.inputStream().buffered()).use { input ->
+            File(directoryPath, file.name).outputStream().buffered().use { output ->
+                tf.transform(StreamSource(input), StreamResult(output))
+            }
+        }
+    }
+}
