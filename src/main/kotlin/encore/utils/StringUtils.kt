@@ -47,6 +47,7 @@ fun String.breakIntoLines(maxCharsEachLine: Int, lineIndent: Int = 0): String {
 val jsonPrettyPrinter = Json {
     prettyPrint = true
     prettyPrintIndent = "  "
+    encodeDefaults = true
 }
 
 /**
@@ -56,8 +57,9 @@ val jsonPrettyPrinter = Json {
  * It is typically used for structured logging or debugging
  * in combination with the [Fancam] logger.
  */
-fun Any.toJsonString(preIndent: Int = 0): String {
-    val json = jsonPrettyPrinter.encodeToString(
+fun Any.toJsonString(preIndent: Int = 0, json: Json? = null): String {
+    val js = json ?: jsonPrettyPrinter
+    val json = js.encodeToString(
         JsonElement.serializer(),
         this.toJsonElement(useReflection = true)
     )
