@@ -1,6 +1,6 @@
 package game.assets.versioning
 
-import game.amf.AmfDecoder
+import game.amf.Amf
 import game.assets.common.AssetsPath
 import game.assets.common.VersionTag
 import kotlinx.serialization.Serializable
@@ -19,9 +19,9 @@ import java.io.File
  * This class is not constructed directly as `resource.cfg`
  * must be decoded beforehand with [ResourceCfg.decode].
  *
- * @param decoded Decoded result of version map using [AmfDecoder].
+ * @param decoded Decoded result of version map using [Amf].
  */
-class VersionMap(decoded: Map<*, *>) {
+class VersionMap(decoded: Map<String, Any>) {
     private val map = mutableMapOf<String, RemoteAssetsEntry>()
 
     /**
@@ -38,8 +38,6 @@ class VersionMap(decoded: Map<*, *>) {
     private var optionalAssetsAmount: Int = 0
 
     init {
-        @Suppress("UNCHECKED_CAST")
-        decoded as Map<String, Any>
         decoded.forEach { (url, value) ->
             // one edge case where value is not a map, it's literally "version": "..."
             if (value is Map<*, *>) {

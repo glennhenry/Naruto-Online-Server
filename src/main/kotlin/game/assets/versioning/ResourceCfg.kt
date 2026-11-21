@@ -4,7 +4,7 @@ import encore.fancam.Fancam
 import encore.fancam.INDENT
 import encore.time.millisFormatInSeconds
 import encore.utils.formatSizeInMb
-import game.amf.AmfDecoder
+import game.amf.Amf
 import game.assets.common.ResourceDecodeStatus
 import game.assets.common.VersionTag
 import org.tukaani.xz.LZMAInputStream
@@ -84,8 +84,10 @@ class ResourceCfg(private val file: File) {
                             "xmlLength: $xmlLengthApprox bytes"
                 }
 
-                val amf = AmfDecoder().decode(data)
-                _versionMap = VersionMap(amf as Map<*, *>)
+                val amf = requireNotNull(Amf.decode<Map<String, Any>>(input)) {
+                    "Amf deserialization is failed on resource.cfg"
+                }
+                _versionMap = VersionMap(amf)
 
                 val hasXml = data.readUnsignedByte() != 0
                 if (hasXml) {

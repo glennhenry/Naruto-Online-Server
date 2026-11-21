@@ -1,10 +1,14 @@
 package game.assets.format
 
 import encore.fancam.Fancam
+import encore.serialization.JSON
+import encore.serialization.toAmfValue
 import encore.utils.toJsonString
-import game.amf.AmfDecoder
+import game.amf.Amf
 import game.assets.common.ResourceDecodeStatus
+import java.io.ByteArrayOutputStream
 import java.io.File
+import java.util.zip.DeflaterOutputStream
 import java.util.zip.InflaterInputStream
 
 /**
@@ -13,9 +17,9 @@ import java.util.zip.InflaterInputStream
  * The CFG data found in Naruto Online assets is Zlib-compressed + Amf3 encoded dictionary.
  *
  * - Call [decode] before usage.
- * - Gain access to the Amf object via [get].
- * - [exportToFile] output decoded JSON representation
- *   in the given `directoryPath`.
+ * - Gain access to the Amf dictionary via [get].
+ * - [exportToFile] output decoded Amf dictionary in
+ *   JSON representation to the given `directoryPath`.
  */
 class CfgDataFormat(private val file: File) : DataFormat {
     init {
@@ -42,8 +46,7 @@ class CfgDataFormat(private val file: File) : DataFormat {
 
         try {
             val bytes = InflaterInputStream(file.inputStream()).use { it.readBytes() }
-            @Suppress("UNCHECKED_CAST")
-            _map = AmfDecoder().decode(bytes) as? Map<String, Any>
+            _map = Amf.decode<Map<String, Any>>(bytes)
                 ?: error("CfgDataFormat error: ${file.name} may not be Amf3 dictionary")
         } catch (e: Exception) {
             Fancam.error(e, "cfg_format") { "Scandal detected while decoding CfgDataFormat of '${file.name}'" }
