@@ -66,6 +66,7 @@ class ArchivePack(xml: String, val version: VersionTag) {
      * Export this archive pack into XML in the respective [outputDir].
      */
     fun exportToXml(outputDir: String = "workspace/output") {
+        File(outputDir).mkdirs()
         val output = File(outputDir, "archives.xml")
         output.writeText(node.toXmlString())
     }

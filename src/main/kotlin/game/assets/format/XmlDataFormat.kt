@@ -61,6 +61,7 @@ class XmlDataFormat(private val file: File) : DataFormat {
     }
 
     override fun exportToFile(directoryPath: String) {
+        File(directoryPath).mkdirs()
         InflaterInputStream(file.inputStream().buffered()).use { input ->
             File(directoryPath, file.name).outputStream().buffered().use { output ->
                 input.copyTo(output)

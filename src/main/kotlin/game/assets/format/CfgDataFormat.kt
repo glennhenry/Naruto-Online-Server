@@ -67,6 +67,7 @@ class CfgDataFormat(private val file: File) : DataFormat {
     fun dictionary(): Map<String, Any> = map
 
     override fun exportToFile(directoryPath: String) {
+        File(directoryPath).mkdirs()
         val output = File(directoryPath, file.nameWithoutExtension + ".json")
         output.writeText(map.toJsonString())
     }
