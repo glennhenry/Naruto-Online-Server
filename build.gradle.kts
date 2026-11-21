@@ -5,6 +5,8 @@ plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.ktor)
     alias(libs.plugins.kotlin.plugin.serialization)
+    // To support AMF auto-serialization
+    kotlin("plugin.noarg") version "2.4.21"
 }
 
 group = "dev.narutool"
@@ -115,4 +117,10 @@ dependencies {
 
     // Custom: Compression
     implementation("org.tukaani:xz:1.12")
+    // AMF 3
+    implementation("org.apache.flex.blazeds:flex-messaging-core:4.8.0")
+}
+
+noArg {
+    annotation("game.amf.AmfSerializable")
 }
