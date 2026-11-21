@@ -1,5 +1,6 @@
 package encore.serialization
 
+import flex.messaging.io.amf.ASObject
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.SerializationStrategy
@@ -71,6 +72,15 @@ fun Any?.toJsonElement(useReflection: Boolean = false, visited: MutableSet<Int> 
         is String -> JsonPrimitive(this)
         is Number -> JsonPrimitive(this)
         is Boolean -> JsonPrimitive(this)
+        is ASObject -> buildJsonObject {
+            // add exception for ASObject to attach special AMF3 type key
+            if (!type.isNullOrEmpty()) {
+                put("__amfType", JsonPrimitive(type))
+            }
+            for ((k, v) in this@toJsonElement) {
+                put(k.toString(), v.toJsonElement(useReflection, visited))
+            }
+        }
         is Map<*, *> -> buildJsonObject {
             this@toJsonElement.forEach { (k, v) ->
                 put(k.toString(), v.toJsonElement(useReflection, visited))
@@ -152,4 +162,34 @@ fun reflectToJson(
             }
         }
     }
+}
+
+/**
+ * Converts [JsonElement] into Kotlin-AMF compatible values type.
+ * For AMF objects, this reads a special `__amfType` key
+ * and returns an `ASObject` type instead of plain HashMap.
+ */
+fun JsonElement.toAmfValue(): Any? = when (this) {
+    is JsonNull -> null
+    is JsonPrimitive -> when {
+        isString -> content
+        booleanOrNull != null -> boolean
+        intOrNull != null -> int
+        longOrNull != null -> long
+        doubleOrNull != null -> double
+        else -> content
+    }
+    is JsonObject -> {
+        val amfType = (this["__amfType"] as? JsonPrimitive)?.contentOrNull
+        if (amfType != null) {
+            ASObject(amfType).apply {
+                for ((k, v) in this@toAmfValue) {
+                    if (k != "__amfType") put(k, v.toAmfValue())
+                }
+            }
+        } else {
+            this.mapValuesTo(HashMap()) { it.value.toAmfValue() }
+        }
+    }
+    is JsonArray -> this.mapTo(ArrayList()) { it.toAmfValue() }
 }
