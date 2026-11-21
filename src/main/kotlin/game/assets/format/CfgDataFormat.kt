@@ -74,4 +74,36 @@ class CfgDataFormat(private val file: File) : DataFormat {
         val output = File(directoryPath, file.nameWithoutExtension + ".json")
         output.writeText(map.toJsonString())
     }
+
+    companion object {
+        /**
+         * Encode JSON string back into CFG format.
+         * @return Encoded bytes.
+         */
+        fun encode(jsonString: String): ByteArray {
+            val output = ByteArrayOutputStream()
+            val map = JSON.json.parseToJsonElement(jsonString)
+            Amf.encode(map.toAmfValue()).inputStream().buffered().use { input ->
+                DeflaterOutputStream(output.buffered()).use { deflaterOut ->
+                    input.copyTo(deflaterOut)
+                }
+            }
+
+            return output.toByteArray()
+        }
+
+        /**
+         * Encode a plain JSON file back into CFG format.
+         *
+         * This is typically used for editing assets file where
+         * the file is decoded, edited, then encoded back.
+         *
+         * Find the output in [outputDir].
+         */
+        fun encodeToFile(jsonFile: File, outputDir: String = "workspace/output") {
+            val target = File(outputDir, jsonFile.name)
+            target.writeBytes(encode(jsonFile.readText()))
+            Fancam.info { "Encoded '${jsonFile.name}' to ${target.path}" }
+        }
+    }
 }

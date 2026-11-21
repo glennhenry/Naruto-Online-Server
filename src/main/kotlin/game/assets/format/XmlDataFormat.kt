@@ -4,6 +4,7 @@ import encore.fancam.Fancam
 import encore.utils.xml.XmlNode
 import encore.utils.xml.XmlUtils
 import game.assets.common.ResourceDecodeStatus
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.zip.DeflaterOutputStream
 import java.util.zip.InflaterInputStream
@@ -71,6 +72,21 @@ class XmlDataFormat(private val file: File) : DataFormat {
 
     companion object {
         /**
+         * Encode XML string back into Zlib compressed XML format.
+         * @return Encoded bytes.
+         */
+        fun encode(xmlString: String): ByteArray {
+            val output = ByteArrayOutputStream()
+            xmlString.byteInputStream().buffered().use { input ->
+                DeflaterOutputStream(output.buffered()).use { deflaterOut ->
+                    input.copyTo(deflaterOut)
+                }
+            }
+
+            return output.toByteArray()
+        }
+
+        /**
          * Encode a plain XML file back into Zlib compressed XML format.
          *
          * This is typically used for editing assets file where
@@ -78,15 +94,10 @@ class XmlDataFormat(private val file: File) : DataFormat {
          *
          * Find the output in [outputDir].
          */
-        fun encode(xmlFile: File, outputDir: String = "workspace/output") {
+        fun encodeToFile(xmlFile: File, outputDir: String = "workspace/output") {
             val target = File(outputDir, xmlFile.name)
-            xmlFile.inputStream().buffered().use { input ->
-                DeflaterOutputStream(target.outputStream().buffered()).use { deflaterOut ->
-                    input.copyTo(deflaterOut)
-                }
-            }
-
-            println("Encoded '${xmlFile.name}' to ${target.path}")
+            target.writeBytes(encode(xmlFile.readText()))
+            Fancam.info { "Encoded '${xmlFile.name}' to ${target.path}" }
         }
     }
 }
