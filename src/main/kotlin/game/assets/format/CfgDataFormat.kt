@@ -1,8 +1,8 @@
 package game.assets.format
 
 import encore.fancam.Fancam
-import encore.serialization.JSON
 import encore.serialization.toAmfValue
+import encore.utils.jsonPrettyPrinter
 import encore.utils.toJsonString
 import game.amf.Amf
 import game.assets.common.ResourceDecodeStatus
@@ -82,7 +82,7 @@ class CfgDataFormat(private val file: File) : DataFormat {
          */
         fun encode(jsonString: String): ByteArray {
             val output = ByteArrayOutputStream()
-            val map = JSON.json.parseToJsonElement(jsonString)
+            val map = jsonPrettyPrinter.parseToJsonElement(jsonString)
             Amf.encode(map.toAmfValue()).inputStream().buffered().use { input ->
                 DeflaterOutputStream(output.buffered()).use { deflaterOut ->
                     input.copyTo(deflaterOut)
