@@ -2,15 +2,20 @@ package game.assets.versioning
 
 import encore.fancam.Fancam
 import encore.fancam.INDENT
+import encore.serialization.toAmfValue
 import encore.time.millisFormatInSeconds
 import encore.utils.formatSizeInMb
+import encore.utils.jsonPrettyPrinter
 import game.amf.Amf
 import game.assets.common.ResourceDecodeStatus
 import game.assets.common.VersionTag
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.decodeFromStream
+import org.tukaani.xz.LZMA2Options
 import org.tukaani.xz.LZMAInputStream
-import java.io.ByteArrayInputStream
-import java.io.DataInputStream
-import java.io.File
+import org.tukaani.xz.LZMAOutputStream
+import java.io.*
 import kotlin.system.measureTimeMillis
 
 /**
@@ -143,5 +148,45 @@ class ResourceCfg(private val file: File) {
      */
     fun getVersion(): VersionTag {
         return versionMap.version
+    }
+
+    companion object {
+        @OptIn(ExperimentalSerializationApi::class)
+        fun encodeToFile(
+            versionMapJson: File, archivesXml: File,
+            outputDir: String = "workspace/output"
+        ) {
+            val amfDict = versionMapJson.inputStream().buffered(65536).use {
+                jsonPrettyPrinter.decodeFromStream<JsonElement>(it)
+            }.toAmfValue()
+
+            // @TODO This is so slow! it can take 1-2 minutes
+            val versionMapBytes = Amf.encode(amfDict)
+
+            val output = ByteArrayOutputStream(8 * 1024 * 1024)
+            val data = DataOutputStream(output)
+
+            // amf length
+            data.writeInt(versionMapBytes.size)
+            // amf payload
+            data.write(versionMapBytes)
+            // has XML
+            data.writeByte(1)
+            // XML
+            val xmlBytes = archivesXml.readBytes()
+            data.writeInt(xmlBytes.size)
+            data.write(xmlBytes)
+            data.flush()
+
+            File(outputDir).mkdirs()
+            val target = File(outputDir, "resource.cfg")
+
+            val bytes = output.toByteArray()
+            LZMAOutputStream(
+                target.outputStream().buffered(),
+                LZMA2Options(LZMA2Options.PRESET_DEFAULT),
+                bytes.size.toLong()
+            ).use { output -> output.write(bytes) }
+        }
     }
 }

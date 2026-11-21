@@ -167,7 +167,8 @@ fun reflectToJson(
 /**
  * Converts [JsonElement] into Kotlin-AMF compatible values type.
  * For AMF objects, this reads a special `__amfType` key
- * and returns an `ASObject` type instead of plain HashMap.
+ * and returns an `ASObject` type with the saved `__amfType`
+ * instead of plain HashMap.
  */
 fun JsonElement.toAmfValue(): Any? = when (this) {
     is JsonNull -> null

@@ -1,5 +1,6 @@
 package game.assets.versioning
 
+import flex.messaging.io.amf.ASObject
 import game.amf.Amf
 import game.assets.common.AssetsPath
 import game.assets.common.VersionTag
@@ -40,7 +41,7 @@ class VersionMap(decoded: Map<String, Any>) {
     init {
         decoded.forEach { (url, value) ->
             // one edge case where value is not a map, it's literally "version": "..."
-            if (value is Map<*, *>) {
+            if (value is ASObject) {
                 val tag = VersionTag(requireNotNull(value["tag"]) {
                     "VersionMap creation error: tag null for value '$value'"
                 } as String)
@@ -120,7 +121,9 @@ class VersionMap(decoded: Map<String, Any>) {
         val belong: String? = null,
         val tag: String,
         val ver: Int,
-        val url: String
+        val url: String,
+        // needed to re-encode back into valid AMF
+        val __amfType: String = "alias.com.tencent.morefun.naruto.file::FileAssetInfo"
     )
 
     private val jsonPrinter = Json {
@@ -133,6 +136,7 @@ class VersionMap(decoded: Map<String, Any>) {
      * Export the version map into JSON in the respective [outputDir].
      */
     fun exportToJson(outputDir: String = "workspace/output") {
+        File(outputDir).mkdirs()
         val output = File(outputDir, "versionMap.json")
         output.writeText(
             jsonPrinter.encodeToString(map.mapValues { (_, entry) ->
