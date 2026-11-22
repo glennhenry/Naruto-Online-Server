@@ -1,6 +1,8 @@
 package game.amf
 
+import flex.messaging.io.PropertyProxyRegistry
 import flex.messaging.io.SerializationContext
+import flex.messaging.io.amf.ASObject
 import flex.messaging.io.amf.Amf3Output
 import flex.messaging.validators.ClassDeserializationValidator
 import java.io.ByteArrayInputStream
@@ -20,6 +22,12 @@ object Amf {
             }
             createASObjectForMissingType = true
         }
+    }
+
+    init {
+        val fastProxy = FastMapProxy()
+        PropertyProxyRegistry.getRegistry().register(ASObject::class.java, fastProxy)
+        PropertyProxyRegistry.getRegistry().register(HashMap::class.java, fastProxy)
     }
 
     /**

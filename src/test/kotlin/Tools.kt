@@ -53,8 +53,6 @@ object ExportResourceCfg {
  *
  * Note: both must be present in the workspace directory.
  *
- * This tool is UN-OPTIMIZED, it may run 1-2 minutes.
- *
  * Find your output in `workspace/output`.
  *
  * Run: `.\gradlew runTool -Ptool=EncodeResourceCfg`

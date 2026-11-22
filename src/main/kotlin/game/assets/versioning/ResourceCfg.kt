@@ -160,7 +160,6 @@ class ResourceCfg(private val file: File) {
                 jsonPrettyPrinter.decodeFromStream<JsonElement>(it)
             }.toAmfValue()
 
-            // @TODO This is so slow! it can take 1-2 minutes
             val versionMapBytes = Amf.encode(amfDict)
 
             val output = ByteArrayOutputStream(8 * 1024 * 1024)
