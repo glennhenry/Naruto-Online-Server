@@ -30,6 +30,26 @@ import java.io.File
  */
 
 /**
+ * Find files as you want by editing the code directly.
+ *
+ * This tool is a ready-to-use utility you can use to find files
+ * in the assets directory. It can run faster than Windows file explorer.
+ *
+ * Run: `.\gradlew runTool -Ptool=FindFiles`
+ */
+object FindFiles {
+    @JvmStatic
+    fun main(args: Array<String>) {
+        val dir = File(BaseAssetsDir)
+        val files = dir.walk()
+            .filter { it.isFile }
+            .toList()
+            .map { it.path to it.extension }
+        println(files.joinToString("\n"))
+    }
+}
+
+/**
  * Decode resource.cfg, then export it to JSON and XML.
  *
  * Run: `.\gradlew runTool -Ptool=ExportResourceCfg`
