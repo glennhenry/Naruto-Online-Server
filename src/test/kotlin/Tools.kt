@@ -7,7 +7,11 @@ import game.assets.mirror.AssetsSyncer
 import game.assets.mirror.LocalAssetsIndex
 import game.assets.versioning.ResourceCfg
 import kotlinx.coroutines.runBlocking
+import java.io.ByteArrayInputStream
+import java.io.DataInputStream
 import java.io.File
+import java.nio.charset.Charset
+import java.util.zip.InflaterInputStream
 
 /**
  * The following file contains pieces of devtools and utility code.
@@ -270,7 +274,7 @@ object EncodeXmlData {
     @JvmStatic
     fun main(args: Array<String>) {
         // change the string directly or input args
-        val filename = "ArenaBadgeCFG.xml"
+        val filename = "CHANGE_ME"
         val final = if (filename == "CHANGE_ME") {
             args.firstOrNull() ?: error("Please input filename argument")
         } else {
@@ -360,7 +364,7 @@ object ExportCfgDataFromWorkspace {
     @JvmStatic
     fun main(args: Array<String>) {
         // change the string directly or input args
-        val filename = "CardItemRecycleCFG.cfg"
+        val filename = "CHANGE_ME"
         val final = if (filename == "CHANGE_ME") {
             args.firstOrNull() ?: error("Please input filename argument")
         } else {
@@ -405,7 +409,7 @@ object EncodeCfgData {
     @JvmStatic
     fun main(args: Array<String>) {
         // change the string directly or input args
-        val filename = "CardItemRecycleCFG.json"
+        val filename = "CHANGE_ME"
         val final = if (filename == "CHANGE_ME") {
             args.firstOrNull() ?: error("Please input filename argument")
         } else {
@@ -419,5 +423,54 @@ object EncodeCfgData {
 
         CfgDataFormat.encodeToFile(file, "workspace/output")
         println("Encoded successfully to workspace/output")
+    }
+}
+
+/**
+ * Decode and export Naruto Online `.pkg` data.
+ *
+ * Arguments:
+ * - filename (e.g., `item1.pkg`) case doesn't matter
+ *
+ * This tool will search the workspace for the pkg file
+ * and extract its content to `workspace/output`, in the directory
+ * of the same file name.
+ *
+ * Run: `.\gradlew runTool -Ptool=ExportPkgData --args=<filename>`
+ */
+object ExportPkgData {
+    @JvmStatic
+    fun main(args: Array<String>) {
+        // change the string directly or input args
+        val filename = "CHANGE_ME"
+        val final = if (filename == "CHANGE_ME") {
+            args.firstOrNull() ?: error("Please input filename argument")
+        } else {
+            filename
+        }
+
+        val dir = File("workspace")
+        val file = dir.walk()
+            .filter { it.isFile && it.name.equals(final, ignoreCase = true) }
+            .toList()
+            .firstOrNull() ?: error("Couldn't find $final in the workspace.")
+
+        println("Found ${file.name}: ${file.path}")
+
+        val bytes = InflaterInputStream(file.inputStream()).use { it.readBytes() }
+        val inputStream = ByteArrayInputStream(bytes)
+        val data = DataInputStream(inputStream)
+
+        while (data.available() != 0) {
+            val filenameLength = data.readShort()
+            val assetsPath = data.readNBytes(filenameLength.toInt())
+                .toString(Charset.defaultCharset())
+            val filename = assetsPath.substringAfterLast('/')
+            val fileLength = data.readInt()
+            val fileBytes = data.readNBytes(fileLength)
+            val target = File("workspace/output", filename)
+            target.writeBytes(fileBytes)
+            println("Wrote $filename (full=$assetsPath)")
+        }
     }
 }
