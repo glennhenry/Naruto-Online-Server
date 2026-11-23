@@ -111,6 +111,29 @@ object UpdateAssets {
 }
 
 /**
+ * Remove empty folder in the assets directory.
+ *
+ * Use this after mirroring assets which involves
+ * deleting unused assets, leaving empty directory.
+ *
+ * Run: `.\gradlew runTool -Ptool=DeleteEmptyFolders`
+ */
+object DeleteEmptyFolders {
+    @JvmStatic
+    fun main(args: Array<String>) {
+        val dir = File(BaseAssetsDir)
+        dir.walk()
+            .filter { it.isDirectory && it.listFiles()?.isEmpty()?.equals(true) == true }
+            .toList()
+            .forEach {
+                if (it.isDirectory && it.listFiles()?.isEmpty()?.equals(true) == true) {
+                    it.deleteRecursively()
+                }
+            }
+    }
+}
+
+/**
  * Find a specific assets file across all versions.
  *
  * Arguments:
