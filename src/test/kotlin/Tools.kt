@@ -461,6 +461,8 @@ object ExportPkgData {
         val inputStream = ByteArrayInputStream(bytes)
         val data = DataInputStream(inputStream)
 
+        val targetDir = File("workspace/output", final).also { it.mkdirs() }
+
         while (data.available() != 0) {
             val filenameLength = data.readShort()
             val assetsPath = data.readNBytes(filenameLength.toInt())
@@ -468,7 +470,7 @@ object ExportPkgData {
             val filename = assetsPath.substringAfterLast('/')
             val fileLength = data.readInt()
             val fileBytes = data.readNBytes(fileLength)
-            val target = File("workspace/output", filename)
+            val target = File(targetDir, filename)
             target.writeBytes(fileBytes)
             println("Wrote $filename (full=$assetsPath)")
         }
