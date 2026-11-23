@@ -40,6 +40,7 @@ export default defineConfig({
       sidebar: [
         { label: "Intro", slug: "index" },
         { label: "Flow", slug: "flow" },
+        { label: "File Formats", slug: "file-format" },
         { label: "Tools", slug: "tools" },
       ],
     }),
