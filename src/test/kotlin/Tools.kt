@@ -3,6 +3,7 @@
 import game.assets.common.BaseAssetsDir
 import game.assets.common.VersionTag
 import game.assets.format.CfgDataFormat
+import game.assets.format.SwfDeobfuscator
 import game.assets.format.XmlDataFormat
 import game.assets.mirror.AssetsReproducer
 import game.assets.mirror.AssetsSyncer
@@ -499,5 +500,94 @@ object ExportPkgData {
             target.writeBytes(fileBytes)
             println("Wrote $filename (full=$assetsPath)")
         }
+    }
+}
+
+/**
+ * Export obfuscated SWF files.
+ *
+ * Arguments:
+ * - filename (e.g., `naruto.core.swf`) case doesn't matter
+ *
+ * This tool will search the assets directory for the SWF file
+ * and deobfuscate it to `workspace/output`, same file name.
+ *
+ * Run: `.\gradlew runTool -Ptool=ExportSwf --args=<filename>`
+ */
+object ExportSwf {
+    @JvmStatic
+    fun main(args: Array<String>) {
+        // change the string directly or input args
+        val filename = "CHANGE_ME"
+        val final = if (filename == "CHANGE_ME") {
+            args.firstOrNull() ?: error("Please input filename argument")
+        } else {
+            filename
+        }
+
+        println("Searching for $final...")
+
+        val dir = File(BaseAssetsDir)
+        val files = dir.walk()
+            .filter { it.isFile && it.name.equals(final, ignoreCase = true) }
+            .toList()
+            .map { f ->
+                val relativePath = f.relativeTo(dir).invariantSeparatorsPath
+                val (version, _) = relativePath.split('/', limit = 2)
+                f to VersionTag(version)
+            }
+
+        if (files.isEmpty()) {
+            println("No file found with $final")
+            return
+        }
+
+        val (file, ver) = files.reduce { prev, cur ->
+            if (prev.second.isNewerThan(cur.second)) prev else cur
+        }
+
+        println("Found ${file.name} of version ${ver.tag}: ${file.path}")
+
+        SwfDeobfuscator.export(file, "workspace/output")
+
+        println("Exported successfully to workspace/output")
+    }
+}
+
+/**
+ * Export obfuscated SWF files.
+ *
+ * Arguments:
+ * - filename (e.g., `naruto.core.swf`) case doesn't matter
+ *
+ * This tool will search the workspace for the SWF file
+ * and deobfuscate it to `workspace/output`, same file name.
+ *
+ * Run: `.\gradlew runTool -Ptool=ExportSwf --args=<filename>`
+ */
+object ExportSwfFromWorkspace {
+    @JvmStatic
+    fun main(args: Array<String>) {
+        // change the string directly or input args
+        val filename = "CHANGE_ME"
+        val final = if (filename == "CHANGE_ME") {
+            args.firstOrNull() ?: error("Please input filename argument")
+        } else {
+            filename
+        }
+
+        println("Searching for $final in the workspace...")
+
+        val dir = File("workspace")
+        val file = dir.walk()
+            .filter { it.isFile && it.name.equals(final, ignoreCase = true) }
+            .toList()
+            .firstOrNull() ?: error("Couldn't find $final in the workspace.")
+
+        println("Found ${file.name}: ${file.path}")
+
+        SwfDeobfuscator.export(file, "workspace/output")
+
+        println("Exported successfully to workspace/output")
     }
 }
