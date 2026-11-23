@@ -1,3 +1,5 @@
+@file:Suppress("KotlinConstantConditions")
+
 import game.assets.common.BaseAssetsDir
 import game.assets.common.VersionTag
 import game.assets.format.CfgDataFormat
