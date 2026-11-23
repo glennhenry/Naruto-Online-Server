@@ -15,6 +15,8 @@ import java.util.zip.InflaterInputStream
  * Represent the CFG data format used in Naruto Online assets (excluding `resource.cfg`).
  *
  * The CFG data found in Naruto Online assets is Zlib-compressed + Amf3 encoded dictionary.
+ * Exception: some CFG are uncompressed and contains Amf3 payload directly.
+ * This class supports that too.
  *
  * - Call [decode] before usage.
  * - Gain access to the Amf dictionary via [get].
@@ -45,7 +47,14 @@ class CfgDataFormat(private val file: File) : DataFormat {
         }
 
         try {
-            val bytes = InflaterInputStream(file.inputStream()).use { it.readBytes() }
+            val bytes = file.inputStream().buffered().use { stream ->
+                stream.mark(2)
+                val header = stream.readNBytes(2)
+                stream.reset()
+                val isZlib = header.contentEquals(byteArrayOf(0x78, 0xda.toByte()))
+                val dataStream = if (isZlib) InflaterInputStream(stream) else stream
+                dataStream.readBytes()
+            }
             _map = Amf.decode<Map<String, Any>>(bytes)
                 ?: error("CfgDataFormat error: ${file.name} may not be Amf3 dictionary")
         } catch (e: Exception) {
