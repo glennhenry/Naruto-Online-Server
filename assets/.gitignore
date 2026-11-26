@@ -15,6 +15,7 @@
 *.lnk
 *.db
 *.inc
+*.html
 **/assets/battle/effect/
 **/assets/battle/role/left/
 **/assets/battle/role/right/

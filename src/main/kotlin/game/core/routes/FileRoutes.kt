@@ -18,9 +18,9 @@ import java.io.File
  */
 fun Route.fileRoutes() {
     get("/") {
-        call.respondFile(File("assets/site/index.html"))
+        call.respondFile(File("web/index.html"))
     }
-    staticFiles("site", File("assets/site"))
+    staticFiles("web", File("web"))
 
     val docsDir = File("docs_build")
     if (File(docsDir, "index.html").exists()) {
