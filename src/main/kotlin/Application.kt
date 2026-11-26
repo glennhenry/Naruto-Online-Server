@@ -27,6 +27,9 @@ import game.core.context.ServerContext
 import game.core.mongo.RuntimeMongoCollections
 import game.core.routes.GameRoutes
 import game.core.routes.fileRoutes
+import game.login.LoginHandler
+import game.protocol.NarutoFallbackHandler
+import game.protocol.NarutoFanchantGuide
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
@@ -213,11 +216,12 @@ fun GameStageInitContext.lifecycleHooks() {
 fun GameStageInitContext.fanchantGuides() {
     // register fanchant guides...
 
-    // guide()
+    guide(NarutoFanchantGuide())
 }
 
 fun GameStageInitContext.handlers(serverContext: ServerContext) {
     // register handlers
 
-    // handler()
+    handler(LoginHandler())
+    handler(NarutoFallbackHandler())
 }
