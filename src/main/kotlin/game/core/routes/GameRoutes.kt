@@ -3,6 +3,7 @@ package game.core.routes
 import encore.route.RouteHandler
 import encore.venue.Venue
 import game.assets.common.BaseAssetsDir
+import io.ktor.http.HttpStatusCode
 import io.ktor.server.http.content.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -16,6 +17,9 @@ class GameRoutes : RouteHandler {
         }
         get("/entry.swf") {
             call.respondFile(File("${BaseAssetsDir}/${Venue.custom.version}/entry.swf"))
+        }
+        get("/logincgi") {
+            call.respond(HttpStatusCode.OK)
         }
         get("/{rest...}") {
             val rest = call.parameters.getAll("rest").orEmpty()
