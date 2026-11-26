@@ -23,8 +23,8 @@
     }
 
     .client-container {
-      width: 800px;
-      height: 600px;
+      width: 1280px;
+      height: 720px;
     }
 
     .toolbar {
@@ -53,7 +53,15 @@
 
   <script>
     var flashvars = {
-
+      zone_id: "HK",
+      time: new Date().getTime(),
+      ip: "127.0.0.1",
+      host: "127.0.0.1",
+      port: "7777",
+      playertype: "admin",
+      source: "local",
+      baseURL: "127.0.0.1",
+      via: "local"
     };
 
     var params = {
@@ -68,17 +76,17 @@
       name: "Naruto Online"
     };
 
-    // swfobject.embedSWF(
-    //   "/game/client.swf",
-    //   "client-placeholder",
-    //   "100%",
-    //   "100%",
-    //   "10.0.0",
-    //   null,
-    //   flashvars,
-    //   params,
-    //   attributes
-    // );
+    swfobject.embedSWF(
+      `/entry.swf`,
+      "client-placeholder",
+      "100%",
+      "100%",
+      "10.0.0",
+      null,
+      flashvars,
+      params,
+      attributes
+    );
 
     document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("kill-swf").addEventListener('click', () => {
