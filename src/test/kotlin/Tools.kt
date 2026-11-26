@@ -15,6 +15,7 @@ import java.io.DataInputStream
 import java.io.File
 import java.nio.charset.Charset
 import java.util.zip.InflaterInputStream
+import kotlin.io.encoding.Base64
 
 /**
  * The following file contains pieces of devtools and utility code.
@@ -589,5 +590,31 @@ object ExportSwfFromWorkspace {
         SwfDeobfuscator.export(file, "workspace/output")
 
         println("Exported successfully to workspace/output")
+    }
+}
+
+/**
+ * This tool can be used to export Naruto Online log file.
+ *
+ * Put any log files in the workspace directory, every log files will be
+ * decoded and you can get the output in `workspace/output/logs`.
+ */
+object ExportLogFile {
+    @JvmStatic
+    fun main(args: Array<String>) {
+        val dir = File("workspace")
+        val files = dir.walk()
+            .filter { it.isFile && it.extension == "log" }
+            .toList()
+
+        File("workspace/output/logs").mkdirs()
+
+        for (file in files) {
+            val bytes = InflaterInputStream(file.inputStream()).readBytes()
+            val logTexts = Base64.Mime.decode(bytes)
+            val target = File("workspace/output/logs", file.name)
+            target.writeBytes(logTexts)
+            println("Exported '${file.name}'")
+        }
     }
 }
