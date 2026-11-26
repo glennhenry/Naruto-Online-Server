@@ -2,7 +2,8 @@
 .kotlin
 .logs/
 deploy/
-/assets/
+assets/clientsource/
+assets/game/
 !backstage/assets/
 venue.secret.xml
 workspace/output/
