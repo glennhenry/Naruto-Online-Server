@@ -26,6 +26,7 @@ import encore.time.TimeCenter
 import encore.utils.types.okOrNull
 import encore.websocket.WebSocketManager
 import game.RealPlayerCreationFactory
+import game.assets.AssetsSubunit
 import game.core.mongo.MongoCollections
 import game.core.mongo.collection.PlayerId
 import kotlinx.coroutines.CoroutineScope
@@ -98,6 +99,8 @@ class RealContextFactory(
         val extraPlayer = PlayerExtraSubunit(playerExtraRepository)
         val extraServer = ServerExtraSubunit(serverExtraRepository)
 
+        val assets = AssetsSubunit()
+
         val subunits = ServerSubunits(
             account = accountSubunit,
             presence = playerPresenceSubunit,
@@ -106,6 +109,7 @@ class RealContextFactory(
             creation = playerCreationSubunit,
             extraPlayer = extraPlayer,
             extraServer = extraServer,
+            assets = assets
         )
 
         // debut all subunits

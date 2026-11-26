@@ -30,6 +30,7 @@ import encore.time.source.SystemTimeSource
 import encore.time.source.TimeSource
 import encore.utils.support.className
 import encore.websocket.WebSocketManager
+import game.assets.AssetsSubunit
 import kotlinx.coroutines.CoroutineScope
 import kotlin.coroutines.EmptyCoroutineContext
 
@@ -90,6 +91,8 @@ data class ServerContext(
             val extraPlayer = PlayerExtraSubunit.createForTest(playerExtraRepository)
             val extraServer = ServerExtraSubunit.createForTest(serverExtraRepository)
 
+            val assets = AssetsSubunit.createForTest()
+
             return ServerContext(
                 appScope = parentScope,
                 dataStore = dataStore,
@@ -105,7 +108,8 @@ data class ServerContext(
                     extraPlayer = extraPlayer,
                     extraServer = extraServer,
                     presence = PlayerPresenceSubunit(),
-                    session = session
+                    session = session,
+                    assets = assets
                 ),
                 locator = SubunitLocator(),
             )
@@ -145,13 +149,19 @@ data class ServerSubunits(
     val extraServer: ServerExtraSubunit,
     val presence: PlayerPresenceSubunit,
     val session: SessionSubunit,
+
+    // game specific
+    val assets: AssetsSubunit
 ) {
     /**
      * Return all server subunit instances.
      * **ADD YOUR NEW SUBUNIT HERE TO BE DEBUTED**
      */
     fun all(): Set<Subunit<ServerScope>> {
-        return setOf(account, auth, creation, extraPlayer, extraServer, presence, session)
+        return setOf(
+            account, auth, creation, extraPlayer, extraServer, presence, session,
+            assets
+        )
     }
 
     /**
