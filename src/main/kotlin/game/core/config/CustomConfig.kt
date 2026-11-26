@@ -13,5 +13,10 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class CustomConfig(
-    val dummy: Int = 0
+    /**
+     * The current version of Naruto Online.
+     * This affects the version of `resource.cfg` and `entry.swf`.
+     */
+    @VenueKey("version")
+    val version: String = ""
 )
