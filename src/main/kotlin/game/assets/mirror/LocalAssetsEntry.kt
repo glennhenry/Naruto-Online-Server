@@ -18,25 +18,25 @@ data class LocalAssetsEntry(
     val size: Int
 ) {
     /**
-     * Convert into CDN URL with [cdnUrl] and the given [versionTag].
+     * Convert into CDN URL with [cdnUrl].
      *
      * e.g., `cdnnarutoen-cst.oasgames.com/EN_NarutoAlpha6.00Build304/assets/dir1/dir2/file.swf`
      *
      * Utilizes [AssetsPath.toCdnUrl].
      */
-    fun toCdnUrl(versionTag: String, cdnUrl: String = BaseCdnUrl): String {
-        return this.path.toCdnUrl(versionTag, cdnUrl)
+    fun toCdnUrl(cdnUrl: String = BaseCdnUrl): String {
+        return this.path.toCdnUrl(version.tag, cdnUrl)
     }
 
     /**
-     * Convert into local path with [assetsDir] and the given [versionTag].
+     * Convert into local path with [assetsDir].
      *
      * e.g., `assets/game/EN_NarutoAlpha6.00Build304/assets/dir1/dir2/file.swf`
      *
      * Utilizes [AssetsPath.toCdnUrl].
      */
-    fun toLocalPath(versionTag: String, assetsDir: String = BaseAssetsDir): String {
-        return this.path.toLocalPath(versionTag, assetsDir)
+    fun toLocalPath(assetsDir: String = BaseAssetsDir): String {
+        return this.path.toLocalPath(version.tag, assetsDir)
     }
 
     /**
@@ -45,7 +45,7 @@ data class LocalAssetsEntry(
      *
      * Utilizes [AssetsPath.toCdnUrl].
      */
-    fun asFile(versionTag: String): File {
-        return File(toLocalPath(versionTag))
+    fun asFile(): File {
+        return File(toLocalPath())
     }
 }
