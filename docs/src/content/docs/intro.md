@@ -17,6 +17,12 @@ Below contains the changes made to the original files.
 1. `entry.as` changed login cgi url to localhost
 2. `ServerInfoRequest.as` changed `defaultIp` to localhost
 
+#### NarutoServer.swf (and item2.pkg)
+
+This file is embedded inside `item2.pkg`
+
+1. Changed every external IP to localhost
+
 ### Logging
 
 Naruto Online own a logging system through `naruto.core.swf`, located in the package `com.tencent.morefun.framework.log`. The logger has two output targets: IDE output and file output.
