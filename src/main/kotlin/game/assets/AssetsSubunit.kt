@@ -8,11 +8,11 @@ import game.assets.mirror.LocalAssetsIndex
  * Assets subunit
  */
 class AssetsSubunit : Subunit<ServerScope> {
-    val local: LocalAssetsIndex = LocalAssetsIndex()
+//    val local: LocalAssetsIndex = LocalAssetsIndex()
 
     override suspend fun debut(scope: ServerScope): Result<Unit> {
         return runCatching {
-            local.build()
+//            local.build()
         }
     }
 

@@ -25,6 +25,7 @@ import game.Globals
 import game.core.context.RealContextFactory
 import game.core.context.ServerContext
 import game.core.mongo.RuntimeMongoCollections
+import game.core.routes.GameRoutes
 import game.core.routes.fileRoutes
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
@@ -115,6 +116,7 @@ suspend fun Application.configureApplication() {
     routing {
         fileRoutes()
         with(BackstageRoutes(serverContext, backstageToken)) { install() }
+        with(GameRoutes()) { install() }
     }
 
     // log startup
