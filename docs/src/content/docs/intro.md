@@ -17,9 +17,9 @@ Below contains the changes made to the original files.
 1. `entry.as` changed login cgi url to localhost
 2. `ServerInfoRequest.as` changed `defaultIp` to localhost
 
-#### NarutoServer.swf (and item2.pkg)
+#### item2.pkg
 
-This file is embedded inside `item2.pkg`
+Edit the `NarutoServer.swf` embedded inside `item2.pkg`.
 
 1. Changed every external IP to localhost
 
