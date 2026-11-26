@@ -49,3 +49,27 @@ Example of log:
 ```
 
 To export the log, you must type the keyword `hylogfile`.
+
+### Important files
+
+- `entry.swf` is the main entry point of the game, connecting to other SWF files.
+- `naruto.core.swf` contains game code of core features like logging, crypto, protobuf, debug, and other infra code.
+- `naruto.include.swf` is the main SWF containing gameplay code and protocol definitions (protobuf).
+- `NarutoServer.swf` (inside `flash/item2.pkg`) contains socket code.
+
+### Networking
+
+Socket code is located at `NarutoServer.swf/SocketServer.as` and protocol and other stuff is defined at `naruto.include.swf`.
+
+- Each message has an opcode (there are 2000+ opcodes)
+- Each message brings optional client data
+- Almost every message is encrypted using TEA algorithm with a hardcoded key, except for login and get encrypt list.
+- Similarly, almost every response from server is encrypted as well.
+- The payload itself utilizes ProtoBuf.
+- The `SocketProtocol` is a wire-level wrapper for any message. It contains a client request message and server response message for later.
+- Every message uses the class `Message`, which a lot of implementations are ProtoBuf generated code.
+- The `encodeByMessage` is called for any request. Its payload will be logged and then each message's ProtoBuf auto-generated packaging code `writeToBuffer` will be called.
+- The `writeToBuffer` results writes to the `bytes` internal buffer on each `Message` class.
+- If encryption is enabled, that result `bytes` will be encrypted.
+- Once encryption is done, the bytes will be packaged into wire-format using `data` defined by `SocketProtocol`.
+- And finally, send it to server.
