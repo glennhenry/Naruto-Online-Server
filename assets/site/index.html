@@ -88,6 +88,16 @@
       attributes
     );
 
+    function getUin() {
+      console.log("getUin called; returning 1")
+      return 1
+    }
+
+    function getCookie(key) {
+      console.log("getCookie called with key: ", key)
+      return 1
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("kill-swf").addEventListener('click', () => {
         swfobject.removeSWF("narutool");
