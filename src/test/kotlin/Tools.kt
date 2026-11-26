@@ -11,9 +11,12 @@ import game.assets.mirror.LocalAssetsIndex
 import game.assets.versioning.ResourceCfg
 import kotlinx.coroutines.runBlocking
 import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
 import java.io.DataInputStream
+import java.io.DataOutputStream
 import java.io.File
 import java.nio.charset.Charset
+import java.util.zip.DeflaterOutputStream
 import java.util.zip.InflaterInputStream
 import kotlin.io.encoding.Base64
 
@@ -257,7 +260,7 @@ object ExportXmlDataFromWorkspace {
     @JvmStatic
     fun main(args: Array<String>) {
         // change the string directly or input args
-        val filename = "CHANGE_ME"
+        val filename = "TranslatedKeyCFG.xml"
         val final = if (filename == "CHANGE_ME") {
             args.firstOrNull() ?: error("Please input filename argument")
         } else {
@@ -463,6 +466,9 @@ object EncodeCfgData {
  * and extract its content to `workspace/output`, in the directory
  * of the same file name.
  *
+ * It will also output a `paths.txt` that list the assets path
+ * of each extracted files, for encoding back.
+ *
  * Run: `.\gradlew runTool -Ptool=ExportPkgData --args=<filename>`
  */
 object ExportPkgData {
@@ -489,18 +495,90 @@ object ExportPkgData {
         val data = DataInputStream(inputStream)
 
         val targetDir = File("workspace/output", final).also { it.mkdirs() }
+        val paths = mutableListOf<Pair<String, String>>()
 
         while (data.available() != 0) {
             val filenameLength = data.readShort()
             val assetsPath = data.readNBytes(filenameLength.toInt())
                 .toString(Charset.defaultCharset())
             val filename = assetsPath.substringAfterLast('/')
+            paths.add(filename to assetsPath)
             val fileLength = data.readInt()
             val fileBytes = data.readNBytes(fileLength)
             val target = File(targetDir, filename)
             target.writeBytes(fileBytes)
             println("Wrote $filename (full=$assetsPath)")
         }
+
+        File(targetDir, "paths.txt")
+            .writeText(paths.joinToString("\n") { "${it.first}=${it.second}" })
+    }
+}
+
+/**
+ * Encode a list of files to be packaged into `.pkg`.
+ *
+ * This is typically done after exporting a `pkg` file with
+ * tools like [ExportPkgData] and you want to edit one of the files.
+ *
+ * It takes a directory of the file and `paths.txt`, then it will
+ * package it back into a single `pkg` file.
+ *
+ * Arguments:
+ * - directory name (e.g., `item1.pkg`) in the workspace directory.
+ *
+ * Run: `.\gradlew runTool -Ptool=EncodePkgData --args=<dirname>`
+ */
+object EncodePkgData {
+    @JvmStatic
+    fun main(args: Array<String>) {
+        // change the string directly or input args
+        val directoryName = "CHANGE_ME"
+        val final = if (directoryName == "CHANGE_ME") {
+            args.firstOrNull() ?: error("Please input directory name argument")
+        } else {
+            directoryName
+        }
+
+        val dir = File("workspace", directoryName)
+        require(dir.exists() && dir.isDirectory) {
+            "Ensure '$directoryName' is a directory that contains the files " +
+                    "you want to package into pkg"
+        }
+
+        val pathFile = requireNotNull(dir.listFiles()!!.find { it.name == "paths.txt" }) {
+            "paths.txt is missing - this is required to encode back pkg file"
+        }
+
+        val paths = mutableMapOf<String, String>()
+        pathFile.readLines().forEach {
+            val (name, path) = it.split("=")
+            paths[name] = path
+        }
+
+        val targetFile = File("workspace/output", directoryName)
+        val outputStream = ByteArrayOutputStream()
+        val data = DataOutputStream(outputStream)
+        for (file in dir.listFiles()!!) {
+            if (file.name == "paths.txt") continue
+            val path = requireNotNull(paths[file.name]) { "Is '${file.name}' in paths.txt?" }
+                .toByteArray()
+            data.writeShort(path.size)
+            data.write(path)
+            val bytes = file.readBytes()
+            data.writeInt(bytes.size)
+            data.write(bytes)
+        }
+        data.flush()
+        val bytes = outputStream.toByteArray()
+
+        bytes.inputStream().buffered().use { input ->
+            DeflaterOutputStream(targetFile.outputStream()).use { deflaterOut ->
+                input.copyTo(deflaterOut)
+            }
+        }
+
+        println("Packaged $final at ${targetFile.path}")
     }
 }
 
