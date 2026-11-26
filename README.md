@@ -10,7 +10,9 @@ Made with [Encore](https://github.com/glennhenry/Encore).
 
 # Progress
 
-Currently, the server has not been developed yet. We are still creating scripts to manage game assets and special game file formats.
+As of now, we have successfully connected the game with our server. We have also discovered the game's protocol partially, but haven't been able to respond correctly.
+
+Right now, stuck in the 14% of loading progress.
 
 <img src="progress.png" alt="gameplay image" width=300/>
 
