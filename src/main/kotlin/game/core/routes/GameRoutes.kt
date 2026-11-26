@@ -1,5 +1,6 @@
 package game.core.routes
 
+import encore.fancam.Fancam
 import encore.route.RouteHandler
 import encore.venue.Venue
 import game.assets.common.BaseAssetsDir
@@ -20,6 +21,11 @@ class GameRoutes : RouteHandler {
         }
         get("/logincgi") {
             call.respond(HttpStatusCode.OK)
+        }
+        get("/d") {
+            val dn = call.queryParameters["dn"]
+            Fancam.debug { "Got /d request with dn: $dn" }
+            call.respond("127.0.0.1")
         }
         get("/{rest...}") {
             val rest = call.parameters.getAll("rest").orEmpty()
