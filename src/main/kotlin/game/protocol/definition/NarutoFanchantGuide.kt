@@ -1,4 +1,4 @@
-package game.protocol
+package game.protocol.definition
 
 import encore.fancam.Fancam
 import encore.network.fanchant.Fanchant
@@ -7,6 +7,7 @@ import encore.network.fanchant.guide.FanchantGuide
 import encore.serialization.Protobuf
 import encore.utils.startsWithBytes
 import game.login.LoginRequest
+import game.protocol.TeaCipher
 import java.io.DataInputStream
 
 /**
@@ -48,13 +49,12 @@ class NarutoFanchantGuide : FanchantGuide<SocketProtocol> {
     }
 
     override fun materialize(decoded: SocketProtocol): Fanchant {
-        val bytes = if (decoded.commandId != ProtocolCmd.PT_LOGIN.id ||
-            decoded.commandId != ProtocolCmd.CMD_GETENCRYPT_LIST.id
+        val bytes = if (decoded.commandId == ProtocolCmd.PT_LOGIN.id ||
+            decoded.commandId == ProtocolCmd.CMD_GETENCRYPT_LIST.id
         ) {
-            // decrypt TEA...
             decoded.bytes
         } else {
-            decoded.bytes
+            TeaCipher().decrypt(decoded.bytes)
         }
 
         val command = ProtocolCmd.fromId(decoded.commandId)
@@ -66,8 +66,7 @@ class NarutoFanchantGuide : FanchantGuide<SocketProtocol> {
             ProtocolCmd.PT_LOGIN -> Protobuf.decode<LoginRequest>(bytes)
             else -> {
                 Fancam.warn {
-                    "Discovered unregistered commandId: '${decoded.commandId}'; " +
-                            "Check ProtocolCmd, register it here, and create handler."
+                    "Discovered unrecognized commandId: '${decoded.commandId}'"
                 }
                 null
             }

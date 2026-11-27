@@ -3,9 +3,10 @@ package game.login
 import encore.fancam.Fancam
 import encore.network.handler.FanchantHandler
 import encore.network.handler.HandlerContext
-import game.protocol.NarutoFanchant
-import game.protocol.ProtocolCmd
-import game.protocol.cmdtype
+import game.protocol.definition.NarutoFanchant
+import game.protocol.definition.ProtocolCmd
+import game.protocol.definition.cmdtype
+import game.protocol.response.response
 
 /**
  * Handles [LoginRequest] message.
@@ -14,10 +15,18 @@ class LoginHandler : FanchantHandler<NarutoFanchant<LoginRequest>> {
     override val fanchantType: String = cmdtype(ProtocolCmd.PT_LOGIN)
 
     override suspend fun handle(ctx: HandlerContext<NarutoFanchant<LoginRequest>>) = with(ctx) {
-        Fancam.info { "Got login: $fanchant" }
-        // todo
-        // respond to message (reverse the SocketProtocol)
-        // decrypt client incoming message
-        // encrypt outgoing message
+        Fancam.info {
+            "Login request by playerId=${fanchant.playerId} " +
+                    "of serverId=${fanchant.serverId} " +
+                    "with role=${fanchant.role}"
+        }
+
+        connection.write(
+            response(
+                payload = LoginResponse(timestamp = 1),
+                fanchant = fanchant,
+                encrypt = false
+            )
+        )
     }
 }

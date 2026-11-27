@@ -1,6 +1,6 @@
 @file:Suppress("unused", "constpropertyname")
 
-package game.protocol
+package game.protocol.definition
 
 /**
  * Naruto Online command opcodes.

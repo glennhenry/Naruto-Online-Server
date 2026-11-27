@@ -5,6 +5,9 @@ import encore.fancam.Tags
 import encore.network.handler.AllRounderHandler
 import encore.network.handler.FanchantHandler
 import encore.network.handler.HandlerContext
+import game.protocol.definition.FallbackNarutoFanchant
+import game.protocol.definition.NarutoFanchant
+import game.protocol.definition.NarutoFanchantGuide
 
 /**
  * Fallback handler for all [NarutoFanchant] that is unrecognized in

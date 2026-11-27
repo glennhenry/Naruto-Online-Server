@@ -29,7 +29,7 @@ import game.core.routes.GameRoutes
 import game.core.routes.fileRoutes
 import game.login.LoginHandler
 import game.protocol.NarutoFallbackHandler
-import game.protocol.NarutoFanchantGuide
+import game.protocol.definition.NarutoFanchantGuide
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*

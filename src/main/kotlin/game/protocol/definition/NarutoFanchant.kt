@@ -1,8 +1,8 @@
-package game.protocol
+package game.protocol.definition
 
 import encore.network.fanchant.Fanchant
 import encore.network.handler.FanchantHandler
-import game.protocol.message.PbMessage
+import encore.utils.support.className
 
 /**
  * Represent Naruto Online message.
@@ -33,7 +33,7 @@ import game.protocol.message.PbMessage
  * @param playerId Player unique identifier (also known as uin)
  * @param role unknown ???
  * @param serverId Denotes the server ID this packet is coming from
- * @param payload The payload, should be [PbMessage].
+ * @param payload The payload.
  */
 data class NarutoFanchant<T>(
     val command: ProtocolCmd,
@@ -46,6 +46,12 @@ data class NarutoFanchant<T>(
     // instead of using plain opcode for handler routing,
     // construct a readable representation for better logging
     override val type: String = cmdtype(command)
+
+    override fun toString(): String {
+        return "NarutoFanchant(command=${cmdtype(command)}, serial=$serial, " +
+                "playerId=$playerId, serverId=$serverId, role=$role, " +
+                "payload=${payload.className()})"
+    }
 }
 
 /**

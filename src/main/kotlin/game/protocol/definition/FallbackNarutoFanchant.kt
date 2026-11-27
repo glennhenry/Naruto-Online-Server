@@ -1,7 +1,8 @@
-package game.protocol
+package game.protocol.definition
 
 import encore.network.fanchant.Fanchant
 import encore.utils.hexString
+import game.protocol.NarutoFallbackHandler
 
 /**
  * Represent Naruto Online fallback message.

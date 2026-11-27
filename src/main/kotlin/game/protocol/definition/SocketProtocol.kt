@@ -1,4 +1,4 @@
-package game.protocol
+package game.protocol.definition
 
 /**
  * Represent the wire-level structure of Naruto Online messages.
