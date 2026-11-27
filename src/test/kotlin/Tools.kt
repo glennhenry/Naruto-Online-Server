@@ -681,7 +681,7 @@ object ExportLogFile {
     @JvmStatic
     fun main(args: Array<String>) {
         val dir = File("workspace")
-        val files = dir.walk()
+        val files = dir.listFiles()!!
             .filter { it.isFile && it.extension == "log" }
             .toList()
 
