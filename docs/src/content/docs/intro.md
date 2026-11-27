@@ -118,3 +118,15 @@ Each command has an executor which implements the `Executer` class. These execut
 For example, `SysReportCommand` has an executor of `ReportExecuter`. Inside `doCommand` of `ReportExecutor`, there is switch statements that maps multiple command into their respective function that handles it.
 
 The `sysReport` is the function that handles `SysReportCommand`. Inside the function, it calls the networking layer to make a request to the server, sending the opcode `250881` (SYS_REPORT).
+
+### System Report
+
+System report, also known as `SYS_REPORT` or the opcode 250881, is a message sent by client intended to inform the server for system information. It's like a client sending logs to server, but those logs is typically useful for server-side.
+
+For example, during register/loading, the game sends information like:
+
+- with id `PROTO_REPORT_LOG_ID_LOGIN_NODE` message `FINISH_NINJA_SELECT` (both sent in number, but we map it to the constants identifier)
+- same id, message `CREATE_ROLE_SUCCESSFUL`
+- message `GAME_LOADING_PERCENT_20`
+- message `GAME_LOADING_PERCENT_40`
+- and many more...

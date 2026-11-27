@@ -22,7 +22,8 @@ import encore.time.source.SystemTimeSource
 import encore.venue.Venue
 import game.GameIdentity
 import game.Globals
-import game.character.RecommendRoleNameHandler
+import game.character.register.RecommendRoleNameHandler
+import game.character.register.RegisterHandler
 import game.core.context.RealContextFactory
 import game.core.context.ServerContext
 import game.core.mongo.RuntimeMongoCollections
@@ -234,4 +235,5 @@ fun GameStageInitContext.handlers(serverContext: ServerContext) {
     handler(ReportGDPRCheckHandler())
     handler(GetRoleHandler())
     handler(RecommendRoleNameHandler())
+    handler(RegisterHandler())
 }

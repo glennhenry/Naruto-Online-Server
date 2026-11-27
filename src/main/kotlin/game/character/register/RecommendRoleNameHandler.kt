@@ -1,4 +1,4 @@
-package game.character
+package game.character.register
 
 import encore.network.handler.FanchantHandler
 import encore.network.handler.HandlerContext
