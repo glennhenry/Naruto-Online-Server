@@ -61,20 +61,21 @@ To export the log, you must type the keyword `hylogfile`.
 
 Socket code is located at `NarutoServer.swf/SocketServer.as` and protocol and other stuff is defined at `naruto.include.swf`.
 
-- Each message has an opcode (there are 2000+ opcodes)
-- Each message brings optional client data
-- Almost every message is encrypted using TEA algorithm with a hardcoded key, except for login and get encrypt list.
-- Similarly, almost every response from server is encrypted as well.
-- The payload itself utilizes ProtoBuf.
-- The `SocketProtocol` is a wire-level wrapper for any message. It contains a client request message and server response message for later.
-- Every message uses the class `Message`, which a lot of implementations are ProtoBuf generated code.
+- The `SocketProtocol` is a wire-level wrapper for socket message. It contains client message and server message field for later.
+- Each socket message has an opcode (there are 1500+ opcodes), also known as command ID.
+- Other than opcode, there are also packet identification information such as packet serial number, player ID, server ID, and role.
+- Each socket message has an optional payload.
+- Almost every message's payload is encrypted using TEA algorithm with a hardcoded key, except for login and get encrypt list command.
+  - The get encrypt list command asks the server whether further communication should be encrypted or not. If yes, the server may also provide the list of opcode that is excluded from encryption.
+  - If no, then any communication, whether its client to server or vice versa, will be in plain text.
+- The payload itself utilizes ProtoBuf. They typically inherit the class `Message`.
 - The `encodeByMessage` is called for any request. Its payload will be logged and then each message's ProtoBuf auto-generated packaging code `writeToBuffer` will be called.
 - The `writeToBuffer` results writes to the `bytes` internal buffer on each `Message` class.
 - If encryption is enabled, that result `bytes` will be encrypted.
 - Once encryption is done, the bytes will be packaged into wire-format using `data` defined by `SocketProtocol`.
 - And finally, send it to server.
 
-Packet details:
+Packet wire representation details:
 
 ```
 [2 bytes short] magic number 2305
