@@ -8,6 +8,7 @@ import encore.serialization.Protobuf
 import encore.utils.startsWithBytes
 import game.startup.login.LoginRequest
 import game.protocol.TeaCipher
+import game.telemetry.ReportLog
 import java.io.DataInputStream
 
 /**
@@ -67,6 +68,7 @@ class NarutoFanchantGuide : FanchantGuide<SocketProtocol> {
         val payload = when (command) {
             ProtocolCmd.PT_LOGIN -> Protobuf.decode<LoginRequest>(bytes)
             ProtocolCmd.CMD_GETENCRYPT_LIST -> null
+            ProtocolCmd.SYS_REPORT -> Protobuf.decode<ReportLog>(bytes)
             else -> {
                 Fancam.warn {
                     "Discovered unrecognized commandId: '${decoded.commandId}'"

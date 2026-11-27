@@ -19,7 +19,7 @@ class LoginHandler : FanchantHandler<NarutoFanchant<LoginRequest>> {
             "Login request by playerId=${fanchant.playerId} " +
                     "of serverId=${fanchant.serverId} " +
                     "with role=${fanchant.role}." +
-                    "skey=${fanchant.payload.skey},"
+                    "skey=${fanchant.payload.skey}," +
                     "seperateSkey=${fanchant.payload.seperateSkey},"
         }
 
