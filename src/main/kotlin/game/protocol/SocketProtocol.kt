@@ -1,7 +1,10 @@
 package game.protocol
 
 /**
- * Represent the wire-level representation of Naruto Online messages.
+ * Represent the wire-level structure of Naruto Online messages.
+ *
+ * This isn't intended to be used by handler, but an intermediate
+ * representation that transform into [NarutoFanchant].
  *
  * @property commandId Message's opcode
  * @property index Message's serial number

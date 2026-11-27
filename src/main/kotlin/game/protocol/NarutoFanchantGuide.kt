@@ -11,13 +11,12 @@ import java.io.DataInputStream
 
 /**
  * Decode Naruto Online messages and materialize it into
- * one of the registered message in [materialize], else use
- * the [FallbackNarutoFanchant].
- *
- * It also decrypt the data as needed.
+ * [NarutoFanchant] with one of the payload message in [materialize].
+ * If the payload is not recognized, it fallbacks to [FallbackNarutoFanchant].
  */
 class NarutoFanchantGuide : FanchantGuide<SocketProtocol> {
     override fun verify(data: ByteArray): Boolean {
+        // packet always starts with magic number 2305
         return data.startsWithBytes(byteArrayOf(0x09, 0x01))
     }
 
@@ -49,24 +48,46 @@ class NarutoFanchantGuide : FanchantGuide<SocketProtocol> {
     }
 
     override fun materialize(decoded: SocketProtocol): Fanchant {
-        val bytes = if (decoded.commandId != ProtocolCmdDef.PT_LOGIN ||
-            decoded.commandId != ProtocolCmdDef.CMD_GETENCRYPT_LIST
+        val bytes = if (decoded.commandId != ProtocolCmd.PT_LOGIN.id ||
+            decoded.commandId != ProtocolCmd.CMD_GETENCRYPT_LIST.id
         ) {
             // decrypt TEA...
             decoded.bytes
         } else {
             decoded.bytes
         }
-        val msg = when (decoded.commandId) {
-            ProtocolCmdDef.PT_LOGIN -> Protobuf.decode<LoginRequest>(bytes)
+
+        val command = ProtocolCmd.fromId(decoded.commandId)
+
+        // map each opcode to protobuf decoding a certain payload class
+        // add more here...
+        // (and dont forget to create a handler afterward, so it will be routed there)
+        val payload = when (command) {
+            ProtocolCmd.PT_LOGIN -> Protobuf.decode<LoginRequest>(bytes)
             else -> {
                 Fancam.warn {
-                    "Unregistered commandId: '${decoded.commandId}'; " +
-                            "please check ProtocolCmdDef and register it here."
+                    "Discovered unregistered commandId: '${decoded.commandId}'; " +
+                            "Check ProtocolCmd, register it here, and create handler."
                 }
-                FallbackNarutoFanchant(decoded)
+                null
             }
         }
-        return msg
+
+        if (payload == null) {
+            return FallbackNarutoFanchant(decoded)
+        }
+
+        requireNotNull(command) {
+            "Weird, if command is null it should have returned early."
+        }
+
+        return NarutoFanchant(
+            command = command,
+            serial = decoded.index,
+            playerId = decoded.uin,
+            role = decoded.role,
+            serverId = decoded.serverId,
+            payload = payload
+        )
     }
 }
