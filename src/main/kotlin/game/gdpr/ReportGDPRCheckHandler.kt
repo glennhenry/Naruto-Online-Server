@@ -1,4 +1,4 @@
-package game.others
+package game.gdpr
 
 import encore.network.handler.FanchantHandler
 import encore.network.handler.HandlerContext

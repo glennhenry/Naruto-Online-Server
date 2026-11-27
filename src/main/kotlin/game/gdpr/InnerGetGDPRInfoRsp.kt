@@ -1,4 +1,4 @@
-package game.others
+package game.gdpr
 
 import game.protocol.response.RetInfo
 import kotlinx.serialization.Serializable

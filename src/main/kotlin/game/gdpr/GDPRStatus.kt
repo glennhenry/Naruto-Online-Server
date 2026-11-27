@@ -1,0 +1,22 @@
+package game.gdpr
+
+enum class GDPRStatus(val id: Int) {
+    EM_GDPR_NONE(0),
+    EM_GDPR_REGION_COLLECTION_DONE(1),
+    EM_GDPR_TERMS_OF_SERVICE_AGREE(2),
+    EM_GDPR_TERMS_OF_SERVICE_DISAGREE(3),
+    EM_GDPR_PRIVACY_POLICY_AGREE(4),
+    EM_GDPR_PRIVACY_POLICY_DISAGREE(5),
+    EM_GDPR_DATA_NOTICE_AGREE(6),
+    EM_GDPR_DATA_NOTICE_DISAGREE(7),
+    EM_GDPR_AGE_LIMITATION_DISAGREE(8),
+    EM_GDPR_SETTING_DELETE_ACCOUNT(9),
+    EM_GDPR_SETTING_DATA_TRANSFER_OUTSIDE_EEA(10),
+    EM_GDPR_SETTING_WITHDRAW_PANRENTAL_CONSENT(11),
+    EM_GDPR_ALL_DONE(12);
+
+    companion object {
+        private val lookup = GDPRStatus.entries.associateBy { it.id }
+        fun fromId(id: Int): GDPRStatus? = lookup[id]
+    }
+}

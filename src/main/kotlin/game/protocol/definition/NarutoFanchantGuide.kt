@@ -6,8 +6,8 @@ import encore.network.fanchant.guide.DecodeResult
 import encore.network.fanchant.guide.FanchantGuide
 import encore.serialization.Protobuf
 import encore.utils.startsWithBytes
+import game.gdpr.GetRoleRequest
 import game.startup.login.LoginRequest
-import game.protocol.TeaCipher
 import game.telemetry.ReportLog
 import java.io.DataInputStream
 
@@ -70,6 +70,7 @@ class NarutoFanchantGuide : FanchantGuide<SocketProtocol> {
             ProtocolCmd.CMD_GETENCRYPT_LIST -> null
             ProtocolCmd.SYS_REPORT -> Protobuf.decode<ReportLog>(bytes)
             ProtocolCmd.REPORT_GDPR_CHECK -> null
+            ProtocolCmd.CMD_GET_ROLE -> Protobuf.decode<GetRoleRequest>(bytes)
             else -> {
                 Fancam.warn {
                     "Discovered unrecognized commandId: '${decoded.commandId}'"

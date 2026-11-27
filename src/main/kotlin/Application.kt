@@ -27,7 +27,8 @@ import game.core.context.ServerContext
 import game.core.mongo.RuntimeMongoCollections
 import game.core.routes.GameRoutes
 import game.core.routes.fileRoutes
-import game.others.ReportGDPRCheckHandler
+import game.gdpr.GetRoleHandler
+import game.gdpr.ReportGDPRCheckHandler
 import game.startup.login.LoginHandler
 import game.protocol.NarutoFallbackHandler
 import game.protocol.definition.NarutoFanchantGuide
@@ -230,4 +231,5 @@ fun GameStageInitContext.handlers(serverContext: ServerContext) {
     handler(GetEncryptListHandler())
     handler(SysReportHandler())
     handler(ReportGDPRCheckHandler())
+    handler(GetRoleHandler())
 }
