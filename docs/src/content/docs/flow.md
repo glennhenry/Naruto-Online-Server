@@ -17,5 +17,6 @@ Particularly, `naruto.core.swf` and `naruto.include.swf` is the most important.
 - the next step is the game using `NarutoServer.swf` which connects to the socket server to a set IP from the flashvars.
 - Flash socket policy request should be requested at this point.
 - JS function `getUin` and `getCookie` should be called to retrieve player's credentials.
-    - If this fails to execute, the `NarutoServer.as` by `GetIPService.as` will request an IP via standard HTTP request. If there is no response data from this, it will use one of the two default hardcoded IPs.
+  - If this fails to execute, the `NarutoServer.as` by `GetIPService.as` will request an IP via standard HTTP request. If there is no response data from this, it will use one of the two default hardcoded IPs.
 - after that, socket is considered connected, and the game will send the server the first message of `PtLoginRequest`, expecting a `PtLoginResponse`.
+- Login response continues to `CMD_GETENCRYPT_LIST`, then to `SYS_REPORT`.

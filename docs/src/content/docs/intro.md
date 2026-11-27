@@ -73,3 +73,47 @@ Socket code is located at `NarutoServer.swf/SocketServer.as` and protocol and ot
 - If encryption is enabled, that result `bytes` will be encrypted.
 - Once encryption is done, the bytes will be packaged into wire-format using `data` defined by `SocketProtocol`.
 - And finally, send it to server.
+
+Packet details:
+
+```
+[2 bytes short] magic number 2305
+[4 bytes uint] payload length
+[4 bytes uint] opcode, also known as command ID
+[4 bytes uint] packet serial number
+[4 bytes uint] fixed number 1
+[8 bytes double] fixed number 0
+[4 bytes uint] self player ID
+[2 bytes short] self role
+[2 bytes short] server ID
+[4 bytes uint] fixed number 0
+[N bytes] payload bytes
+```
+
+Server response structure is similar.
+
+```
+[2 bytes short] magic number 2305
+[4 bytes uint] payload length
+[4 bytes uint] opcode, also known as command ID
+[4 bytes uint] packet serial number
+[4 bytes uint] type
+[20 bytes] dummy bytes
+[N bytes] payload bytes
+```
+
+- In the payload, every response message should have `ret` or `retInfo` which is a field that provides error code and error message to client. This is optional — error code should be 0 if there is not error.
+- The `type` seems to be an identifier for which action the server wants the client to perform. Certain responses or server-initiated message doesn't have payload, and the type represent a client action.
+- The 20 dummy bytes is required as per client expectation.
+
+### Command System
+
+Client leveraged _command_ system as the architecture to perform certain actions, typically used to make a request to server.
+
+Client creates a class that implements `Command`. Once it is constructed, the client typically invoke the `call` method on it. This initiates a request to execute that command.
+
+Each command has an executor which implements the `Executer` class. These executors are responsible to handle the command request. An executor can handle multiple commands.
+
+For example, `SysReportCommand` has an executor of `ReportExecuter`. Inside `doCommand` of `ReportExecutor`, there is switch statements that maps multiple command into their respective function that handles it.
+
+The `sysReport` is the function that handles `SysReportCommand`. Inside the function, it calls the networking layer to make a request to the server, sending the opcode `250881` (SYS_REPORT).
