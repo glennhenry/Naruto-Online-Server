@@ -6,7 +6,7 @@ import encore.network.fanchant.guide.DecodeResult
 import encore.network.fanchant.guide.FanchantGuide
 import encore.serialization.Protobuf
 import encore.utils.startsWithBytes
-import game.login.LoginRequest
+import game.startup.login.LoginRequest
 import game.protocol.TeaCipher
 import java.io.DataInputStream
 

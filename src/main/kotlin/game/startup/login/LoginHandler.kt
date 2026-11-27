@@ -1,8 +1,9 @@
-package game.login
+package game.startup.login
 
 import encore.fancam.Fancam
 import encore.network.handler.FanchantHandler
 import encore.network.handler.HandlerContext
+import encore.time.TimeCenter
 import game.protocol.definition.NarutoFanchant
 import game.protocol.definition.ProtocolCmd
 import game.protocol.definition.cmdtype
@@ -23,7 +24,7 @@ class LoginHandler : FanchantHandler<NarutoFanchant<LoginRequest>> {
 
         connection.write(
             response(
-                payload = LoginResponse(timestamp = 1),
+                payload = LoginResponse(timestamp = TimeCenter.now()),
                 fanchant = fanchant,
                 encrypt = false
             )

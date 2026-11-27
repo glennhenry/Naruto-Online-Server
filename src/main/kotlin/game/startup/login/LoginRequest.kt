@@ -1,4 +1,4 @@
-package game.login
+package game.startup.login
 
 import kotlinx.serialization.Serializable
 

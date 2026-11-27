@@ -27,7 +27,7 @@ import game.core.context.ServerContext
 import game.core.mongo.RuntimeMongoCollections
 import game.core.routes.GameRoutes
 import game.core.routes.fileRoutes
-import game.login.LoginHandler
+import game.startup.login.LoginHandler
 import game.protocol.NarutoFallbackHandler
 import game.protocol.definition.NarutoFanchantGuide
 import io.ktor.server.application.*

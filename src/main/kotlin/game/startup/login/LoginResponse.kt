@@ -1,4 +1,4 @@
-package game.login
+package game.startup.login
 
 import game.protocol.response.RetInfo
 import kotlinx.serialization.Serializable
