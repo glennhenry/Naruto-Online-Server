@@ -69,6 +69,7 @@ class NarutoFanchantGuide : FanchantGuide<SocketProtocol> {
             ProtocolCmd.PT_LOGIN -> Protobuf.decode<LoginRequest>(bytes)
             ProtocolCmd.CMD_GETENCRYPT_LIST -> null
             ProtocolCmd.SYS_REPORT -> Protobuf.decode<ReportLog>(bytes)
+            ProtocolCmd.REPORT_GDPR_CHECK -> null
             else -> {
                 Fancam.warn {
                     "Discovered unrecognized commandId: '${decoded.commandId}'"
