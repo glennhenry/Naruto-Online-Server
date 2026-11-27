@@ -9,5 +9,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class LoginResponse(
     val ret: RetInfo = RetInfo(0, ""),
-    val timestamp: Long
+    // although its timestamp, client enforces this as UInt
+    val timestamp: UInt
 )

@@ -3,7 +3,6 @@ package game.startup.login
 import encore.fancam.Fancam
 import encore.network.handler.FanchantHandler
 import encore.network.handler.HandlerContext
-import encore.time.TimeCenter
 import game.protocol.definition.NarutoFanchant
 import game.protocol.definition.ProtocolCmd
 import game.protocol.definition.cmdtype
@@ -19,12 +18,16 @@ class LoginHandler : FanchantHandler<NarutoFanchant<LoginRequest>> {
         Fancam.info {
             "Login request by playerId=${fanchant.playerId} " +
                     "of serverId=${fanchant.serverId} " +
-                    "with role=${fanchant.role}"
+                    "with role=${fanchant.role}." +
+                    "skey=${fanchant.payload.skey},"
+                    "seperateSkey=${fanchant.payload.seperateSkey},"
         }
 
         connection.write(
             response(
-                payload = LoginResponse(timestamp = TimeCenter.now()),
+                // timestamp from this response isn't used
+                // so just response anything valid
+                payload = LoginResponse(timestamp = 1u),
                 fanchant = fanchant,
                 encrypt = false
             )

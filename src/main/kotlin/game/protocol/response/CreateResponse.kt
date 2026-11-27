@@ -24,7 +24,7 @@ import java.io.DataOutputStream
  */
 inline fun <reified T> response(
     payload: T?, fanchant: NarutoFanchant<*>,
-    type: Int = 0, encrypt: Boolean = true
+    type: Int = 0, encrypt: Boolean = false
 ): ByteArray {
     val outputBytes = ByteArrayOutputStream()
     val output = DataOutputStream(outputBytes)

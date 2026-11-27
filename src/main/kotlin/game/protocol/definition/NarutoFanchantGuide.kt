@@ -54,7 +54,9 @@ class NarutoFanchantGuide : FanchantGuide<SocketProtocol> {
         ) {
             decoded.bytes
         } else {
-            TeaCipher().decrypt(decoded.bytes)
+            // encryption disabled
+            // TeaCipher().decrypt(decoded.bytes)
+            decoded.bytes
         }
 
         val command = ProtocolCmd.fromId(decoded.commandId)
@@ -64,20 +66,13 @@ class NarutoFanchantGuide : FanchantGuide<SocketProtocol> {
         // (and dont forget to create a handler afterward, so it will be routed there)
         val payload = when (command) {
             ProtocolCmd.PT_LOGIN -> Protobuf.decode<LoginRequest>(bytes)
+            ProtocolCmd.CMD_GETENCRYPT_LIST -> null
             else -> {
                 Fancam.warn {
                     "Discovered unrecognized commandId: '${decoded.commandId}'"
                 }
-                null
+                return FallbackNarutoFanchant(decoded)
             }
-        }
-
-        if (payload == null) {
-            return FallbackNarutoFanchant(decoded)
-        }
-
-        requireNotNull(command) {
-            "Weird, if command is null it should have returned early."
         }
 
         return NarutoFanchant(

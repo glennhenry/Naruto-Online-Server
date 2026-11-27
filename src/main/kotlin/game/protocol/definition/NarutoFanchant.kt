@@ -24,6 +24,8 @@ import encore.utils.support.className
  *
  * Example: `FanchantHandler<NarutoFanchant<LoginRequest>>`
  *
+ * For packet that does not contain payload, the `T` can be `*`.
+ *
  * **Important:** The handler should declare its type by using
  * any of the opcodes from [ProtocolCmd] and declare it through
  * [cmdtype] for compatibility.

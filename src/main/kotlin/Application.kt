@@ -30,6 +30,7 @@ import game.core.routes.fileRoutes
 import game.startup.login.LoginHandler
 import game.protocol.NarutoFallbackHandler
 import game.protocol.definition.NarutoFanchantGuide
+import game.startup.others.GetEncryptListHandler
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
@@ -224,4 +225,5 @@ fun GameStageInitContext.handlers(serverContext: ServerContext) {
 
     handler(LoginHandler())
     handler(NarutoFallbackHandler())
+    handler(GetEncryptListHandler())
 }
