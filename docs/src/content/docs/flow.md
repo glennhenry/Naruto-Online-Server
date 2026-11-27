@@ -19,4 +19,6 @@ Particularly, `naruto.core.swf` and `naruto.include.swf` is the most important.
 - JS function `getUin` and `getCookie` should be called to retrieve player's credentials.
   - If this fails to execute, the `NarutoServer.as` by `GetIPService.as` will request an IP via standard HTTP request. If there is no response data from this, it will use one of the two default hardcoded IPs.
 - after that, socket is considered connected, and the game will send the server the first message of `PtLoginRequest`, expecting a `PtLoginResponse`.
-- Login response continues to `CMD_GETENCRYPT_LIST`, then to `SYS_REPORT`.
+- Login response continues to `CMD_GETENCRYPT_LIST`, then to `REPORT_GDPR_CHECK` (opcode 1048619), then to `CMD_GET_ROLE` with extra request of `SYS_REPORT` along the way.
+- After `CMD_GET_ROLE`, player is verified and can either: create new character (selecting one of the 5 MC) or login to existing account.
+  - Creating new character opens the `RegisterPlugin.swf`. Registering involves asking server for random character name and registering an account itself.

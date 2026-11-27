@@ -6,6 +6,7 @@ import encore.network.fanchant.guide.DecodeResult
 import encore.network.fanchant.guide.FanchantGuide
 import encore.serialization.Protobuf
 import encore.utils.startsWithBytes
+import game.character.RecommendRoleNameRequest
 import game.gdpr.GetRoleRequest
 import game.startup.login.LoginRequest
 import game.telemetry.ReportLog
@@ -71,6 +72,7 @@ class NarutoFanchantGuide : FanchantGuide<SocketProtocol> {
             ProtocolCmd.SYS_REPORT -> Protobuf.decode<ReportLog>(bytes)
             ProtocolCmd.REPORT_GDPR_CHECK -> null
             ProtocolCmd.CMD_GET_ROLE -> Protobuf.decode<GetRoleRequest>(bytes)
+            ProtocolCmd.CMD_RECOMMEND_NAME -> Protobuf.decode<RecommendRoleNameRequest>(bytes)
             else -> {
                 Fancam.warn {
                     "Discovered unrecognized commandId: '${decoded.commandId}'"

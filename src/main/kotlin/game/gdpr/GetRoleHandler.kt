@@ -12,7 +12,7 @@ class GetRoleHandler: FanchantHandler<NarutoFanchant<GetRoleRequest>> {
     override val fanchantType: String = cmdtype(ProtocolCmd.CMD_GET_ROLE)
 
     override suspend fun handle(ctx: HandlerContext<NarutoFanchant<GetRoleRequest>>) = with(ctx) {
-        // this probably ask legal information like privacy policy stuff
+        // this ask legal information GDPR
         // if error code is 1106, account is expired (was scheduled to be deleted before)
         // error code 0 is success -> login to existing character
         // error code -14001 is success -> create new character
