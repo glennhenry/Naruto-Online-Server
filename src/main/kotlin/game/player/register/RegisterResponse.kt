@@ -1,4 +1,4 @@
-package game.character.register
+package game.player.register
 
 import game.protocol.response.RetInfo
 import kotlinx.serialization.Serializable

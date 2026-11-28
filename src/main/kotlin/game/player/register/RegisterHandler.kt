@@ -1,4 +1,4 @@
-package game.character.register
+package game.player.register
 
 import encore.fancam.Fancam
 import encore.network.handler.FanchantHandler

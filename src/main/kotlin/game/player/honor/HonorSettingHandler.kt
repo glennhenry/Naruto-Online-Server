@@ -1,4 +1,4 @@
-package game.character.honor
+package game.player.honor
 
 import encore.network.handler.FanchantHandler
 import encore.network.handler.HandlerContext

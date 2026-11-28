@@ -4,7 +4,7 @@ import game.protocol.response.RetInfo
 import kotlinx.serialization.Serializable
 
 /**
- * Response for login.
+ * Response for login in startup (not in-game).
  */
 @Serializable
 data class LoginResponse(

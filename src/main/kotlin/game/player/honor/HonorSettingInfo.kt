@@ -1,4 +1,4 @@
-package game.character.honor
+package game.player.honor
 
 import kotlinx.serialization.Serializable
 

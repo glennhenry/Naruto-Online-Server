@@ -27,3 +27,4 @@ Particularly, `naruto.core.swf` and `naruto.include.swf` is the most important.
 - Three next commands are: `StartHelloPackageCommand` (`HELLO_PACKAGE` message; heartbeat by `UserPlugin.swf`), `SetupGameLoadingCommand` (client-only), `LoginCommand` (`LOGIN` message; request player data by `LoginPlugin.swf`).
 - During one of the plugin loading, the `RSModelPlugin.swf` is loaded, which continues to the client sending server `CMD_HONOR_GET_SETTING` opcode.
 - All this result in 3 request to server: `CMD_HONOR_GET_SETTING`, `HELLO_PACKAGE`, and `LOGIN`.
+- The `LOGIN` is important to request various player data from EXP, HP, location, scene, etc.

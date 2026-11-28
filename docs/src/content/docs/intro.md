@@ -12,16 +12,21 @@ Naruto Online is a flash game.
 
 Below contains the changes made to the original files.
 
+Certain changes such as changing external domain to localhost is not required, but recommended to ensure our client do not make requests to official server.
+
+- huoying.qq domain for login cgi
+- huoying.qq domain for empty.swf
+
 #### entry.swf
 
-1. `entry.as` changed login cgi url to localhost
-2. `ServerInfoRequest.as` changed `defaultIp` to localhost
+1. `entry.as` changed login cgi url to localhost (recommended)
+2. `ServerInfoRequest.as` changed `defaultIp` to localhost (not required)
 
 #### item2.pkg
 
 Edit the `NarutoServer.swf` embedded inside `item2.pkg`.
 
-1. Changed every external IP to localhost
+1. Changed every external IP to localhost (not required)
 
 ### Logging
 
