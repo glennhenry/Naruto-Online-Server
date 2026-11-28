@@ -39,6 +39,7 @@ import game.activities.wishingLantern.WishingLightQueryHandler
 import game.items.GetItemListHandler
 import game.player.character.GetPlayerInfoHandler
 import game.player.login.GameLoginHandler
+import game.player.vip.GetVIPInfoHandler
 import game.startup.login.LoginHandler
 import game.protocol.NarutoFallbackHandler
 import game.protocol.definition.NarutoFanchantGuide
@@ -254,4 +255,5 @@ fun GameStageInitContext.handlers(serverContext: ServerContext) {
     handler(GetActivityMainUIHandler())
     handler(OpenActivityHubHandler())
     handler(GetItemListHandler())
+    handler(GetVIPInfoHandler())
 }
