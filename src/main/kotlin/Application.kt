@@ -22,6 +22,7 @@ import encore.time.source.SystemTimeSource
 import encore.venue.Venue
 import game.GameIdentity
 import game.Globals
+import game.OpenActivityHubHandler
 import game.activities.GetActivityMainUIHandler
 import game.player.honor.HonorSettingHandler
 import game.player.register.RecommendRoleNameHandler
@@ -250,4 +251,5 @@ fun GameStageInitContext.handlers(serverContext: ServerContext) {
     handler(GetPlayerInfoHandler())
     handler(WishingLightQueryHandler())
     handler(GetActivityMainUIHandler())
+    handler(OpenActivityHubHandler())
 }
