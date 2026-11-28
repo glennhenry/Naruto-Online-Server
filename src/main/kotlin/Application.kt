@@ -33,6 +33,7 @@ import game.core.routes.fileRoutes
 import game.gdpr.GetRoleHandler
 import game.gdpr.ReportGDPRCheckHandler
 import game.health.PlayerHeartBeatHandler
+import game.player.character.GetPlayerInfoHandler
 import game.player.login.GameLoginHandler
 import game.startup.login.LoginHandler
 import game.protocol.NarutoFallbackHandler
@@ -242,4 +243,5 @@ fun GameStageInitContext.handlers(serverContext: ServerContext) {
     handler(HonorSettingHandler())
     handler(PlayerHeartBeatHandler())
     handler(GameLoginHandler())
+    handler(GetPlayerInfoHandler())
 }
