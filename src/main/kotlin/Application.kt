@@ -24,6 +24,7 @@ import game.GameIdentity
 import game.Globals
 import game.OpenActivityHubHandler
 import game.activities.GetActivityMainUIHandler
+import game.activities.dayActivity.GetDayActivityInfoHandler
 import game.player.honor.HonorSettingHandler
 import game.player.register.RecommendRoleNameHandler
 import game.player.register.RegisterHandler
@@ -39,6 +40,7 @@ import game.activities.wishingLantern.WishingLightQueryHandler
 import game.dungeon.GetRaidsStateHandler
 import game.items.GetItemListHandler
 import game.player.character.GetPlayerInfoHandler
+import game.player.friend.GetFriendListHandler
 import game.player.login.GameLoginHandler
 import game.player.vip.GetVIPInfoHandler
 import game.startup.login.LoginHandler
@@ -260,4 +262,6 @@ fun GameStageInitContext.handlers(serverContext: ServerContext) {
     handler(GetVIPInfoHandler())
     handler(GetRaidsStateHandler())
     handler(GetTaskInfoHandler())
+    handler(GetDayActivityInfoHandler())
+    handler(GetFriendListHandler())
 }

@@ -88,6 +88,8 @@ class NarutoFanchantGuide : FanchantGuide<SocketProtocol> {
             ProtocolCmd.VIP_GET_VIP_DETAIL -> null
             ProtocolCmd.GET_WIPE_OUT_STATE -> null
             ProtocolCmd.TASK_GET_ALL_TASK_INFO -> null
+            ProtocolCmd.GET_DAY_ACTIVITY_INFO -> null
+            ProtocolCmd.GET_FRIEND_LIST -> null
             else -> {
                 Fancam.warn {
                     "Discovered unrecognized commandId: '${decoded.commandId}'"

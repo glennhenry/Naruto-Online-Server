@@ -2,6 +2,7 @@ package game.player.character
 
 import kotlinx.serialization.Serializable
 
+// in EN version this is not used
 @Serializable
 data class DiamondInfo(
     val blueLevel: Int,
