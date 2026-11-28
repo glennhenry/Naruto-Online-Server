@@ -119,6 +119,16 @@ For example, `SysReportCommand` has an executor of `ReportExecuter`. Inside `doC
 
 The `sysReport` is the function that handles `SysReportCommand`. Inside the function, it calls the networking layer to make a request to the server, sending the opcode `250881` (SYS_REPORT).
 
+### Plugin System
+
+Naruto Online don't bundle all their code in one single SWF, but use the notion of plugin, where it bundles code and logic for a specific domain.
+
+For example, registering uses the plugin `RegisterPlugin.swf`, while login uses `LoginPlugin.swf`.
+
+Plugin system can make code searching more difficult because every code is scattered and each of the SWFs are decompiled. A command can exist in `naruto.core.swf`, but its execution elsewhere. Though, each command defines plugin name which indicates the plugin that should be installed to run them. The `naruto.include.swf/def/PluginDef` contains the list of plugin definitions.
+
+Certain plugin has their pairing of XML file, which act as the configuration. For example, when the `StartupCommand` is invoked, the `StartupPlugin.swf` already registered beforehand is initialized. This continues to `StartupPlugin.as` reading the `StartupConfig.xml`, which in this case initialize other plugins and call other commands.
+
 ### System Report
 
 System report, also known as `SYS_REPORT` or the opcode 250881, is a message sent by client intended to inform the server for system information. It's like a client sending logs to server, but those logs is typically useful for server-side.

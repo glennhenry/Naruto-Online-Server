@@ -22,3 +22,8 @@ Particularly, `naruto.core.swf` and `naruto.include.swf` is the most important.
 - Login response continues to `CMD_GETENCRYPT_LIST`, then to `REPORT_GDPR_CHECK` (opcode 1048619), then to `CMD_GET_ROLE` with extra request of `SYS_REPORT` along the way.
 - After `CMD_GET_ROLE`, player is verified and can either: create new character (selecting one of the 5 MC) or login to existing account.
   - Creating new character opens the `RegisterPlugin.swf`. Registering involves asking server for random character name and registering an account itself.
+- After registering, or in the case login, the command `PreLoginCommand` is called. This moves to the plugin `LoginPlugin.swf`, where `PreLoginCommand` is handled by `ViewExecuter.as`, causing another command `StartupCommand` to be called.
+- The `StartupCommand` is a bit different, its executor is `StartupPlugin.as` directly. The command is `call` is invoked, but the input is the XML `StartupConfig.xml`. The XML contains list of plugins and commands to be invoked next.
+- Three next commands are: `StartHelloPackageCommand` (`HELLO_PACKAGE` message; heartbeat by `UserPlugin.swf`), `SetupGameLoadingCommand` (client-only), `LoginCommand` (`LOGIN` message; request player data by `LoginPlugin.swf`).
+- During one of the plugin loading, the `RSModelPlugin.swf` is loaded, which continues to the client sending server `CMD_HONOR_GET_SETTING` opcode.
+- All this result in 3 request to server: `CMD_HONOR_GET_SETTING`, `HELLO_PACKAGE`, and `LOGIN`.
