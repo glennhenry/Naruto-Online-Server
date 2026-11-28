@@ -22,6 +22,7 @@ import encore.time.source.SystemTimeSource
 import encore.venue.Venue
 import game.GameIdentity
 import game.Globals
+import game.character.honor.HonorSettingHandler
 import game.character.register.RecommendRoleNameHandler
 import game.character.register.RegisterHandler
 import game.core.context.RealContextFactory
@@ -31,6 +32,7 @@ import game.core.routes.GameRoutes
 import game.core.routes.fileRoutes
 import game.gdpr.GetRoleHandler
 import game.gdpr.ReportGDPRCheckHandler
+import game.health.PlayerHeartBeatHandler
 import game.startup.login.LoginHandler
 import game.protocol.NarutoFallbackHandler
 import game.protocol.definition.NarutoFanchantGuide
@@ -236,4 +238,6 @@ fun GameStageInitContext.handlers(serverContext: ServerContext) {
     handler(GetRoleHandler())
     handler(RecommendRoleNameHandler())
     handler(RegisterHandler())
+    handler(HonorSettingHandler())
+    handler(PlayerHeartBeatHandler())
 }
