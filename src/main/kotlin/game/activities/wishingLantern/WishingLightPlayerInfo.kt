@@ -1,4 +1,4 @@
-package game.player.activities.wishingLantern
+package game.activities.wishingLantern
 
 import game.player.common.PlayerKey
 import kotlinx.serialization.Serializable

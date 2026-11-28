@@ -33,7 +33,7 @@ import game.core.routes.fileRoutes
 import game.gdpr.GetRoleHandler
 import game.gdpr.ReportGDPRCheckHandler
 import game.health.PlayerHeartBeatHandler
-import game.player.activities.wishingLantern.WishingLightQueryHandler
+import game.activities.wishingLantern.WishingLightQueryHandler
 import game.player.character.GetPlayerInfoHandler
 import game.player.login.GameLoginHandler
 import game.startup.login.LoginHandler

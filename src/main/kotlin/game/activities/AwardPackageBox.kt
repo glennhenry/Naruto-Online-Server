@@ -1,4 +1,4 @@
-package game.player.activities
+package game.activities
 
 import game.items.ItemInfo
 import kotlinx.serialization.Serializable

@@ -1,8 +1,8 @@
-package game.player.activities.wishingLantern
+package game.activities.wishingLantern
 
 import encore.network.handler.FanchantHandler
 import encore.network.handler.HandlerContext
-import game.player.activities.AwardPackageBox
+import game.activities.AwardPackageBox
 import game.protocol.definition.NarutoFanchant
 import game.protocol.definition.ProtocolCmd
 import game.protocol.definition.cmdtype

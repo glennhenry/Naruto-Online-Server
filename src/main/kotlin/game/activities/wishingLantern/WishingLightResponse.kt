@@ -1,6 +1,6 @@
-package game.player.activities.wishingLantern
+package game.activities.wishingLantern
 
-import game.player.activities.AwardPackageBox
+import game.activities.AwardPackageBox
 import game.protocol.response.RetInfo
 import kotlinx.serialization.Serializable
 
