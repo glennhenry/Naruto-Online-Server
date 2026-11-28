@@ -22,6 +22,7 @@ import encore.time.source.SystemTimeSource
 import encore.venue.Venue
 import game.GameIdentity
 import game.Globals
+import game.activities.GetActivityMainUIHandler
 import game.player.honor.HonorSettingHandler
 import game.player.register.RecommendRoleNameHandler
 import game.player.register.RegisterHandler
@@ -33,6 +34,8 @@ import game.core.routes.fileRoutes
 import game.gdpr.GetRoleHandler
 import game.gdpr.ReportGDPRCheckHandler
 import game.health.PlayerHeartBeatHandler
+import game.activities.wishingLantern.WishingLightQueryHandler
+import game.player.character.GetPlayerInfoHandler
 import game.player.login.GameLoginHandler
 import game.startup.login.LoginHandler
 import game.protocol.NarutoFallbackHandler
@@ -46,6 +49,7 @@ import io.ktor.server.routing.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.modules.SerializersModule
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -228,6 +232,7 @@ fun GameStageInitContext.fanchantGuides() {
     guide(NarutoFanchantGuide())
 }
 
+@OptIn(ExperimentalSerializationApi::class)
 fun GameStageInitContext.handlers(serverContext: ServerContext) {
     // register handlers
 
@@ -242,4 +247,7 @@ fun GameStageInitContext.handlers(serverContext: ServerContext) {
     handler(HonorSettingHandler())
     handler(PlayerHeartBeatHandler())
     handler(GameLoginHandler())
+    handler(GetPlayerInfoHandler())
+    handler(WishingLightQueryHandler())
+    handler(GetActivityMainUIHandler())
 }
