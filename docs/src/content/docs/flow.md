@@ -28,3 +28,4 @@ Particularly, `naruto.core.swf` and `naruto.include.swf` is the most important.
 - During one of the plugin loading, the `RSModelPlugin.swf` is loaded, which continues to the client sending server `CMD_HONOR_GET_SETTING` opcode.
 - All this result in 3 request to server: `CMD_HONOR_GET_SETTING`, `HELLO_PACKAGE`, and `LOGIN`.
 - The `LOGIN` is important to request various player data from EXP, HP, location, scene, etc.
+- Afterward, a bunch of follow-up requests are sent: `GET_USER_INFO(196610)`, `CMD_ACTIVITY_WISHING_LIGHT_QUERY(1050033)`, `CMD_ACTIVITY_HUB_GET_MAIN_UI(251137)`, `CMD_ACTIVITY_HUB_OPEN(251138)`, `GET_ITEM_LIST(196644)`, `VIP_GET_VIP_DETAIL(250369)`, `GET_WIPE_OUT_STATE(196886)`, `TASK_GET_ALL_TASK_INFO(197377)`, `GET_DAY_ACTIVITY_INFO(251649)`, `GET_FRIEND_LIST(458753)`, `CMD_PING(250882)`. Note that certain requests are added because of the running event (e.g., wishing light).

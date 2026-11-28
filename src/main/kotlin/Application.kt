@@ -45,6 +45,7 @@ import game.startup.login.LoginHandler
 import game.protocol.NarutoFallbackHandler
 import game.protocol.definition.NarutoFanchantGuide
 import game.startup.others.GetEncryptListHandler
+import game.tasks.GetTaskInfoHandler
 import game.telemetry.SysReportHandler
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
@@ -258,4 +259,5 @@ fun GameStageInitContext.handlers(serverContext: ServerContext) {
     handler(GetItemListHandler())
     handler(GetVIPInfoHandler())
     handler(GetRaidsStateHandler())
+    handler(GetTaskInfoHandler())
 }
