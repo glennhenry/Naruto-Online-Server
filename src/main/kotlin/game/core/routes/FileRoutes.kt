@@ -20,6 +20,9 @@ fun Route.fileRoutes() {
     get("/") {
         call.respondFile(File("web/index.html"))
     }
+    get("/favicon.ico") {
+        call.respondFile(File("web/favicon.ico"))
+    }
     staticFiles("web", File("web"))
 
     val docsDir = File("docs_build")
