@@ -81,6 +81,7 @@ class NarutoFanchantGuide : FanchantGuide<SocketProtocol> {
             ProtocolCmd.HELLO_PACKAGE -> null
             ProtocolCmd.LOGIN -> Protobuf.decode<GameLoginRequest>(bytes)
             ProtocolCmd.GET_USER_INFO -> Protobuf.decode<GetPlayerInfoRequest>(bytes)
+            ProtocolCmd.CMD_ACTIVITY_WISHING_LIGHT_QUERY -> null
             else -> {
                 Fancam.warn {
                     "Discovered unrecognized commandId: '${decoded.commandId}'"

@@ -33,6 +33,7 @@ import game.core.routes.fileRoutes
 import game.gdpr.GetRoleHandler
 import game.gdpr.ReportGDPRCheckHandler
 import game.health.PlayerHeartBeatHandler
+import game.player.activities.wishingLantern.WishingLightQueryHandler
 import game.player.character.GetPlayerInfoHandler
 import game.player.login.GameLoginHandler
 import game.startup.login.LoginHandler
@@ -47,6 +48,7 @@ import io.ktor.server.routing.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.modules.SerializersModule
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -229,6 +231,7 @@ fun GameStageInitContext.fanchantGuides() {
     guide(NarutoFanchantGuide())
 }
 
+@OptIn(ExperimentalSerializationApi::class)
 fun GameStageInitContext.handlers(serverContext: ServerContext) {
     // register handlers
 
@@ -244,4 +247,5 @@ fun GameStageInitContext.handlers(serverContext: ServerContext) {
     handler(PlayerHeartBeatHandler())
     handler(GameLoginHandler())
     handler(GetPlayerInfoHandler())
+    handler(WishingLightQueryHandler())
 }
