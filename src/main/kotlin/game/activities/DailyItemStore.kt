@@ -1,6 +1,5 @@
-package game
+package game.activities
 
-import game.activities.DailyItem
 import kotlinx.serialization.Serializable
 
 @Serializable

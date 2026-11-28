@@ -1,6 +1,5 @@
 package game.activities
 
-import game.DailyItemStore
 import game.protocol.response.RetInfo
 import kotlinx.serialization.Serializable
 

@@ -4,6 +4,7 @@ import encore.network.handler.FanchantHandler
 import encore.network.handler.HandlerContext
 import game.activities.ActivityHubNodeInfo
 import game.activities.DailyItem
+import game.activities.DailyItemStore
 import game.activities.OpenActivityHubResponse
 import game.protocol.definition.NarutoFanchant
 import game.protocol.definition.ProtocolCmd

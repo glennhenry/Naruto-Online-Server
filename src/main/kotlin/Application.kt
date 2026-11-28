@@ -39,6 +39,7 @@ import game.health.PlayerHeartBeatHandler
 import game.activities.wishingLantern.WishingLightQueryHandler
 import game.dungeon.GetRaidsStateHandler
 import game.items.GetItemListHandler
+import game.others.PingHandler
 import game.player.character.GetPlayerInfoHandler
 import game.player.friend.GetFriendListHandler
 import game.player.login.GameLoginHandler
@@ -264,4 +265,5 @@ fun GameStageInitContext.handlers(serverContext: ServerContext) {
     handler(GetTaskInfoHandler())
     handler(GetDayActivityInfoHandler())
     handler(GetFriendListHandler())
+    handler(PingHandler())
 }
