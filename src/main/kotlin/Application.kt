@@ -36,6 +36,7 @@ import game.gdpr.GetRoleHandler
 import game.gdpr.ReportGDPRCheckHandler
 import game.health.PlayerHeartBeatHandler
 import game.activities.wishingLantern.WishingLightQueryHandler
+import game.items.GetItemListHandler
 import game.player.character.GetPlayerInfoHandler
 import game.player.login.GameLoginHandler
 import game.startup.login.LoginHandler
@@ -252,4 +253,5 @@ fun GameStageInitContext.handlers(serverContext: ServerContext) {
     handler(WishingLightQueryHandler())
     handler(GetActivityMainUIHandler())
     handler(OpenActivityHubHandler())
+    handler(GetItemListHandler())
 }
